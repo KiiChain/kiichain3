@@ -34,6 +34,12 @@ message Params {
     (gogoproto.moretags) = "yaml:\"token_release_schedule\"",
     (gogoproto.nullable) = false
   ];
+  // Max yearly inflation rate
+  string inflation_max = 3 [
+    (gogoproto.moretags)   = "yaml:\"inflation_max\"",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable)   = false
+  ];
 }
 
 
