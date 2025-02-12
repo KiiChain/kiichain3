@@ -59,6 +59,7 @@ func TestEndOfEpochMintedCoinDistribution(t *testing.T) {
 		mintParams := minttypes.NewParams(
 			"ukii",
 			tokenReleaseSchedle,
+			minttypes.DefaultInflationMax,
 		)
 		kiiApp.MintKeeper.SetParams(ctx, mintParams)
 
@@ -105,6 +106,7 @@ func TestEndOfEpochMintedCoinDistribution(t *testing.T) {
 		mintParams := minttypes.NewParams(
 			"ukii",
 			tokenReleaseSchedle,
+			minttypes.DefaultInflationMax,
 		)
 		kiiApp.MintKeeper.SetParams(ctx, mintParams)
 
@@ -166,6 +168,7 @@ func TestEndOfEpochMintedCoinDistribution(t *testing.T) {
 		mintParams := minttypes.NewParams(
 			"ukii",
 			tokenReleaseSchedle,
+			minttypes.DefaultInflationMax,
 		)
 		kiiApp.MintKeeper.SetParams(ctx, mintParams)
 
@@ -209,6 +212,7 @@ func TestEndOfEpochMintedCoinDistribution(t *testing.T) {
 		mintParams := minttypes.NewParams(
 			"ukii",
 			tokenReleaseSchedule,
+			minttypes.DefaultInflationMax,
 		)
 		kiiApp.MintKeeper.SetParams(ctx, mintParams)
 
@@ -319,6 +323,7 @@ func TestAfterEpochEndBadPath(t *testing.T) {
 		mintParams := minttypes.NewParams(
 			"ukii",
 			tokenReleaseSchedule,
+			minttypes.DefaultInflationMax,
 		)
 		kiiApp.MintKeeper.SetParams(cachedCtx, mintParams)
 
