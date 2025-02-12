@@ -33,7 +33,7 @@ func NewEpoch(
 // DefaultParams returns a default set of parameters
 func DefaultEpoch() *Epoch {
 	// Get now and build a new epoch
-	now := time.Now()
+	now := time.Now().UTC()
 
 	// Return the epoch
 	return NewEpoch(
