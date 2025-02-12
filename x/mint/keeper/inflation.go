@@ -33,14 +33,19 @@ func (k Keeper) GetAnnualInflationForMint(ctx sdk.Context, minter *types.Minter)
 	// Get the current supply for the token that will be minted
 	supply := k.bankKeeper.GetSupply(ctx, minter.Denom).Amount.ToDec()
 
+	// Check if we have supply
+	if supply.IsZero() {
+		return sdk.ZeroDec(), fmt.Errorf("can't calculate inflation when supply is zero")
+	}
+
 	// Get the end date and start date
 	startDate, err := minter.GetStartDateTime()
 	if err != nil {
-		return sdk.ZeroDec(), err
+		return sdk.Dec{}, err
 	}
 	endDate, err := minter.GetEndDateTime()
 	if err != nil {
-		return sdk.ZeroDec(), err
+		return sdk.Dec{}, err
 	}
 
 	// Compute total days in the minting period

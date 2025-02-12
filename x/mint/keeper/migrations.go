@@ -77,6 +77,7 @@ func (m Migrator) Migrate2to3(ctx sdk.Context) error {
 	v3Params := types.Params{
 		MintDenom:            v2MintDenom,
 		TokenReleaseSchedule: v3TokenReleaseSchedule,
+		InflationMax:         types.DefaultInflationMax,
 	}
 	m.keeper.SetParams(ctx, v3Params)
 	ctx.Logger().Info("Migrating mint module from v2 to v3", "v3Params", v3Params.String())
