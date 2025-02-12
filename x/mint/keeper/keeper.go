@@ -19,7 +19,6 @@ type Keeper struct {
 	paramSpace       paramtypes.Subspace
 	stakingKeeper    types.StakingKeeper
 	bankKeeper       types.BankKeeper
-	hooks            types.MintHooks
 	feeCollectorName string
 }
 
@@ -52,15 +51,6 @@ func NewKeeper(
 // Logger returns a module-specific logger.
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", "x/"+types.ModuleName)
-}
-
-// Set the mint hooks.
-func (k *Keeper) SetHooks(h types.MintHooks) *Keeper {
-	if k.hooks != nil {
-		panic("cannot set mint hooks twice")
-	}
-	k.hooks = h
-	return k
 }
 
 // get the minter
