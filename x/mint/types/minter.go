@@ -47,7 +47,7 @@ func DefaultInitialMinter() Minter {
 
 // validate minter
 func ValidateMinter(minter Minter) error {
-	// Validate the if the remaining amount is less than mint amount
+	// Validate if the remaining amount is less than mint amount
 	if minter.GetTotalMintAmount() < minter.GetRemainingMintAmount() {
 		return fmt.Errorf("total mint amount cannot be less than remaining mint amount")
 	}
