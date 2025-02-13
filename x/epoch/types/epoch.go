@@ -8,6 +8,8 @@ import (
 const (
 	// Default epoch params
 	DefaultEpochDuration = time.Minute
+	DefaultCurrentEpoch  = 0
+	DefaultEpochHeight   = 0
 
 	// MaxEpochDuration is the max epoch duration of one hour
 	MaxEpochDuration = time.Hour
@@ -39,9 +41,9 @@ func DefaultEpoch() *Epoch {
 	return NewEpoch(
 		now,
 		DefaultEpochDuration,
-		0,
+		DefaultCurrentEpoch,
 		now,
-		0,
+		DefaultEpochHeight,
 	)
 }
 
