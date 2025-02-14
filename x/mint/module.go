@@ -23,6 +23,7 @@ import (
 	"github.com/kiichain/kiichain3/x/mint/client/cli"
 	"github.com/kiichain/kiichain3/x/mint/client/rest"
 	"github.com/kiichain/kiichain3/x/mint/keeper"
+	"github.com/kiichain/kiichain3/x/mint/migrations"
 	"github.com/kiichain/kiichain3/x/mint/simulation"
 	"github.com/kiichain/kiichain3/x/mint/types"
 )
@@ -144,9 +145,19 @@ func (am AppModule) LegacyQuerierHandler(_ *codec.LegacyAmino) sdk.Querier {
 // module-specific gRPC queries.
 func (am AppModule) RegisterServices(cfg module.Configurator) {
 	types.RegisterQueryServer(cfg.QueryServer(), keeper.NewQuerier(am.keeper))
-	m := keeper.NewMigrator(am.keeper)
-	_ = cfg.RegisterMigration(types.ModuleName, 1, m.Migrate1to2)
-	_ = cfg.RegisterMigration(types.ModuleName, 2, m.Migrate2to3)
+
+	// Register the v3 to v4 migration
+	err := cfg.RegisterMigration(types.ModuleName, 3, func(ctx sdk.Context) error {
+		// Migrate the store
+		if err := migrations.V4MigrateStore(ctx, &am.keeper); err != nil {
+			return err
+		}
+
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
 }
 
 // InitGenesis performs genesis initialization for the mint module. It returns

@@ -15,6 +15,11 @@ import (
 var (
 	KeyMintDenom            = []byte("MintDenom")
 	KeyTokenReleaseSchedule = []byte("TokenReleaseSchedule")
+	KeyInflationMax         = []byte("InflationMax")
+
+	// Default data
+	DefaultMintDenom    = sdk.DefaultBondDenom
+	DefaultInflationMax = sdk.NewDecWithPrec(20, 2)
 )
 
 // ParamTable for minting module.
@@ -23,19 +28,21 @@ func ParamKeyTable() paramtypes.KeyTable {
 }
 
 func NewParams(
-	mintDenom string, tokenReleaseSchedule []ScheduledTokenRelease,
+	mintDenom string, tokenReleaseSchedule []ScheduledTokenRelease, inflationMax sdk.Dec,
 ) Params {
 	return Params{
 		MintDenom:            mintDenom,
 		TokenReleaseSchedule: SortTokenReleaseCalendar(tokenReleaseSchedule),
+		InflationMax:         inflationMax,
 	}
 }
 
 // default minting module parameters
 func DefaultParams() Params {
 	return Params{
-		MintDenom:            sdk.DefaultBondDenom,
+		MintDenom:            DefaultMintDenom,
 		TokenReleaseSchedule: []ScheduledTokenRelease{},
+		InflationMax:         DefaultInflationMax, // 20% per year
 	}
 }
 
@@ -44,7 +51,10 @@ func (p Params) Validate() error {
 	if err := validateMintDenom(p.MintDenom); err != nil {
 		return err
 	}
-	return validateTokenReleaseSchedule(p.TokenReleaseSchedule)
+	if err := validateInflationMax(p.InflationMax); err != nil {
+		return err
+	}
+	return ValidateTokenReleaseSchedule(p.TokenReleaseSchedule)
 }
 
 // String implements the Stringer interface.
@@ -62,7 +72,8 @@ func (p Version2Params) String() string {
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(KeyMintDenom, &p.MintDenom, validateMintDenom),
-		paramtypes.NewParamSetPair(KeyTokenReleaseSchedule, &p.TokenReleaseSchedule, validateTokenReleaseSchedule),
+		paramtypes.NewParamSetPair(KeyTokenReleaseSchedule, &p.TokenReleaseSchedule, ValidateTokenReleaseSchedule),
+		paramtypes.NewParamSetPair(KeyInflationMax, &p.InflationMax, validateInflationMax),
 	}
 }
 
@@ -87,6 +98,22 @@ func validateMintDenom(i interface{}) error {
 	return nil
 }
 
+func validateInflationMax(i interface{}) error {
+	v, ok := i.(sdk.Dec)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	if v.IsNegative() {
+		return fmt.Errorf("max inflation cannot be negative: %s", v)
+	}
+	if v.GT(sdk.OneDec()) {
+		return fmt.Errorf("max inflation too large: %s", v)
+	}
+
+	return nil
+}
+
 func SortTokenReleaseCalendar(tokenReleaseSchedule []ScheduledTokenRelease) []ScheduledTokenRelease {
 	sort.Slice(tokenReleaseSchedule, func(i, j int) bool {
 		startDate1, _ := time.Parse(TokenReleaseDateFormat, tokenReleaseSchedule[i].GetStartDate())
@@ -96,7 +123,7 @@ func SortTokenReleaseCalendar(tokenReleaseSchedule []ScheduledTokenRelease) []Sc
 	return tokenReleaseSchedule
 }
 
-func validateTokenReleaseSchedule(i interface{}) error {
+func ValidateTokenReleaseSchedule(i interface{}) error {
 	tokenReleaseSchedule, ok := i.([]ScheduledTokenRelease)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", i)

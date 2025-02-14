@@ -30,7 +30,7 @@ func RandomizedGenState(simState *module.SimulationState) {
 		tokenReleaseSchedule = append(tokenReleaseSchedule, scheduledTokenRelease)
 	}
 
-	params := types.NewParams(mintDenom, tokenReleaseSchedule)
+	params := types.NewParams(mintDenom, tokenReleaseSchedule, types.DefaultInflationMax)
 
 	mintGenesis := types.NewGenesisState(types.InitialMinter(), params)
 

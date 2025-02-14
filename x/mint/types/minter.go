@@ -47,6 +47,7 @@ func DefaultInitialMinter() Minter {
 
 // validate minter
 func ValidateMinter(minter Minter) error {
+	// Validate if the remaining amount is less than mint amount
 	if minter.GetTotalMintAmount() < minter.GetRemainingMintAmount() {
 		return fmt.Errorf("total mint amount cannot be less than remaining mint amount")
 	}
@@ -68,6 +69,8 @@ func ValidateMinter(minter Minter) error {
 	if endDate.Before(startDate) {
 		return fmt.Errorf("end date must be after start date %s < %s", endDate, startDate)
 	}
+
+	// Validate the denom
 	return validateMintDenom(minter.Denom)
 }
 

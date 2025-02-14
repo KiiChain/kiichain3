@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	abcitypes "github.com/tendermint/tendermint/abci/types"
@@ -38,6 +39,12 @@ func TestNewProposalHandler(t *testing.T) {
 	app.MintKeeper.SetParams(ctx, types.DefaultParams())
 	app.MintKeeper.SetMinter(ctx, types.DefaultInitialMinter())
 
+	// Create some supply
+	err := app.BankKeeper.MintCoins(ctx, types.ModuleName, sdk.NewCoins(
+		sdk.NewCoin("ukii", sdk.NewInt(365_000_000)), // 365 tokens
+	))
+	require.NoError(t, err)
+
 	handler := mint.NewProposalHandler(app.MintKeeper)
 
 	newMinter := types.NewMinter(
@@ -51,7 +58,7 @@ func TestNewProposalHandler(t *testing.T) {
 		Description: "Test Description",
 		Minter:      &newMinter,
 	}
-	err := handler(ctx, updateMinterProposal)
+	err = handler(ctx, updateMinterProposal)
 	require.NoError(t, err)
 	updatedMinter := app.MintKeeper.GetMinter(ctx)
 	require.Equal(t, newMinter, updatedMinter)
