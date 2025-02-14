@@ -52,7 +52,3 @@ func (k *Keeper) UnsafeSetHooks(eh types.ExpectedEpochHooks) *Keeper {
 	k.hooks = eh
 	return k
 }
-
-func (k *Keeper) GetParamSubspace() paramtypes.Subspace {
-	return k.paramstore
-}
