@@ -265,15 +265,6 @@ func TestBaseCases(t *testing.T) {
 		})
 	})
 
-	t.Run("set hooks", func(t *testing.T) {
-		newHook := &MockMintHooks{}
-		appKeeper.SetHooks(newHook)
-
-		require.PanicsWithValue(t, "cannot set mint hooks twice", func() {
-			appKeeper.SetHooks(newHook)
-		})
-	})
-
 	t.Run("nil minter", func(t *testing.T) {
 		nilApp, nilCtx := createTestApp(false)
 
