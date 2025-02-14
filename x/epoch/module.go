@@ -21,6 +21,7 @@ import (
 	"github.com/kiichain/kiichain3/utils/metrics"
 	"github.com/kiichain/kiichain3/x/epoch/client/cli"
 	"github.com/kiichain/kiichain3/x/epoch/keeper"
+	"github.com/kiichain/kiichain3/x/epoch/migrations"
 	"github.com/kiichain/kiichain3/x/epoch/types"
 )
 
@@ -152,6 +153,19 @@ func (am AppModule) LegacyQuerierHandler(_ *codec.LegacyAmino) sdk.Querier {
 // module-specific GRPC queries.
 func (am AppModule) RegisterServices(cfg module.Configurator) {
 	types.RegisterQueryServer(cfg.QueryServer(), am.keeper)
+
+	// Register the v2 to v3 migration
+	err := cfg.RegisterMigration(types.ModuleName, 2, func(ctx sdk.Context) error {
+		// Migrate the store
+		if err := migrations.V3MigrateStore(ctx, &am.keeper); err != nil {
+			return err
+		}
+
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
 }
 
 // RegisterInvariants registers the capability module's invariants.
@@ -186,7 +200,7 @@ func (am AppModule) ExportGenesisStream(ctx sdk.Context, cdc codec.JSONCodec) <-
 }
 
 // ConsensusVersion implements ConsensusVersion.
-func (AppModule) ConsensusVersion() uint64 { return 2 }
+func (AppModule) ConsensusVersion() uint64 { return 3 }
 
 // BeginBlock executes all ABCI BeginBlock logic respective to the capability module.
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
