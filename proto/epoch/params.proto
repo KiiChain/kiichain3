@@ -9,4 +9,8 @@ option go_package = "github.com/kiichain/kiichain3/x/epoch/types";
 message Params {
   option (gogoproto.goproto_stringer) = false;
   
+  // max_hooks_gas_allowed is the max gas consumption allowed on hooks execution
+  uint64 max_hooks_gas_allowed = 1 [
+    (gogoproto.moretags)   = "yaml:\"max_hooks_gas_allowed\""
+  ];
 }
