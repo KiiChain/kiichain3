@@ -6,7 +6,7 @@ import (
 	"github.com/kiichain/kiichain3/utils"
 )
 
-// EpochHooks are is the interface for the Epoch Hooks
+// EpochHooks are the interface for the Epoch Hooks
 type EpochHooks interface {
 	// AfterEpochEnd defines the first block whose timestamp is after the duration
 	// is counted as the end of the epoch.
