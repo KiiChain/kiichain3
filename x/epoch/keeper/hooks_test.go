@@ -6,7 +6,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/kiichain/kiichain3/app"
-	"github.com/kiichain/kiichain3/x/epoch/keeper"
 	"github.com/kiichain/kiichain3/x/epoch/types"
 	"github.com/stretchr/testify/require"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
@@ -44,16 +43,21 @@ func (h *multiHooksMock) BeforeEpochStart(ctx sdk.Context, _ types.Epoch) {
 }
 
 func TestKeeperHooks(t *testing.T) {
-	k := keeper.Keeper{}
+	// Start a app
+	app := app.Setup(false, false) // Your setup function here
+	ctx := app.BaseApp.NewContext(false, tmproto.Header{})
+
+	// Get the keeper
+	k := app.EpochKeeper
 	hooks := &mockEpochHooks{}
-	k.SetHooks(hooks)
 
 	// Can't set the same hook twice
 	require.Panics(t, func() {
 		k.SetHooks(hooks)
 	})
 
-	ctx := sdk.Context{}   // setup context as required
+	// For the tests use the mock hook
+	k.UnsafeSetHooks(hooks)
 	epoch := types.Epoch{} // setup epoch as required
 
 	k.AfterEpochEnd(ctx, epoch)
