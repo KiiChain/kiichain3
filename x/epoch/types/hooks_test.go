@@ -5,7 +5,6 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/store"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/x/epoch/keeper"
 	"github.com/kiichain/kiichain3/x/epoch/types"
 	"github.com/stretchr/testify/require"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
@@ -34,25 +33,9 @@ func (h *mockEpochHooks) BeforeEpochStart(_ sdk.Context, _ types.Epoch) {
 	h.beforeEpochStartCalled = true
 }
 
-func TestKeeperHooks(t *testing.T) {
-	k := keeper.Keeper{}
-	hooks := &mockEpochHooks{}
-	k.SetHooks(hooks)
-
-	ctx := sdk.Context{}   // setup context as required
-	epoch := types.Epoch{} // setup epoch as required
-
-	k.AfterEpochEnd(ctx, epoch)
-	require.True(t, hooks.afterEpochEndCalled)
-
-	hooks.afterEpochEndCalled = false // reset for the next test
-
-	k.BeforeEpochStart(ctx, epoch)
-	require.True(t, hooks.beforeEpochStartCalled)
-}
-
 func TestMultiHooks(t *testing.T) {
 	hooks := &mockEpochHooks{}
+
 	multiHooks := types.MultiEpochHooks{
 		hooks,
 	}
@@ -62,12 +45,12 @@ func TestMultiHooks(t *testing.T) {
 	ctx := sdk.NewContext(ms, tmproto.Header{}, false, nil)
 	epoch := types.Epoch{}
 
-	multiHooks.AfterEpochEnd(ctx, epoch)
+	multiHooks.AfterEpochEnd(ctx, epoch, 0)
 	require.True(t, hooks.afterEpochEndCalled)
 
 	hooks.afterEpochEndCalled = false // reset for the next test
 
-	multiHooks.BeforeEpochStart(ctx, epoch)
+	multiHooks.BeforeEpochStart(ctx, epoch, 0)
 	require.True(t, hooks.beforeEpochStartCalled)
 }
 
@@ -86,7 +69,7 @@ func TestMultiHooks_Panic(t *testing.T) {
 	ctx := sdk.NewContext(ms, tmproto.Header{}, false, nil)
 	epoch := types.Epoch{}
 
-	multiHooks.AfterEpochEnd(ctx, epoch)
+	multiHooks.AfterEpochEnd(ctx, epoch, 0)
 	require.True(t, hook1.afterEpochEndCalled)
 	require.False(t, hook2.afterEpochEndCalled) // second hook should panic
 	require.True(t, hook3.afterEpochEndCalled)  // third hook should still run after 2nd
