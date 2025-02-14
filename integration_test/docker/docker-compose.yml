@@ -3,7 +3,6 @@ services:
     platform: linux/amd64
     container_name: kii-node-0
     image: "kiichain3/integration"
-    user: "${USERID}:${GROUPID}"
     ports:
       - "26656-26658:26656-26658"
       - "9090-9091:9090-9091"
@@ -31,7 +30,6 @@ services:
     platform: linux/amd64
     container_name: kii-node-1
     image: "kiichain3/integration"
-    user: "${USERID}:${GROUPID}"
     ports:
       - "26659-26661:26656-26658"
       - "9092-9093:9090-9091"
@@ -58,7 +56,6 @@ services:
     platform: linux/amd64
     container_name: kii-node-2
     image: "kiichain3/integration"
-    user: "${USERID}:${GROUPID}"
     environment:
       - ID=2
       - CLUSTER_SIZE=4
@@ -85,7 +82,6 @@ services:
     platform: linux/amd64
     container_name: kii-node-3
     image: "kiichain3/integration"
-    user: "${USERID}:${GROUPID}"
     environment:
       - ID=3
       - CLUSTER_SIZE=4
