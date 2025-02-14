@@ -6,8 +6,10 @@ import (
 )
 
 // GetParams get all parameters as types.Params
-func (k Keeper) GetParams(_ sdk.Context) types.Params {
-	return types.NewParams()
+func (k Keeper) GetParams(ctx sdk.Context) types.Params {
+	params := types.Params{}
+	k.paramstore.GetParamSetIfExists(ctx, &params)
+	return params
 }
 
 // SetParams set the params

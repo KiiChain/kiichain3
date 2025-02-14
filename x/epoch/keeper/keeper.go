@@ -7,16 +7,16 @@ import (
 	"github.com/kiichain/kiichain3/x/epoch/types"
 )
 
-type (
-	Keeper struct {
-		cdc        codec.BinaryCodec
-		storeKey   sdk.StoreKey
-		memKey     sdk.StoreKey
-		paramstore paramtypes.Subspace
-		hooks      types.EpochHooks
-	}
-)
+// Keeper is the epoch keeper struct
+type Keeper struct {
+	cdc        codec.BinaryCodec
+	storeKey   sdk.StoreKey
+	memKey     sdk.StoreKey
+	paramstore paramtypes.Subspace
+	hooks      types.ExpectedEpochHooks
+}
 
+// NewKeeper returns a new epoch keeper
 func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey,
@@ -36,11 +36,19 @@ func NewKeeper(
 	}
 }
 
-func (k *Keeper) SetHooks(eh types.EpochHooks) *Keeper {
+// SetHooks set the hooks for the epoch keeper
+func (k *Keeper) SetHooks(eh types.ExpectedEpochHooks) *Keeper {
 	if k.hooks != nil {
 		panic("cannot set epochs hooks twice")
 	}
 
+	k.hooks = eh
+	return k
+}
+
+// UnsafeSetHooks set the epoch hooks with no validation
+// this is unsafe and should only be used for tests
+func (k *Keeper) UnsafeSetHooks(eh types.ExpectedEpochHooks) *Keeper {
 	k.hooks = eh
 	return k
 }
