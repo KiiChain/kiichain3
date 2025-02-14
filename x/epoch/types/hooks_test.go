@@ -34,9 +34,31 @@ func (h *mockEpochHooks) BeforeEpochStart(_ sdk.Context, _ types.Epoch) {
 	h.beforeEpochStartCalled = true
 }
 
+type mockEpochKeeperHooks struct {
+	afterEpochEndCalled    bool
+	beforeEpochStartCalled bool
+	shouldPanic            bool
+}
+
+func (h *mockEpochKeeperHooks) AfterEpochEnd(_ sdk.Context, _ types.Epoch, _ sdk.Gas) {
+	if h.shouldPanic {
+		panic("AfterEpochEnd")
+	}
+
+	h.afterEpochEndCalled = true
+}
+
+func (h *mockEpochKeeperHooks) BeforeEpochStart(_ sdk.Context, _ types.Epoch, _ sdk.Gas) {
+	if h.shouldPanic {
+		panic("BeforeEpochStart")
+	}
+
+	h.beforeEpochStartCalled = true
+}
+
 func TestKeeperHooks(t *testing.T) {
 	k := keeper.Keeper{}
-	hooks := &mockEpochHooks{}
+	hooks := &mockEpochKeeperHooks{}
 	k.SetHooks(hooks)
 
 	ctx := sdk.Context{}   // setup context as required
@@ -53,6 +75,7 @@ func TestKeeperHooks(t *testing.T) {
 
 func TestMultiHooks(t *testing.T) {
 	hooks := &mockEpochHooks{}
+
 	multiHooks := types.MultiEpochHooks{
 		hooks,
 	}
@@ -62,12 +85,12 @@ func TestMultiHooks(t *testing.T) {
 	ctx := sdk.NewContext(ms, tmproto.Header{}, false, nil)
 	epoch := types.Epoch{}
 
-	multiHooks.AfterEpochEnd(ctx, epoch)
+	multiHooks.AfterEpochEnd(ctx, epoch, 0)
 	require.True(t, hooks.afterEpochEndCalled)
 
 	hooks.afterEpochEndCalled = false // reset for the next test
 
-	multiHooks.BeforeEpochStart(ctx, epoch)
+	multiHooks.BeforeEpochStart(ctx, epoch, 0)
 	require.True(t, hooks.beforeEpochStartCalled)
 }
 
@@ -86,7 +109,7 @@ func TestMultiHooks_Panic(t *testing.T) {
 	ctx := sdk.NewContext(ms, tmproto.Header{}, false, nil)
 	epoch := types.Epoch{}
 
-	multiHooks.AfterEpochEnd(ctx, epoch)
+	multiHooks.AfterEpochEnd(ctx, epoch, 0)
 	require.True(t, hook1.afterEpochEndCalled)
 	require.False(t, hook2.afterEpochEndCalled) // second hook should panic
 	require.True(t, hook3.afterEpochEndCalled)  // third hook should still run after 2nd

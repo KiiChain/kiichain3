@@ -16,3 +16,9 @@ type BankKeeper interface {
 	SpendableCoins(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
 	// Methods imported from bank should be defined here
 }
+
+// ExpectedEpochHooks is the internal interface with gas control
+type ExpectedEpochHooks interface {
+	AfterEpochEnd(ctx sdk.Context, epoch Epoch, maxHooksGasAllowed sdk.Gas)
+	BeforeEpochStart(ctx sdk.Context, epoch Epoch, maxHooksGasAllowed sdk.Gas)
+}
