@@ -7,6 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	distTypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	"github.com/kiichain/kiichain3/x/oracle/types"
+	"github.com/kiichain/kiichain3/x/oracle/utils"
 	"github.com/stretchr/testify/require"
 )
 
@@ -146,4 +147,196 @@ func TestExchangeRateLogic(t *testing.T) {
 	require.Equal(t, 2, exchangeRateAmount) // verify that iterate over all exchange rates elements
 }
 
+func TestParams(t *testing.T) {
+	// Prepare the test environment
+	init := CreateTestInput(t)
+	oracleKeeper := init.OracleKeeper
+	ctx := init.Ctx
 
+	// test default params
+	defaultParams := oracleKeeper.GetParams(ctx)
+	oracleKeeper.SetParams(ctx, defaultParams)
+	require.NotNil(t, defaultParams)
+
+	// test custom params
+	votePeriod := uint64(10)
+	voteThreshold := sdk.NewDecWithPrec(33, 2) // 0.033
+	rewardBand := sdk.NewDecWithPrec(1, 2)     // 0.01
+	slashFraccion := sdk.NewDecWithPrec(1, 2)  // 0.01
+	slashwindow := uint64(1000)
+	minValPerWindow := sdk.NewDecWithPrec(1, 4) // 0.0001
+	whiteList := types.DenomList{{Name: utils.MicroKiiDenom}, {Name: utils.MicroAtomDenom}}
+	lookbackDuration := uint64(3600)
+
+	params := types.Params{
+		VotePeriod:        votePeriod,
+		VoteThreshold:     voteThreshold,
+		RewardBand:        rewardBand,
+		Whitelist:         whiteList,
+		SlashFraction:     slashFraccion,
+		SlashWindow:       slashwindow,
+		MinValidPerWindow: minValPerWindow,
+		LookbackDuration:  lookbackDuration,
+	}
+	oracleKeeper.SetParams(ctx, params)
+
+	storedParams := oracleKeeper.GetParams(ctx)
+	require.NotNil(t, slashFraccion)
+	require.Equal(t, params, storedParams)
+}
+
+func TestDelegationLogic(t *testing.T) {
+	// Prepare the test environment
+	init := CreateTestInput(t)
+	oracleKeeper := init.OracleKeeper
+	ctx := init.Ctx
+
+	// ***** Get and set feeder delegator
+	delegate := oracleKeeper.GetFeederDelegation(ctx, ValAddrs[0]) // supposed to received the same val addr
+	require.Equal(t, Addrs[0], delegate)
+
+	oracleKeeper.SetFeederDelegation(ctx, ValAddrs[0], Addrs[1]) // Delegate Val 0 -> Addr 1
+	delegate = oracleKeeper.GetFeederDelegation(ctx, ValAddrs[0])
+	require.Equal(t, Addrs[1], delegate)
+
+	// ***** Iterate feeder delegator list
+	var validators []sdk.ValAddress
+	var delegates []sdk.AccAddress
+	handler := func(valAddr sdk.ValAddress, delegatedFeeder sdk.AccAddress) bool {
+		validators = append(validators, valAddr)
+		delegates = append(delegates, delegatedFeeder)
+		return false
+	}
+	oracleKeeper.IterateFeederDelegations(ctx, handler)
+
+	// Validation
+	require.Equal(t, 1, len(delegates))
+	require.Equal(t, 1, len(validators))
+	require.Equal(t, validators[0], delegates[0])
+	require.Equal(t, Addrs[1], delegates[0]) // Validator 0 delegate to -> Addr 1
+}
+
+func TestMissCounter(t *testing.T) {
+	// Prepare the test environment
+	init := CreateTestInput(t)
+	oracleKeeper := init.OracleKeeper
+	ctx := init.Ctx
+
+	// ***** Get default voting information
+	counter := oracleKeeper.GetVotePenaltyCounter(ctx, ValAddrs[0]) // Get the counter details of the val 0
+
+	// Validation (everything must be zero, I haven't add voting information yet)
+	require.Equal(t, uint64(0), counter.MissCount)
+	require.Equal(t, uint64(0), counter.AbstainCount)
+	require.Equal(t, uint64(0), counter.SuccessCount)
+	require.Equal(t, uint64(0), oracleKeeper.GetMissCount(ctx, ValAddrs[0]))
+	require.Equal(t, uint64(0), oracleKeeper.GetAbstainCount(ctx, ValAddrs[0]))
+	require.Equal(t, uint64(0), oracleKeeper.GetSuccessCount(ctx, ValAddrs[0]))
+
+	// ***** Set an specific voting information
+	missCounter := uint64(10)
+	abstainCounter := uint64(20)
+	successCounter := uint64(30)
+	oracleKeeper.SetVotePenaltyCounter(ctx, ValAddrs[0], missCounter, abstainCounter, successCounter) // Set the voting info
+
+	// Validation
+	counter = oracleKeeper.GetVotePenaltyCounter(ctx, ValAddrs[0]) // Get the counter details of the val 0
+	require.Equal(t, missCounter, counter.MissCount)
+	require.Equal(t, abstainCounter, counter.AbstainCount)
+	require.Equal(t, successCounter, counter.SuccessCount)
+	require.Equal(t, missCounter, oracleKeeper.GetMissCount(ctx, ValAddrs[0]))
+	require.Equal(t, abstainCounter, oracleKeeper.GetAbstainCount(ctx, ValAddrs[0]))
+	require.Equal(t, successCounter, oracleKeeper.GetSuccessCount(ctx, ValAddrs[0]))
+
+	// ***** Test delete voting info
+	oracleKeeper.DeleteVotePanltyCounter(ctx, ValAddrs[0])
+
+	// validation
+	counter = oracleKeeper.GetVotePenaltyCounter(ctx, ValAddrs[0]) // Get the counter details of the val 0
+	require.Equal(t, uint64(0), counter.MissCount)
+	require.Equal(t, uint64(0), counter.AbstainCount)
+	require.Equal(t, uint64(0), counter.SuccessCount)
+	require.Equal(t, uint64(0), oracleKeeper.GetMissCount(ctx, ValAddrs[0]))
+	require.Equal(t, uint64(0), oracleKeeper.GetAbstainCount(ctx, ValAddrs[0]))
+	require.Equal(t, uint64(0), oracleKeeper.GetSuccessCount(ctx, ValAddrs[0]))
+
+	// ***** Test increment function
+	oracleKeeper.IncrementMissCount(ctx, ValAddrs[0])
+	oracleKeeper.IncrementAbstainCount(ctx, ValAddrs[0])
+	oracleKeeper.IncrementSuccessCount(ctx, ValAddrs[0])
+
+	// validation
+	counter = oracleKeeper.GetVotePenaltyCounter(ctx, ValAddrs[0]) // Get the counter details of the val 0
+	require.Equal(t, uint64(1), counter.MissCount)
+	require.Equal(t, uint64(1), counter.AbstainCount)
+	require.Equal(t, uint64(1), counter.SuccessCount)
+	require.Equal(t, uint64(1), oracleKeeper.GetMissCount(ctx, ValAddrs[0]))
+	require.Equal(t, uint64(1), oracleKeeper.GetAbstainCount(ctx, ValAddrs[0]))
+	require.Equal(t, uint64(1), oracleKeeper.GetSuccessCount(ctx, ValAddrs[0]))
+}
+
+func TestMissCounterIterate(t *testing.T) {
+	// Prepare the test environment
+	init := CreateTestInput(t)
+	oracleKeeper := init.OracleKeeper
+	ctx := init.Ctx
+
+	// Set voting info
+	missCounter := uint64(10)
+	abstainCounter := uint64(20)
+	successCounter := uint64(30)
+	oracleKeeper.SetVotePenaltyCounter(ctx, ValAddrs[0], missCounter, abstainCounter, successCounter) // Set the voting info
+
+	// The handler will iterate over
+	handler := func(operator sdk.ValAddress, votePenaltyCounter types.VotePenaltyCounter) bool {
+		missCount := votePenaltyCounter.MissCount
+		abstainCount := votePenaltyCounter.AbstainCount
+		successCount := votePenaltyCounter.SuccessCount
+
+		// validation
+		require.Equal(t, missCounter, missCount)
+		require.Equal(t, abstainCounter, abstainCount)
+		require.Equal(t, successCounter, successCount)
+		return true
+	}
+
+	oracleKeeper.IterateVotePenaltyCounters(ctx, handler)
+}
+
+func TestAggregateExchangeRateLogic(t *testing.T) {
+	// Prepare the test environment
+	init := CreateTestInput(t)
+	oracleKeeper := init.OracleKeeper
+	ctx := init.Ctx
+
+	// Create and aggregate exchange rate
+	exchangeRate := types.ExchangeRateTuples{
+		{Denom: "BTC/USD", ExchangeRate: sdk.NewDec(1)},
+		{Denom: "ETH/USD", ExchangeRate: sdk.NewDec(2)},
+		{Denom: "ATOM/USD", ExchangeRate: sdk.NewDec(3)},
+	}
+	exchangeRateVote, err := types.NewAggregateExchangeRateVote(exchangeRate, ValAddrs[0])
+	oracleKeeper.SetAggregateExchangeRateVote(ctx, ValAddrs[0], exchangeRateVote)
+	require.NoError(t, err)
+
+	// Get the aggregated exchange rate and validate
+	gotExchangeRate, err := oracleKeeper.GetAggregateExchangeRateVote(ctx, ValAddrs[0])
+	require.NoError(t, err)
+	require.Equal(t, exchangeRate, gotExchangeRate.ExchangeRateTuples)
+	require.Equal(t, ValAddrs[0].String(), gotExchangeRate.Voter)
+
+	// Delete exchange rate
+	oracleKeeper.DeleteAggregateExchangeRateVote(ctx, ValAddrs[0]) // delete exchange rate voting
+	_, err = oracleKeeper.GetAggregateExchangeRateVote(ctx, ValAddrs[0])
+	require.Error(t, err)
+
+	// Create and aggregate invalid exchange rate
+	exchangeRate = types.ExchangeRateTuples{
+		{Denom: "BTC/USD", ExchangeRate: sdk.NewDec(0)},
+		{Denom: "ETH/USD", ExchangeRate: sdk.NewDec(-1)},
+		{Denom: "ATOM/USD", ExchangeRate: sdk.NewDec(2)},
+	}
+	_, err = types.NewAggregateExchangeRateVote(exchangeRate, ValAddrs[0])
+	oracleKeeper.SetAggregateExchangeRateVote(ctx, ValAddrs[0], exchangeRateVote)
+	require.Error(t, err)
+}
