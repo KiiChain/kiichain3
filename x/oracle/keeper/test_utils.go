@@ -70,6 +70,16 @@ var (
 		sdk.AccAddress(pubKeys[5].Address()),
 		sdk.AccAddress(pubKeys[6].Address()),
 	}
+
+	ValAddrs = []sdk.ValAddress{
+		sdk.ValAddress(pubKeys[0].Address()),
+		sdk.ValAddress(pubKeys[1].Address()),
+		sdk.ValAddress(pubKeys[2].Address()),
+		sdk.ValAddress(pubKeys[3].Address()),
+		sdk.ValAddress(pubKeys[4].Address()),
+		sdk.ValAddress(pubKeys[5].Address()),
+		sdk.ValAddress(pubKeys[6].Address()),
+	}
 )
 
 // ModuleBasics register the basic app modules
