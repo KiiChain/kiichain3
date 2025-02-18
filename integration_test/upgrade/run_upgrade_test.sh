@@ -25,20 +25,20 @@ sudo cp integration_test/upgrade/old_binary/kiichaind build/
 
 # 2. Start docker environment
 echo "Starting the docker environment"
-sudo rm build/generated/launch.complete
+sudo rm -f build/generated/launch.complete
 sudo make docker-cluster-start-skipbuild-integration > /dev/null 2>&1 &
 
 # Wait for liveness
 until [ $(cat build/generated/launch.complete |wc -l) = 4 ]
 do
-    echo "Containers are note initialized yet, sleeping..."
+    echo "Still initializing containers, sleeping..."
     sleep 1
 done
-echo "Nodes have started successfully. Sleeping for 10 seconds..."
-sleep 10
+echo "Nodes have started successfully. Sleeping for 30 seconds..."
+sleep 30
 
 # 2. Run the compatibility test
-echo "Starting the compatibility test..."
+echo "Starting the upgrade test..."
 python3 integration_test/scripts/runner.py integration_test/upgrade/upgrade_test.yaml
 
 # HERE YOU CAN APPLY OTHER TESTS BEFORE THE TEAR DOWN
