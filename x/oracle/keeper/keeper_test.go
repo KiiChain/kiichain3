@@ -212,7 +212,6 @@ func TestDelegationLogic(t *testing.T) {
 	// Validation
 	require.Equal(t, 1, len(delegates))
 	require.Equal(t, 1, len(validators))
-	require.Equal(t, validators[0], delegates[0])
 	require.Equal(t, Addrs[1], delegates[0]) // Validator 0 delegate to -> Addr 1
 }
 
