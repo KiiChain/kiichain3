@@ -61,7 +61,11 @@ func (ms msgServer) AggregateExchangeRateVote(ctx context.Context, msg *types.Ms
 	}
 
 	// aggregate the exchange rate prices from the feeder
-	aggregateExchangeRateVote := types.NewAggregateExchangeRateVote(exchangeRates, valAddress)
+	aggregateExchangeRateVote, err := types.NewAggregateExchangeRateVote(exchangeRates, valAddress)
+	if err != nil {
+		return nil, sdkerrors.Wrap(types.ErrAggregateVoteInvalidRate, exchangeRates.String())
+	}
+
 	ms.SetAggregateExchangeRateVote(sdkCtx, valAddress, aggregateExchangeRateVote)
 
 	// Trigger events (exchange rate saved and the feeder address)

@@ -45,8 +45,9 @@ func TestNewAggregateExchangeRateVote(t *testing.T) {
 	// Run each test case
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			result := NewAggregateExchangeRateVote(tc.exchangeRateTuples, tc.voter)
+			result, err := NewAggregateExchangeRateVote(tc.exchangeRateTuples, tc.voter)
 			require.Equal(t, tc.expected, result, "NewAggregateExchangeRateVote() did not return expected result")
+			require.NoError(t, err)
 		})
 	}
 }
