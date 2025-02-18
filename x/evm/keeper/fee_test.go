@@ -5,6 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	testkeeper "github.com/kiichain/kiichain3/testutil/keeper"
+	"github.com/kiichain/kiichain3/x/evm/types"
 	"github.com/stretchr/testify/require"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 )
@@ -129,4 +130,25 @@ func TestAdjustBaseFeePerGas(t *testing.T) {
 			require.Equal(t, expected, k.GetDynamicBaseFeePerGas(ctx.WithBlockHeight(height+1)), "base fee did not match expected value")
 		})
 	}
+}
+
+func TestGetDynamicBaseFeePerGasWithNilMinFee(t *testing.T) {
+	k, ctx := testkeeper.MockEVMKeeper()
+
+	// Test case 1: When dynamic base fee doesn't exist and minimum fee is nil
+	store := ctx.KVStore(k.GetStoreKey())
+	store.Delete(types.BaseFeePerGasPrefix)
+
+	// Clear the dynamic base fee from store
+	fee := k.GetDynamicBaseFeePerGas(ctx)
+	require.Equal(t, types.DefaultParams().MinimumFeePerGas, fee)
+	require.False(t, fee.IsNil())
+
+	// Test case 2: When dynamic base fee exists
+	expectedFee := sdk.NewDec(100)
+	k.SetDynamicBaseFeePerGas(ctx, expectedFee)
+
+	fee = k.GetDynamicBaseFeePerGas(ctx)
+	require.Equal(t, expectedFee, fee)
+	require.False(t, fee.IsNil())
 }
