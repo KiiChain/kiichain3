@@ -9,11 +9,18 @@ import (
 )
 
 // NewAggregateExchangeRateVote creates a new AggregateExchangeRateVote instance
-func NewAggregateExchangeRateVote(exchangeRateTuples ExchangeRateTuples, voter sdk.ValAddress) AggregateExchangeRateVote {
+func NewAggregateExchangeRateVote(exchangeRateTuples ExchangeRateTuples, voter sdk.ValAddress) (AggregateExchangeRateVote, error) {
+	// Iterate over the exchangeRateTuples and validate all exchangeRate are higher than zero
+	for _, exchangeRate := range exchangeRateTuples {
+		if !exchangeRate.ExchangeRate.IsPositive() {
+			return AggregateExchangeRateVote{}, fmt.Errorf("exchange rate for denom %s must be greater than zero, got %s", exchangeRate.Denom, exchangeRate.ExchangeRate.String())
+		}
+	}
+
 	return AggregateExchangeRateVote{
 		ExchangeRateTuples: exchangeRateTuples,
 		Voter:              voter.String(),
-	}
+	}, nil
 }
 
 // Implement String for the AggregateExchangeRateVote (I set false on the proto file, so I have to do it manually)
