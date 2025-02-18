@@ -76,7 +76,7 @@ func (k Keeper) GetBaseExchangeRate(ctx sdk.Context, denom string) (sdk.Dec, sdk
 	return exchangeRate.ExchangeRate, exchangeRate.LastUpdate, exchangeRate.LastUpdateTimestamp, nil
 }
 
-// SetBaseExchangeRate is used to set the exchange rate by denom from the KVStore
+// SetBaseExchangeRate is used to set the exchange rate by denom on the KVStore
 func (k Keeper) SetBaseExchangeRate(ctx sdk.Context, denom string, exchangeRate sdk.Dec) {
 	store := ctx.KVStore(k.storeKey) // Get the oracle module's store
 	currentHeight := sdk.NewInt(ctx.BlockHeight())
@@ -434,7 +434,7 @@ func (k Keeper) AddPriceSnapshot(ctx sdk.Context, snapshot types.PriceSnapshot) 
 
 	k.IteratePriceSnapshots(ctx, func(snapshot types.PriceSnapshot) bool {
 		// If the snapshot is too old, mark it for deletion
-		if snapshot.SnapshotTimestamp+lookBackDuration < ctx.BlockTime().Unix() {
+		if snapshot.SnapshotTimestamp+int64(lookBackDuration) < ctx.BlockTime().Unix() {
 			timestampsToDelete = append(timestampsToDelete, snapshot.SnapshotTimestamp)
 			return false // Continue iteration
 		}

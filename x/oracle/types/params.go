@@ -35,7 +35,7 @@ var (
 	}
 	DefaultSlashFraction     = sdk.NewDecWithPrec(0, 4) // 0.00%
 	DefaultMinValidPerWindow = sdk.NewDecWithPrec(5, 2) // 5%
-	DefaultLookbackDuration  = int64(3600)
+	DefaultLookbackDuration  = uint64(3600)
 )
 
 // Implement the interface ParamSet
