@@ -61,7 +61,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 }
 
 // **************************** EXCHANGE RATE LOGIC ***************************
-// SetBaseExchangeRate is used to get the exchange rate by denom from the KVStore
+// GetBaseExchangeRate is used to get the exchange rate by denom from the KVStore
 func (k Keeper) GetBaseExchangeRate(ctx sdk.Context, denom string) (sdk.Dec, sdk.Int, int64, error) {
 	// Get ExchangeRate from KVStore
 	store := ctx.KVStore(k.storeKey) // Get the oracle module's store
@@ -338,6 +338,7 @@ func (k Keeper) ValidateFeeder(ctx sdk.Context, feederAddr sdk.AccAddress, valAd
 // ****************************************************************************
 
 // **************************** Vote Target logic *****************************
+// GetVoteTarget returns the Denom info on the KVStore by denom string
 func (k Keeper) GetVoteTarget(ctx sdk.Context, denom string) (types.Denom, error) {
 	store := ctx.KVStore(k.storeKey)
 	byteData := store.Get(types.GetVoteTargetKey(denom))
