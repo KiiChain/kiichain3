@@ -6,6 +6,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	distTypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
+	"github.com/cosmos/cosmos-sdk/x/staking"
 	"github.com/kiichain/kiichain3/x/oracle/types"
 	"github.com/kiichain/kiichain3/x/oracle/utils"
 	"github.com/stretchr/testify/require"
@@ -215,6 +216,48 @@ func TestDelegationLogic(t *testing.T) {
 	require.Equal(t, Addrs[1], delegates[0]) // Validator 0 delegate to -> Addr 1
 }
 
+func TestValidateFeeder(t *testing.T) {
+	// Prepare the test environment
+	init := CreateTestInput(t)
+	oracleKeeper := init.OracleKeeper
+	stakingKeeper := init.StakingKeeper
+	ctx := init.Ctx
+	amount := sdk.TokensFromConsensusPower(100, sdk.DefaultPowerReduction) // staking power tokens
+	stakingHandler := staking.NewHandler(stakingKeeper)
+
+	// Create validators
+	val1Addr, val1PubKey := ValAddrs[0], ValPubKeys[0]
+	val2Addr, val2PubKey := ValAddrs[1], ValPubKeys[1]
+	_, err := stakingHandler(ctx, NewTestMsgCreateValidator(val1Addr, val1PubKey, amount)) // Create validator
+	require.NoError(t, err)
+	_, err = stakingHandler(ctx, NewTestMsgCreateValidator(val2Addr, val2PubKey, amount)) // Create validator
+	require.NoError(t, err)
+	staking.EndBlocker(ctx, stakingKeeper) // assign the endblocker
+
+	// Validate validator's bonded tokens
+	bondDenomDefault := stakingKeeper.GetParams(ctx).BondDenom                       // Get bonded denom from module params
+	reference := sdk.NewCoins(sdk.NewCoin(bondDenomDefault, InitTokens.Sub(amount))) // Create balance reference, Suppose to be 100 Kii
+	balanceVal1 := init.BankKeeper.GetAllBalances(ctx, sdk.AccAddress(val1Addr))
+	balanceVal2 := init.BankKeeper.GetAllBalances(ctx, sdk.AccAddress(val2Addr))
+	bondedVal1 := stakingKeeper.Validator(ctx, val1Addr).GetBondedTokens()
+	bondedVal2 := stakingKeeper.Validator(ctx, val2Addr).GetBondedTokens()
+
+	// Validation
+	require.Equal(t, reference, balanceVal1)
+	require.Equal(t, reference, balanceVal2)
+	require.Equal(t, amount, bondedVal1)
+	require.Equal(t, amount, bondedVal2)
+
+	// Validate Feeder when validators did not delegate
+	require.NoError(t, oracleKeeper.ValidateFeeder(ctx, sdk.AccAddress(val1Addr), val1Addr))
+	require.NoError(t, oracleKeeper.ValidateFeeder(ctx, sdk.AccAddress(val2Addr), val2Addr))
+
+	// Delegate validator 1 to Val 2
+	oracleKeeper.SetFeederDelegation(ctx, val1Addr, sdk.AccAddress(val2Addr))                // Delegate Val 1 to Val 2
+	require.NoError(t, oracleKeeper.ValidateFeeder(ctx, sdk.AccAddress(val2Addr), val1Addr)) //Validate that Val2 is delegated by val1
+	require.Error(t, oracleKeeper.ValidateFeeder(ctx, sdk.AccAddress(Addrs[2]), val1Addr))
+}
+
 func TestMissCounter(t *testing.T) {
 	// Prepare the test environment
 	init := CreateTestInput(t)
@@ -308,7 +351,7 @@ func TestAggregateExchangeRateLogic(t *testing.T) {
 	oracleKeeper := init.OracleKeeper
 	ctx := init.Ctx
 
-	// Create and aggregate exchange rate
+	// Create and set exchange rate
 	exchangeRate := types.ExchangeRateTuples{
 		{Denom: "BTC/USD", ExchangeRate: sdk.NewDec(1)},
 		{Denom: "ETH/USD", ExchangeRate: sdk.NewDec(2)},
@@ -338,4 +381,216 @@ func TestAggregateExchangeRateLogic(t *testing.T) {
 	_, err = types.NewAggregateExchangeRateVote(exchangeRate, ValAddrs[0])
 	oracleKeeper.SetAggregateExchangeRateVote(ctx, ValAddrs[0], exchangeRateVote)
 	require.Error(t, err)
+}
+
+func TestIterateAggregateExchangeRateVotes(t *testing.T) {
+	// Prepare the test environment
+	init := CreateTestInput(t)
+	oracleKeeper := init.OracleKeeper
+	ctx := init.Ctx
+
+	// Aggregate exchange rates
+	exchangeRate1 := types.ExchangeRateTuples{
+		{Denom: "BTC/USD", ExchangeRate: sdk.NewDec(1)},
+		{Denom: "ETH/USD", ExchangeRate: sdk.NewDec(2)},
+		{Denom: "ATOM/USD", ExchangeRate: sdk.NewDec(3)},
+	}
+	exchangeRateVote1, err := types.NewAggregateExchangeRateVote(exchangeRate1, ValAddrs[0]) // Upload rates by val 0
+	oracleKeeper.SetAggregateExchangeRateVote(ctx, ValAddrs[0], exchangeRateVote1)
+	require.NoError(t, err)
+
+	exchangeRate2 := types.ExchangeRateTuples{
+		{Denom: "BTC/USD", ExchangeRate: sdk.NewDec(4)},
+		{Denom: "ETH/USD", ExchangeRate: sdk.NewDec(5)},
+		{Denom: "ATOM/USD", ExchangeRate: sdk.NewDec(6)},
+	}
+	exchangeRateVote2, err := types.NewAggregateExchangeRateVote(exchangeRate2, ValAddrs[1]) // Upload rates by val 1
+	oracleKeeper.SetAggregateExchangeRateVote(ctx, ValAddrs[1], exchangeRateVote2)
+	require.NoError(t, err)
+
+	handler := func(voterAddr sdk.ValAddress, aggregateVote types.AggregateExchangeRateVote) bool {
+		if voterAddr.Equals(ValAddrs[0]) {
+			require.Equal(t, exchangeRateVote1, aggregateVote)
+			require.Equal(t, exchangeRateVote1.Voter, voterAddr.String())
+			return false
+		}
+
+		require.Equal(t, exchangeRateVote2, aggregateVote)
+		require.Equal(t, exchangeRateVote2.Voter, voterAddr.String())
+		return false
+	}
+	oracleKeeper.IterateAggregateExchangeRateVotes(ctx, handler)
+}
+
+func TestVoteTargetLogic(t *testing.T) {
+	// Prepare the test environment
+	init := CreateTestInput(t)
+	oracleKeeper := init.OracleKeeper
+	ctx := init.Ctx
+
+	// Set and Get Voting target
+	voteTarget := map[string]types.Denom{
+		utils.MicroKiiDenom:  {Name: utils.MicroKiiDenom},
+		utils.MicroEthDenom:  {Name: utils.MicroEthDenom},
+		utils.MicroUsdcDenom: {Name: utils.MicroUsdcDenom},
+		utils.MicroAtomDenom: {Name: utils.MicroAtomDenom},
+	}
+
+	for denom := range voteTarget {
+		oracleKeeper.SetVoteTarget(ctx, denom)                     // Store the Denom on the KVStore
+		gottenDenom, err := oracleKeeper.GetVoteTarget(ctx, denom) // Get the denom from the KVStore
+		require.NoError(t, err)
+		require.Equal(t, voteTarget[denom], gottenDenom)
+	}
+
+	// Test iterate function
+
+	handler := func(denom string, denomInfo types.Denom) bool {
+		require.Equal(t, voteTarget[denom], denomInfo)
+		return false
+	}
+	oracleKeeper.IterateVoteTargets(ctx, handler)
+
+	// Test delete all targets
+	oracleKeeper.DeleteVoteTargets(ctx)
+	for denom := range voteTarget {
+		_, err := oracleKeeper.GetVoteTarget(ctx, denom)
+		require.Error(t, err)
+	}
+
+}
+
+func TestPriceSnapshotLogic(t *testing.T) {
+	// Prepare the test environment
+	init := CreateTestInput(t)
+	oracleKeeper := init.OracleKeeper
+	ctx := init.Ctx
+
+	// Snapshot Data
+	exchangeRate1 := types.OracleExchangeRate{
+		ExchangeRate:        sdk.NewDec(1),
+		LastUpdate:          sdk.NewInt(1),
+		LastUpdateTimestamp: 1,
+	}
+	exchangeRate2 := types.OracleExchangeRate{
+		ExchangeRate:        sdk.NewDec(2),
+		LastUpdate:          sdk.NewInt(2),
+		LastUpdateTimestamp: 2,
+	}
+	snapshotItem1 := types.NewPriceSnapshotItem(utils.MicroKiiDenom, exchangeRate1)
+	snapshotItem2 := types.NewPriceSnapshotItem(utils.MicroEthDenom, exchangeRate2)
+	snapshot1 := types.NewPriceSnapshot(1, types.PriceSnapshotItems{snapshotItem1, snapshotItem1})
+	snapshot2 := types.NewPriceSnapshot(2, types.PriceSnapshotItems{snapshotItem2, snapshotItem2})
+
+	// test set and get snapshot data
+	oracleKeeper.SetPriceSnapshot(ctx, snapshot1)
+	oracleKeeper.SetPriceSnapshot(ctx, snapshot2)
+
+	gottenSnapshot1 := oracleKeeper.GetPriceSnapshot(ctx, 1)
+	gottenSnapshot2 := oracleKeeper.GetPriceSnapshot(ctx, 2)
+	require.Equal(t, snapshot1, gottenSnapshot1) // validate
+	require.Equal(t, snapshot2, gottenSnapshot2) // validate
+
+	// test iterate functions
+	iteration := int64(1)
+	handler := func(snapshot types.PriceSnapshot) bool {
+		require.Equal(t, iteration, snapshot.SnapshotTimestamp)
+		iteration++
+		return false
+	}
+	oracleKeeper.IteratePriceSnapshots(ctx, handler)
+
+	iteration = int64(2)
+	handler = func(snapshot types.PriceSnapshot) bool {
+		require.Equal(t, iteration, snapshot.SnapshotTimestamp)
+		iteration--
+		return false
+	}
+	oracleKeeper.IteratePriceSnapshotsReverse(ctx, handler)
+
+	// test delete snapshot
+	expected := types.PriceSnapshot{}
+	oracleKeeper.DeletePriceSnapshot(ctx, 1)
+	result := oracleKeeper.GetPriceSnapshot(ctx, 1) // Expected empty struct
+	require.Equal(t, expected, result)
+}
+
+func TestAddPriceSnapshot(t *testing.T) {
+	// Prepare the test environment
+	init := CreateTestInput(t)
+	oracleKeeper := init.OracleKeeper
+	ctx := init.Ctx
+
+	// priceSnapshot initial data
+	ctx = ctx.WithBlockTime(time.Unix(3500, 0)) // by default LookbackDuration is 3600
+	exchangeRate1 := types.OracleExchangeRate{
+		ExchangeRate:        sdk.NewDec(1),
+		LastUpdate:          sdk.NewInt(1),
+		LastUpdateTimestamp: 1,
+	}
+	exchangeRate2 := types.OracleExchangeRate{
+		ExchangeRate:        sdk.NewDec(2),
+		LastUpdate:          sdk.NewInt(2),
+		LastUpdateTimestamp: 2,
+	}
+	snapshotItem1 := types.NewPriceSnapshotItem(utils.MicroKiiDenom, exchangeRate1)
+	snapshotItem2 := types.NewPriceSnapshotItem(utils.MicroEthDenom, exchangeRate2)
+	snapshot1 := types.NewPriceSnapshot(1, types.PriceSnapshotItems{snapshotItem1, snapshotItem2})
+	snapshot2 := types.NewPriceSnapshot(2, types.PriceSnapshotItems{snapshotItem1, snapshotItem2})
+
+	// Add snapshots (the function will not delete nothing)
+	oracleKeeper.AddPriceSnapshot(ctx, snapshot1) // Add snapshots 1
+	oracleKeeper.AddPriceSnapshot(ctx, snapshot2) // Add snapshots 2
+
+	// Validate the 2 snapshots are on the KVStore
+	data1 := oracleKeeper.GetPriceSnapshot(ctx, 1)
+	data2 := oracleKeeper.GetPriceSnapshot(ctx, 2)
+	require.Equal(t, snapshot1, data1)
+	require.Equal(t, snapshot2, data2)
+
+	// Update the block time (time is higher than the default param)
+	ctx = ctx.WithBlockTime(time.Unix(3700, 0))
+
+	// Create new snapshot
+	exchangeRate3 := types.OracleExchangeRate{
+		ExchangeRate:        sdk.NewDec(3),
+		LastUpdate:          sdk.NewInt(4),
+		LastUpdateTimestamp: 3,
+	}
+	snapshotItem3 := types.NewPriceSnapshotItem(utils.MicroKiiDenom, exchangeRate3)
+	snapshot3 := types.NewPriceSnapshot(1000, types.PriceSnapshotItems{snapshotItem1, snapshotItem2, snapshotItem3})
+
+	// Add snapshots (the function will delete the snapshot 1 and 2)
+	oracleKeeper.AddPriceSnapshot(ctx, snapshot3) // Add snapshots 3
+
+	// Validate the snapshot 1 and 2 were deleted
+	data1 = oracleKeeper.GetPriceSnapshot(ctx, 1)
+	data2 = oracleKeeper.GetPriceSnapshot(ctx, 2)
+	data3 := oracleKeeper.GetPriceSnapshot(ctx, 1000)
+
+	deletedSnapshot := types.NewPriceSnapshot(0, nil)
+	require.Equal(t, deletedSnapshot, data1) // data1 is empty
+	require.Equal(t, deletedSnapshot, data2) // data2 is empty
+	require.Equal(t, snapshot3, data3)
+}
+
+func TestSpamPreventionLogic(t *testing.T) {
+	// Prepare the test environment
+	init := CreateTestInput(t)
+	oracleKeeper := init.OracleKeeper
+	ctx := init.Ctx
+
+	// test set and get spam prevention
+	ctx = ctx.WithBlockHeight(100)                          // Set an specific block height
+	oracleKeeper.SetSpamPreventionCounter(ctx, ValAddrs[0]) // set spam on block 100 to val 0
+
+	ctx = ctx.WithBlockHeight(200)
+	oracleKeeper.SetSpamPreventionCounter(ctx, ValAddrs[1]) // set spam on block 200 to val 1
+
+	spamVal1 := oracleKeeper.GetSpamPreventionCounter(ctx, ValAddrs[0]) // get smap list for val 0
+	spamVal2 := oracleKeeper.GetSpamPreventionCounter(ctx, ValAddrs[1]) // get smap list for val 1
+
+	// Validation
+	require.Equal(t, int64(100), spamVal1)
+	require.Equal(t, int64(200), spamVal2)
 }
