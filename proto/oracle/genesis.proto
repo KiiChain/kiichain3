@@ -9,27 +9,27 @@ option go_package = "github.com/kiichain/kiichain3/x/oracle/types";
 // GenesisState is the data strcut on the genesis
 message GenesisState{
     Params params = 1 [(gogoproto.nullable) = false];
-    // ExchangeRateTuple represents the array of exchange rate: Denom and Rate 
+    // exchange_rates represents the array of exchange rate: Denom and Rate 
     repeated ExchangeRateTuple exchange_rates = 2 [
       (gogoproto.castrepeated) = "ExchangeRateTuples",
       (gogoproto.nullable) = false
     ];
 
-    // FeederDelegation represents the array of delegated address
+    // feeder_delegations represents the array of delegated address
     repeated FeederDelegation feeder_delegations = 3 [(gogoproto.nullable) = false];
 
-    // VotePenaltyCounter represents the voting behavior per validator  
+    // vote_penalty_counters represents the voting behavior per validator  
     repeated VotePenaltyCounter vote_penalty_counters = 4 [(gogoproto.nullable) = false];
 
-    // AggregateExchangeRateVote represents the array with the vote process by each denom
+    // aggregate_exchange_rate_votes represents the array with the vote process by each denom
     repeated AggregateExchangeRateVote aggregate_exchange_rate_votes = 5 [(gogoproto.nullable) = false];
 
-    // PriceSnapshot represents the initial array of snapshots 
+    // price_snapshots represents the initial array of snapshots 
     repeated PriceSnapshot price_snapshots = 6 [
         (gogoproto.nullable) = false,
         (gogoproto.castrepeated) = "PriceSnapshots"
     ];
-    // penalty_counter represents the array with the penalty counter by validator
+    // penalty_counters represents the array with the penalty counter by validator
     repeated PenaltyCounter penalty_counters = 7 [(gogoproto.nullable) = false];
 }
 
@@ -42,7 +42,7 @@ message FeederDelegation {
   string validator_address = 2;
 }
 
-// PenaltyCounter 
+// PenaltyCounter is the structure on the keeper that link the voting info with a validator address   
 message PenaltyCounter {
   string validator_address = 1;
   VotePenaltyCounter vote_penalty_counter = 2;
