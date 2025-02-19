@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/codec"
+	"github.com/cosmos/cosmos-sdk/simapp"
 	"github.com/cosmos/cosmos-sdk/std"
 	"github.com/cosmos/cosmos-sdk/store"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -32,6 +33,7 @@ import (
 	stakingTypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	simparams "github.com/cosmos/cosmos-sdk/simapp/params"
 
 	"github.com/tendermint/tendermint/crypto"
@@ -50,6 +52,8 @@ var (
 	kiiCoins     = sdk.NewCoins(sdk.NewCoin(utils.MicroKiiDenom, InitTokens.MulRaw(int64(len(Addrs)+2))))
 
 	OracleDecPrecision = 8
+
+	ValPubKeys = simapp.CreateTestPubKeys(7) // Return 7 public keys for testing
 
 	pubKeys = []crypto.PubKey{
 		secp256k1.GenPrivKey().PubKey(),
@@ -259,4 +263,15 @@ func MakeEncodingConfig() simparams.EncodingConfig {
 		TxConfig:          txCfg,
 		Amino:             amino,
 	}
+}
+
+// NewTestMsgCreateValidator simulate the message used on create a validator
+// this function should be used ONLY FOR TESTING
+func NewTestMsgCreateValidator(address sdk.ValAddress, pubKey cryptotypes.PubKey, amount sdk.Int) *stakingTypes.MsgCreateValidator {
+	rate := sdk.NewDecWithPrec(5, 2)                           // 0.5
+	selfDelegation := sdk.NewCoin(utils.MicroKiiDenom, amount) // Create kii coin
+	commission := stakingTypes.NewCommissionRates(rate, rate, rate)
+	msg, _ := stakingTypes.NewMsgCreateValidator(address, pubKey, selfDelegation, stakingTypes.Description{}, commission, sdk.OneInt()) // create a new MsgCreateValidator instance
+
+	return msg
 }
