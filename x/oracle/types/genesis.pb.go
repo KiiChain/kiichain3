@@ -26,17 +26,17 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 // GenesisState is the data strcut on the genesis
 type GenesisState struct {
 	Params Params `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
-	// ExchangeRateTuple represents the array of exchange rate: Denom and Rate
+	// exchange_rates represents the array of exchange rate: Denom and Rate
 	ExchangeRates ExchangeRateTuples `protobuf:"bytes,2,rep,name=exchange_rates,json=exchangeRates,proto3,castrepeated=ExchangeRateTuples" json:"exchange_rates"`
-	// FeederDelegation represents the array of delegated address
+	// feeder_delegations represents the array of delegated address
 	FeederDelegations []FeederDelegation `protobuf:"bytes,3,rep,name=feeder_delegations,json=feederDelegations,proto3" json:"feeder_delegations"`
-	// VotePenaltyCounter represents the voting behavior per validator
+	// vote_penalty_counters represents the voting behavior per validator
 	VotePenaltyCounters []VotePenaltyCounter `protobuf:"bytes,4,rep,name=vote_penalty_counters,json=votePenaltyCounters,proto3" json:"vote_penalty_counters"`
-	// AggregateExchangeRateVote represents the array with the vote process by each denom
+	// aggregate_exchange_rate_votes represents the array with the vote process by each denom
 	AggregateExchangeRateVotes []AggregateExchangeRateVote `protobuf:"bytes,5,rep,name=aggregate_exchange_rate_votes,json=aggregateExchangeRateVotes,proto3" json:"aggregate_exchange_rate_votes"`
-	// PriceSnapshot represents the initial array of snapshots
+	// price_snapshots represents the initial array of snapshots
 	PriceSnapshots PriceSnapshots `protobuf:"bytes,6,rep,name=price_snapshots,json=priceSnapshots,proto3,castrepeated=PriceSnapshots" json:"price_snapshots"`
-	// penalty_counter represents the array with the penalty counter by validator
+	// penalty_counters represents the array with the penalty counter by validator
 	PenaltyCounters []PenaltyCounter `protobuf:"bytes,7,rep,name=penalty_counters,json=penaltyCounters,proto3" json:"penalty_counters"`
 }
 
@@ -177,7 +177,7 @@ func (m *FeederDelegation) GetValidatorAddress() string {
 	return ""
 }
 
-// PenaltyCounter
+// PenaltyCounter is the structure on the keeper that link the voting info with a validator address
 type PenaltyCounter struct {
 	ValidatorAddress   string              `protobuf:"bytes,1,opt,name=validator_address,json=validatorAddress,proto3" json:"validator_address,omitempty"`
 	VotePenaltyCounter *VotePenaltyCounter `protobuf:"bytes,2,opt,name=vote_penalty_counter,json=votePenaltyCounter,proto3" json:"vote_penalty_counter,omitempty"`
