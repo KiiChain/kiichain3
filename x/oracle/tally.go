@@ -71,8 +71,9 @@ func ballotIsPassing(ballot types.ExchangeRateBallot, thresholdVotes sdk.Int) (s
 // a reasonable spread from the weighted median to the store
 // CONTRACT: ex must be sorted
 func Tally(_ sdk.Context, ex types.ExchangeRateBallot, rewardBand sdk.Dec, validatorClaimMap map[string]types.Claim) (weightedMedian sdk.Dec) {
-	weightedMedian = ex.WeightedMedianWithAssertion()
+	weightedMedian = ex.WeightedMedianWithAssertion() // Get weighted median
 
+	// Check if result is on the reward interval
 	standardDeviation := ex.StandardDeviation(weightedMedian)
 	rewardSpread := weightedMedian.Mul(rewardBand.QuoInt64(2))
 
@@ -80,10 +81,11 @@ func Tally(_ sdk.Context, ex types.ExchangeRateBallot, rewardBand sdk.Dec, valid
 		rewardSpread = standardDeviation
 	}
 
+	// Check each vote and reward
 	for _, vote := range ex {
 		// Filter ballot winners
-		key := vote.Voter.String()
-		claim := validatorClaimMap[key]
+		voter := vote.Voter.String()
+		claim := validatorClaimMap[voter]
 		if vote.ExchangeRate.GTE(weightedMedian.Sub(rewardSpread)) &&
 			vote.ExchangeRate.LTE(weightedMedian.Add(rewardSpread)) {
 
@@ -91,7 +93,7 @@ func Tally(_ sdk.Context, ex types.ExchangeRateBallot, rewardBand sdk.Dec, valid
 			claim.WinCount++
 		}
 		claim.DidVote = true
-		validatorClaimMap[key] = claim
+		validatorClaimMap[voter] = claim
 	}
 
 	return

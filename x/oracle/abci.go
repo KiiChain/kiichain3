@@ -17,40 +17,31 @@ func MidBlocker(ctx sdk.Context, k keeper.Keeper) {
 
 	// Check if the current block is the last one to finish the voting period
 	if utils.IsPeriodLastBlock(ctx, params.VotePeriod) {
-		validatorClaimMap := make(map[string]types.Claim)
+		validatorClaimMap := make(map[string]types.Claim) // here I will store the claim per validator
 
-		maxValidators := k.StakingKeeper.MaxValidators(ctx) // get amount of bonded validators
 		iterator := k.StakingKeeper.ValidatorsPowerStoreIterator(ctx)
 		defer iterator.Close()
 
 		powerReduction := k.StakingKeeper.PowerReduction(ctx) // Get the power reduction factor
 
-		// Get the validators ordered by power
-		powerOrderedValAddrs := []sdk.ValAddress{}
-		for i := 0; iterator.Valid() && i < int(maxValidators); iterator.Next() {
-			powerOrderedValAddrs = append(powerOrderedValAddrs, iterator.Value())
-		}
+		// Iterate over validators and register only the bonded ones
+		for ; iterator.Valid(); iterator.Next() {
+			valAddr := sdk.ValAddress(iterator.Value())          // Get validator address
+			validator := k.StakingKeeper.Validator(ctx, valAddr) // get validator by address
 
-		// Iterate over the validators and exlude not bonded
-		for _, valAddr := range powerOrderedValAddrs {
-			validator := k.StakingKeeper.Validator(ctx, valAddr) // Get the validator by its address
-
-			// exclude not bonded validators
+			// add bonded validators
 			if validator.IsBonded() {
-				valAddr := validator.GetOperator()                      // Get operator address
-				valPower := validator.GetConsensusPower(powerReduction) // Get validator's power
-				claim := types.NewClaim(valPower, 0, 0, false, valAddr) // Create claim object
-				validatorClaimMap[valAddr.String()] = claim             // Assign the validator on the list to receive
+				valPower := validator.GetConsensusPower(powerReduction)  // Get validator's power
+				operator := validator.GetOperator()                      // Get address to receive coins
+				claim := types.NewClaim(valPower, 0, 0, false, operator) // Create claim object
+				validatorClaimMap[operator.String()] = claim             // Assign the validator on the list to receive
 			}
-
 		}
 
 		// Get the voting targets from the KVStore
 		voteTargets := make(map[string]types.Denom)
-		totalTargets := 0
 		k.IterateVoteTargets(ctx, func(denom string, denomInfo types.Denom) bool {
 			voteTargets[denom] = denomInfo
-			totalTargets++
 			return false
 		})
 
@@ -66,16 +57,13 @@ func MidBlocker(ctx sdk.Context, k keeper.Keeper) {
 			exchangeRateRD := ballotRD.WeightedMedianWithAssertion()
 
 			// Get the denoms from the ballot
-			denoms := make([]string, len(voteMap))
-			index := 0
+			denoms := make([]string, 0, len(voteMap))
 			for denom := range voteMap {
-				denoms[index] = denom
-				index++
+				denoms = append(denoms, denom)
 			}
-
 			sort.Strings(denoms)
 
-			// Iterate the denoms on the voting map to ....
+			// Iterate the denoms on the voting map to calculate the final exchange rate
 			for _, denom := range denoms {
 				votingTally := voteMap[denom] // get the voting tally per denom
 
@@ -103,11 +91,9 @@ func MidBlocker(ctx sdk.Context, k keeper.Keeper) {
 		}
 
 		// Extract the denoms stored on belowThresholdVote map
-		belowThresholdDenoms := make([]string, len(belowThresholdVoteMap))
-		n := 0
+		belowThresholdDenoms := make([]string, 0, len(belowThresholdVoteMap))
 		for denom := range belowThresholdVoteMap {
-			belowThresholdDenoms[n] = denom
-			n++
+			belowThresholdDenoms = append(belowThresholdDenoms, denom)
 		}
 		sort.Strings(belowThresholdDenoms) // sort by denom name
 
