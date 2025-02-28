@@ -173,9 +173,9 @@ func CreateTestInput(t *testing.T) TestInput {
 
 	distKeeper.SetFeePool(ctx, distTypes.InitialFeePool())
 	distParams := distTypes.DefaultParams()
-	distParams.CommunityTax = sdk.NewDecWithPrec(2, 2)        // 2.00
-	distParams.BaseProposerReward = sdk.NewDecWithPrec(1, 2)  // 1.00
-	distParams.BonusProposerReward = sdk.NewDecWithPrec(4, 2) // 4.00
+	distParams.CommunityTax = sdk.NewDecWithPrec(2, 2)        // 0.02
+	distParams.BaseProposerReward = sdk.NewDecWithPrec(1, 2)  // 0.01
+	distParams.BonusProposerReward = sdk.NewDecWithPrec(4, 2) // 0.04
 	distKeeper.SetParams(ctx, distParams)                     // Assign new params on the module
 	stakingKeeper.SetHooks(stakingTypes.NewMultiStakingHooks(distKeeper.Hooks()))
 
@@ -268,7 +268,7 @@ func MakeEncodingConfig() simparams.EncodingConfig {
 // NewTestMsgCreateValidator simulate the message used on create a validator
 // this function should be used ONLY FOR TESTING
 func NewTestMsgCreateValidator(address sdk.ValAddress, pubKey cryptotypes.PubKey, amount sdk.Int) *stakingTypes.MsgCreateValidator {
-	rate := sdk.NewDecWithPrec(5, 2)                           // 0.5
+	rate := sdk.NewDecWithPrec(5, 2)                           // 0.05
 	selfDelegation := sdk.NewCoin(utils.MicroKiiDenom, amount) // Create kii coin
 	commission := stakingTypes.NewCommissionRates(rate, rate, rate)
 	msg, _ := stakingTypes.NewMsgCreateValidator(address, pubKey, selfDelegation, stakingTypes.Description{}, commission, sdk.OneInt()) // create a new MsgCreateValidator instance
