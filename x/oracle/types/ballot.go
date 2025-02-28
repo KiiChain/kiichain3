@@ -125,11 +125,16 @@ func (ex ExchangeRateBallot) ToCrossRateWithSort(bases map[string]sdk.Dec) Excha
 }
 
 // ToCrossRate return cross_rate(base/exchange_rate) ballot
-func (ex ExchangeRateBallot) ToCrossRate(bases map[string]sdk.Dec) (cb ExchangeRateBallot) {
+func (ex ExchangeRateBallot) ToCrossRate(bases map[string]sdk.Dec) ExchangeRateBallot {
+	// Iterate over the exchange rates
+	crossRateBallot := make(ExchangeRateBallot, 0, len(ex))
+
 	for i := range ex {
 		vote := ex[i]
 
-		if exchangeRateRT, ok := bases[string(vote.Voter)]; ok && vote.ExchangeRate.IsPositive() {
+		exchangeRateBase, ok := bases[string(vote.Voter)]
+
+		if ok && vote.ExchangeRate.IsPositive() {
 			// Quo will panic on overflow, so we wrap it in a defer/recover
 			func() {
 				defer func() {
@@ -139,7 +144,7 @@ func (ex ExchangeRateBallot) ToCrossRate(bases map[string]sdk.Dec) (cb ExchangeR
 						vote.Power = 0
 					}
 				}()
-				vote.ExchangeRate = exchangeRateRT.Quo(vote.ExchangeRate)
+				vote.ExchangeRate = exchangeRateBase.Quo(vote.ExchangeRate) // get cross = base / ex
 			}()
 		} else {
 			// If we can't get exchange rate, convert the vote as abstain vote
@@ -147,10 +152,10 @@ func (ex ExchangeRateBallot) ToCrossRate(bases map[string]sdk.Dec) (cb ExchangeR
 			vote.Power = 0
 		}
 
-		cb = append(cb, vote)
+		crossRateBallot = append(crossRateBallot, vote)
 	}
 
-	return
+	return crossRateBallot
 }
 
 // StandardDeviation calculates the standard deviation by the power
@@ -160,6 +165,7 @@ func (ex ExchangeRateBallot) StandardDeviation(median sdk.Dec) (standardDeviatio
 		return sdk.ZeroDec()
 	}
 
+	// Panic handler (returns zero)
 	defer func() {
 		e := recover()
 		if e != nil {
@@ -169,11 +175,11 @@ func (ex ExchangeRateBallot) StandardDeviation(median sdk.Dec) (standardDeviatio
 
 	sum := sdk.ZeroDec()
 	for _, votes := range ex {
-		deviation := votes.ExchangeRate.Sub(median)
-		sum = sum.Add(deviation.Mul(deviation))
+		deviation := votes.ExchangeRate.Sub(median) // calculate the ex - median
+		sum = sum.Add(deviation.Mul(deviation))     // Calculate sum += (ex - median)^2
 	}
 
-	variance := sum.QuoInt64(int64(len(ex)))
+	variance := sum.QuoInt64(int64(len(ex))) // Divide the result by the number of ex
 
 	floatNum, _ := strconv.ParseFloat(variance.String(), 64)
 	floatNum = math.Sqrt(floatNum)

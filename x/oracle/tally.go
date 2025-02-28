@@ -31,6 +31,7 @@ func pickReferenceDenom(ctx sdk.Context, k keeper.Keeper, voteTargets map[string
 		_, exists := voteTargets[denom]
 		if !exists {
 			delete(voteMap, denom)
+			continue
 		}
 
 		// Get ballot power and check if is greater than the threshold
@@ -75,9 +76,9 @@ func Tally(_ sdk.Context, ex types.ExchangeRateBallot, rewardBand sdk.Dec, valid
 
 	// Check if result is on the reward interval
 	standardDeviation := ex.StandardDeviation(weightedMedian)
-	rewardSpread := weightedMedian.Mul(rewardBand.QuoInt64(2))
+	rewardSpread := weightedMedian.Mul(rewardBand.QuoInt64(2)) // this is the interval that will be added around weightedMedian
 
-	if standardDeviation.GT(rewardSpread) {
+	if standardDeviation.GT(rewardSpread) { // if rewardSpread > deviation means the data is disperse
 		rewardSpread = standardDeviation
 	}
 
@@ -86,8 +87,10 @@ func Tally(_ sdk.Context, ex types.ExchangeRateBallot, rewardBand sdk.Dec, valid
 		// Filter ballot winners
 		voter := vote.Voter.String()
 		claim := validatorClaimMap[voter]
-		if vote.ExchangeRate.GTE(weightedMedian.Sub(rewardSpread)) &&
-			vote.ExchangeRate.LTE(weightedMedian.Add(rewardSpread)) {
+
+		// If exchange rate is in the interval reward the validator
+		if vote.ExchangeRate.GTE(weightedMedian.Sub(rewardSpread)) && // lower limit
+			vote.ExchangeRate.LTE(weightedMedian.Add(rewardSpread)) { // upper limit
 
 			claim.Weight += vote.Power
 			claim.WinCount++
