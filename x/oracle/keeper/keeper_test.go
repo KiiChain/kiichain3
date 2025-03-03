@@ -291,7 +291,7 @@ func TestMissCounter(t *testing.T) {
 	require.Equal(t, successCounter, oracleKeeper.GetSuccessCount(ctx, ValAddrs[0]))
 
 	// ***** Test delete voting info
-	oracleKeeper.DeleteVotePanltyCounter(ctx, ValAddrs[0])
+	oracleKeeper.DeleteVotePenaltyCounter(ctx, ValAddrs[0])
 
 	// validation
 	counter = oracleKeeper.GetVotePenaltyCounter(ctx, ValAddrs[0]) // Get the counter details of the val 0
@@ -420,6 +420,31 @@ func TestIterateAggregateExchangeRateVotes(t *testing.T) {
 		return false
 	}
 	oracleKeeper.IterateAggregateExchangeRateVotes(ctx, handler)
+}
+
+func TestRemoveExcessFeeds(t *testing.T) {
+	// Prepare the test environment
+	init := CreateTestInput(t)
+	oracleKeeper := init.OracleKeeper
+	ctx := init.Ctx
+
+	// Agregate voting targets
+	oracleKeeper.SetVoteTarget(ctx, utils.MicroAtomDenom)
+	oracleKeeper.SetVoteTarget(ctx, utils.MicroEthDenom)
+
+	// Aggregate base exchange rate
+	oracleKeeper.SetBaseExchangeRate(ctx, utils.MicroAtomDenom, sdk.NewDec(1))
+	oracleKeeper.SetBaseExchangeRate(ctx, utils.MicroEthDenom, sdk.NewDec(2))
+	oracleKeeper.SetBaseExchangeRate(ctx, utils.MicroKiiDenom, sdk.NewDec(3)) // extra denom
+
+	// remove excess
+	oracleKeeper.RemoveExcessFeeds(ctx)
+
+	// Validate the successfull erased of the extra denoms
+	oracleKeeper.IterateBaseExchangeRates(ctx, func(denom string, exchangeRate types.OracleExchangeRate) bool {
+		require.True(t, denom != utils.MicroKiiDenom)
+		return false
+	})
 }
 
 func TestVoteTargetLogic(t *testing.T) {
@@ -572,6 +597,31 @@ func TestAddPriceSnapshot(t *testing.T) {
 	require.Equal(t, deletedSnapshot, data1) // data1 is empty
 	require.Equal(t, deletedSnapshot, data2) // data2 is empty
 	require.Equal(t, snapshot3, data3)
+}
+
+func TestClearVoteTargets(t *testing.T) {
+	// Prepare the test environment
+	init := CreateTestInput(t)
+	oracleKeeper := init.OracleKeeper
+	ctx := init.Ctx
+
+	// Eliminate initial voting target
+	oracleKeeper.DeleteVoteTargets(ctx)
+
+	// Agregate voting targets
+	oracleKeeper.SetVoteTarget(ctx, utils.MicroAtomDenom)
+	oracleKeeper.SetVoteTarget(ctx, utils.MicroEthDenom)
+
+	// Validate the voting target were successfully added
+	targets := oracleKeeper.GetVoteTargets(ctx)
+	require.True(t, len(targets) == 2)
+
+	// Clear voting targets
+	oracleKeeper.ClearVoteTargets(ctx)
+
+	// Validate empty voting targets
+	targets = oracleKeeper.GetVoteTargets(ctx)
+	require.True(t, len(targets) == 0)
 }
 
 func TestSpamPreventionLogic(t *testing.T) {
