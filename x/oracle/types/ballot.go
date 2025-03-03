@@ -9,7 +9,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// Claim represent the
+// Claim represents a claim action ticket from the validator, it will store the information
+// about voting and who will receive the reward (or slashing)
 type Claim struct {
 	Power     int64
 	Weight    int64
