@@ -103,8 +103,58 @@ func MidBlocker(ctx sdk.Context, k keeper.Keeper) {
 			Tally(ctx, ballot, params.RewardBand, validatorClaimMap)
 		}
 
-		// ********* Miss Counting Logic *************
-		// TODO: Complete this part
+		// Validate miss voting process
+		for _, claim := range validatorClaimMap {
+			if int(claim.WinCount) == len(voteTargets) {
+				k.IncrementSuccessCount(ctx, claim.Recipient)
+				continue
+			}
 
+			if !claim.DidVote {
+				k.IncrementAbstainCount(ctx, claim.Recipient)
+				continue
+			}
+
+			k.IncrementMissCount(ctx, claim.Recipient)
+		}
+
+		// Clear the ballot
+		k.ClearBallots(ctx)
+
+		// Update vote target
+		k.ApplyWhitelist(ctx, params.Whitelist, voteTargets)
+
+		// take an snapshot for each price
+		priceSnapshotItems := []types.PriceSnapshotItem{}
+		k.IterateBaseExchangeRates(ctx, func(denom string, exchangeRate types.OracleExchangeRate) bool {
+			priceSnapshotItem := types.PriceSnapshotItem{
+				Denom:              denom,
+				OracleExchangeRate: exchangeRate,
+			}
+
+			priceSnapshotItems = append(priceSnapshotItems, priceSnapshotItem)
+			return false
+		})
+
+		// create and save general snapshot
+		if len(priceSnapshotItems) > 0 {
+			priceSnapshot := types.PriceSnapshot{
+				SnapshotTimestamp:  ctx.BlockTime().Unix(),
+				PriceSnapshotItems: priceSnapshotItems,
+			}
+			k.AddPriceSnapshot(ctx, priceSnapshot)
+		}
+	}
+}
+
+// Endblocker is the function that slash the validators and reset the miss counters
+func Endblocker(ctx sdk.Context, k keeper.Keeper) {
+	params := k.GetParams(ctx)
+
+	// Slash who did miss voting over threshold
+	// reset miss counter of all validators at the last block of slash window
+	if utils.IsPeriodLastBlock(ctx, params.SlashWindow) {
+		k.SlashAndResetCounters(ctx) // slash validator and reset voting counter
+		k.RemoveExcessFeeds(ctx)     // remove aditional rates added on the votes
 	}
 }
