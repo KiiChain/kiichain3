@@ -262,7 +262,7 @@ func (k Keeper) GetSuccessCount(ctx sdk.Context, operator sdk.ValAddress) uint64
 }
 
 // DeleteVotePanltyCounter deletes the operator's vote penalty counter element
-func (k Keeper) DeleteVotePanltyCounter(ctx sdk.Context, operator sdk.ValAddress) {
+func (k Keeper) DeleteVotePenaltyCounter(ctx sdk.Context, operator sdk.ValAddress) {
 	// TODO: Add metrics on defer functions
 
 	store := ctx.KVStore(k.storeKey)
@@ -335,6 +335,35 @@ func (k Keeper) IterateAggregateExchangeRateVotes(ctx sdk.Context, handler func(
 	}
 }
 
+// RemoveExcessFeeds deletes the exchange rates added to the KVStore but not require on the whitelist
+func (k Keeper) RemoveExcessFeeds(ctx sdk.Context) {
+	// get exchange rates stored on the KVStore
+	excessActives := make(map[string]struct{})
+	k.IterateBaseExchangeRates(ctx, func(denom string, exchangeRate types.OracleExchangeRate) bool {
+		excessActives[denom] = struct{}{}
+		return false
+	})
+
+	// Get voting target
+	k.IterateVoteTargets(ctx, func(denom string, denomInfo types.Denom) bool {
+		// Remove vote targets from actives
+		delete(excessActives, denom)
+		return false
+	})
+
+	// at this point just left the excess exchange rates
+	activesToClear := make([]string, 0, len(excessActives))
+	for denom := range excessActives {
+		activesToClear = append(activesToClear, denom)
+	}
+	sort.Strings(activesToClear)
+
+	// delete the excess exchange rates
+	for _, denom := range activesToClear {
+		k.DeleteBaseExchangeRate(ctx, denom)
+	}
+}
+
 // ****************************************************************************
 
 // **************************** Vote Target logic *****************************
@@ -395,6 +424,14 @@ func (k Keeper) getAllKeysForPrefix(store sdk.KVStore, prefix []byte) [][]byte {
 		keys = append(keys, iter.Key()) // Add the key of the elements inside the prefix
 	}
 	return keys
+}
+
+// ClearVoteTargets deletes all voting target on the KVStore
+func (k Keeper) ClearVoteTargets(ctx sdk.Context) {
+	store := ctx.KVStore(k.storeKey)
+	for _, key := range k.getAllKeysForPrefix(store, types.VoteTargetKey) {
+		store.Delete(key)
+	}
 }
 
 // ****************************************************************************
