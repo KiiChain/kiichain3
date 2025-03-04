@@ -12,7 +12,7 @@ import (
 )
 
 func TestOrganizeBallotByDenom(t *testing.T) {
-	t.Parallel()
+
 	// Prepare the test environment
 	init := CreateTestInput(t)
 	oracleKeeper := init.OracleKeeper
