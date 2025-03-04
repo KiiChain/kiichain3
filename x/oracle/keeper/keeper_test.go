@@ -429,6 +429,7 @@ func TestRemoveExcessFeeds(t *testing.T) {
 	ctx := init.Ctx
 
 	// Agregate voting targets
+	oracleKeeper.DeleteVoteTargets(ctx)
 	oracleKeeper.SetVoteTarget(ctx, utils.MicroAtomDenom)
 	oracleKeeper.SetVoteTarget(ctx, utils.MicroEthDenom)
 
