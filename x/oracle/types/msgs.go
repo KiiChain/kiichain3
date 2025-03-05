@@ -70,6 +70,14 @@ func (msg MsgAggregateExchangeRateVote) ValidateBasic() error {
 	return nil
 }
 
+// NewMsgDelegateFeedConsent creates a MsgDelegateFeedConsent instance
+func NewMsgDelegateFeedConsent(operatorAddress sdk.ValAddress, feederAddress sdk.AccAddress) *MsgDelegateFeedConsent {
+	return &MsgDelegateFeedConsent{
+		Operator: operatorAddress.String(),
+		Delegate: feederAddress.String(),
+	}
+}
+
 // GetSigners implements sdk.Msg interface
 // Returns the signer of the transaction which is the feeder
 func (msg MsgDelegateFeedConsent) GetSigners() []sdk.AccAddress {
