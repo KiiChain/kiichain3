@@ -61,6 +61,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 }
 
 // **************************** EXCHANGE RATE LOGIC ***************************
+
 // GetBaseExchangeRate is used to get the exchange rate by denom from the KVStore
 func (k Keeper) GetBaseExchangeRate(ctx sdk.Context, denom string) (sdk.Dec, sdk.Int, int64, error) {
 	// Get ExchangeRate from KVStore
@@ -123,7 +124,7 @@ func (k Keeper) IterateBaseExchangeRates(ctx sdk.Context, handler func(denom str
 	// Iterate the whole exchangeRate list
 	for ; iter.Valid(); iter.Next() {
 		// Get denom and rate
-		denom := string(iter.Key()[len(types.ExchangeRateKey)])
+		denom := string(iter.Key()[len(types.ExchangeRateKey):])
 		rate := types.OracleExchangeRate{}
 		k.cdc.MustUnmarshal(iter.Value(), &rate)
 
@@ -136,6 +137,7 @@ func (k Keeper) IterateBaseExchangeRates(ctx sdk.Context, handler func(denom str
 // ****************************************************************************
 
 // **************************** Oracle Delegation Logic ***********************
+
 // GetFeederDelegation returns the delegated address by validator address
 func (k Keeper) GetFeederDelegation(ctx sdk.Context, valAddr sdk.ValAddress) sdk.AccAddress {
 	// Get delegator by validator Address
@@ -195,6 +197,7 @@ func (k Keeper) ValidateFeeder(ctx sdk.Context, feederAddr sdk.AccAddress, valAd
 // ****************************************************************************
 
 // **************************** Miss counter logic ****************************
+
 // GetVotePenaltyCounter returns the vote penalty counter data for an operator (validator or delegated address)
 func (k Keeper) GetVotePenaltyCounter(ctx sdk.Context, operator sdk.ValAddress) types.VotePenaltyCounter {
 	store := ctx.KVStore(k.storeKey) // Get oracle module's store
@@ -262,7 +265,7 @@ func (k Keeper) GetSuccessCount(ctx sdk.Context, operator sdk.ValAddress) uint64
 }
 
 // DeleteVotePanltyCounter deletes the operator's vote penalty counter element
-func (k Keeper) DeleteVotePanltyCounter(ctx sdk.Context, operator sdk.ValAddress) {
+func (k Keeper) DeleteVotePenaltyCounter(ctx sdk.Context, operator sdk.ValAddress) {
 	// TODO: Add metrics on defer functions
 
 	store := ctx.KVStore(k.storeKey)
@@ -290,6 +293,7 @@ func (k Keeper) IterateVotePenaltyCounters(ctx sdk.Context, handler func(operato
 // ****************************************************************************
 
 // **************************** Aggregate Exchange Rate Vote logic ************
+
 // GetAggregateExchangeRateVote returns the exchange rate voted from the store by an specific voter
 func (k Keeper) GetAggregateExchangeRateVote(ctx sdk.Context, voter sdk.ValAddress) (types.AggregateExchangeRateVote, error) {
 	store := ctx.KVStore(k.storeKey)
@@ -335,9 +339,39 @@ func (k Keeper) IterateAggregateExchangeRateVotes(ctx sdk.Context, handler func(
 	}
 }
 
+// RemoveExcessFeeds deletes the exchange rates added to the KVStore but not require on the whitelist
+func (k Keeper) RemoveExcessFeeds(ctx sdk.Context) {
+	// get exchange rates stored on the KVStore
+	excessActives := make(map[string]struct{})
+	k.IterateBaseExchangeRates(ctx, func(denom string, exchangeRate types.OracleExchangeRate) bool {
+		excessActives[denom] = struct{}{}
+		return false
+	})
+
+	// Get voting target
+	k.IterateVoteTargets(ctx, func(denom string, denomInfo types.Denom) bool {
+		// Remove vote targets from actives
+		delete(excessActives, denom)
+		return false
+	})
+
+	// at this point just left the excess exchange rates
+	activesToClear := make([]string, 0, len(excessActives))
+	for denom := range excessActives {
+		activesToClear = append(activesToClear, denom)
+	}
+	sort.Strings(activesToClear)
+
+	// delete the excess exchange rates
+	for _, denom := range activesToClear {
+		k.DeleteBaseExchangeRate(ctx, denom)
+	}
+}
+
 // ****************************************************************************
 
 // **************************** Vote Target logic *****************************
+
 // GetVoteTarget returns the Denom info on the KVStore by denom string
 func (k Keeper) GetVoteTarget(ctx sdk.Context, denom string) (types.Denom, error) {
 	store := ctx.KVStore(k.storeKey)
@@ -397,9 +431,18 @@ func (k Keeper) getAllKeysForPrefix(store sdk.KVStore, prefix []byte) [][]byte {
 	return keys
 }
 
+// ClearVoteTargets deletes all voting target on the KVStore
+func (k Keeper) ClearVoteTargets(ctx sdk.Context) {
+	store := ctx.KVStore(k.storeKey)
+	for _, key := range k.getAllKeysForPrefix(store, types.VoteTargetKey) {
+		store.Delete(key)
+	}
+}
+
 // ****************************************************************************
 
 // **************************** Price Snapshot logic **************************
+
 // GetPriceSnapshot returns the exchange rate prices stored by a defined timestamp
 func (k Keeper) GetPriceSnapshot(ctx sdk.Context, timestamp int64) types.PriceSnapshot {
 	store := ctx.KVStore(k.storeKey)
@@ -489,6 +532,7 @@ func (k Keeper) DeletePriceSnapshot(ctx sdk.Context, timestamp int64) {
 // ****************************************************************************
 
 // **************************** Spam Prevention Counter logic *****************
+
 // GetSpamPreventionCounter returns the stored block heigh by the validator (in that heigh the validator voted)
 func (k Keeper) GetSpamPreventionCounter(ctx sdk.Context, valAddr sdk.ValAddress) int64 {
 	store := ctx.KVStore(k.memKey) // Get oracle module's KVStore
@@ -513,6 +557,7 @@ func (k Keeper) SetSpamPreventionCounter(ctx sdk.Context, valAddr sdk.ValAddress
 // ****************************************************************************
 
 // **************************** Helper Functions logic ************************
+
 // CalculateTwaps calculate the twap to each exchange rate stored on the KVStore, the twap is a fundamental operation
 // to avoid price manipulation using the historycal price and feeders input to calculate the current price
 func (k Keeper) CalculateTwaps(ctx sdk.Context, lookBackSeconds uint64) (types.OracleTwaps, error) {
