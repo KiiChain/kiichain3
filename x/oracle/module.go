@@ -84,10 +84,12 @@ func (AppModule) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *runtim
 	// TODO: Register gRPC query routes
 }
 
+// GetTxCmd returns the cli tx commands for the module
 func (AppModule) GetTxCmd() *cobra.Command {
 	return cli.GetTxCmd()
 }
 
+// GetQueryCmd returns the cli query commands for the module
 func (AppModule) GetQueryCmd() *cobra.Command {
 	return cli.GetQueryCmd()
 }
