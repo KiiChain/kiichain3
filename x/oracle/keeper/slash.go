@@ -8,6 +8,8 @@ import (
 	"github.com/kiichain/kiichain3/x/oracle/types"
 )
 
+// SlashAndResetCounters calculate if the validator must be slashed if success votes / total votes
+// is lower than MinValidPerWindow param. Then reset the vote penalty info
 func (k Keeper) SlashAndResetCounters(ctx sdk.Context) {
 	height := ctx.BlockHeight()
 	distributionHeight := height - sdk.ValidatorUpdateDelay - 1
