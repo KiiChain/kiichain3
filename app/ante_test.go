@@ -100,6 +100,7 @@ func (suite *AnteTestSuite) SetupTest(isCheckTx bool) {
 			WasmKeeper:          &suite.App.WasmKeeper,
 			AccessControlKeeper: &suite.App.AccessControlKeeper,
 			TracingInfo:         tracingInfo,
+			OracleKeeper:        &suite.App.OracleKeeper,
 			EVMKeeper:           &suite.App.EvmKeeper,
 			LatestCtxGetter:     func() sdk.Context { return suite.Ctx },
 		},
@@ -187,7 +188,7 @@ func (suite *AnteTestSuite) TestValidateDepedencies() {
 
 	suite.Require().NotNil(err, "Did not error on invalid tx")
 
-	privs, accNums, accSeqs = []cryptotypes.PrivKey{suite.testAccPriv}, []uint64{8}, []uint64{0}
+	privs, accNums, accSeqs = []cryptotypes.PrivKey{suite.testAccPriv}, []uint64{9}, []uint64{0}
 
 	handlerCtx, cms := aclutils.CacheTxContext(suite.Ctx)
 	validTx, err := suite.CreateTestTx(privs, accNums, accSeqs, suite.Ctx.ChainID())

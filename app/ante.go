@@ -16,6 +16,8 @@ import (
 	"github.com/kiichain/kiichain/app/antedecorators/depdecorators"
 	evmante "github.com/kiichain/kiichain/x/evm/ante"
 	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
+	"github.com/kiichain/kiichain3/x/oracle"
+	oraclekeeper "github.com/kiichain/kiichain3/x/oracle/keeper"
 )
 
 // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC
@@ -28,6 +30,7 @@ type HandlerOptions struct {
 	WasmKeeper          *wasm.Keeper
 	AccessControlKeeper *aclkeeper.Keeper
 	EVMKeeper           *evmkeeper.Keeper
+	OracleKeeper        *oraclekeeper.Keeper
 	TXCounterStoreKey   sdk.StoreKey
 	LatestCtxGetter     func() sdk.Context
 
@@ -62,6 +65,9 @@ func NewAnteHandlerAndDepGenerator(options HandlerOptions) (sdk.AnteHandler, sdk
 	if options.EVMKeeper == nil {
 		return nil, nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "evm keeper is required for ante builder")
 	}
+	if options.OracleKeeper == nil {
+		return nil, nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "oracle keeper is required for ante builder")
+	}
 	if options.LatestCtxGetter == nil {
 		return nil, nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "latest context getter is required for ante builder")
 	}
@@ -75,9 +81,11 @@ func NewAnteHandlerAndDepGenerator(options HandlerOptions) (sdk.AnteHandler, sdk
 
 	anteDecorators := []sdk.AnteFullDecorator{
 		sdk.DefaultWrappedAnteDecorator(ante.NewSetUpContextDecorator(antedecorators.GetGasMeterSetter(options.ParamsKeeper.(paramskeeper.Keeper)))), // outermost AnteDecorator. SetUpContext must be called first
-		antedecorators.NewGaslessDecorator([]sdk.AnteFullDecorator{ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.ParamsKeeper.(paramskeeper.Keeper), options.TxFeeChecker)}, options.EVMKeeper),
+		antedecorators.NewGaslessDecorator([]sdk.AnteFullDecorator{ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.ParamsKeeper.(paramskeeper.Keeper), options.TxFeeChecker)}, options.EVMKeeper, *options.OracleKeeper),
 		sdk.DefaultWrappedAnteDecorator(wasmkeeper.NewLimitSimulationGasDecorator(options.WasmConfig.SimulationGasLimit, antedecorators.GetGasMeterSetter(options.ParamsKeeper.(paramskeeper.Keeper)))), // after setup context to enforce limits early
 		sdk.DefaultWrappedAnteDecorator(ante.NewRejectExtensionOptionsDecorator()),
+		oracle.NewSpammingPreventionDecorator(*options.OracleKeeper), // Register spamming prevention oracle decorator
+		oracle.NewVoteAloneDecorator(),                               // Register oracle vote alone decorator
 		sdk.DefaultWrappedAnteDecorator(ante.NewValidateBasicDecorator()),
 		sdk.DefaultWrappedAnteDecorator(ante.NewTxTimeoutHeightDecorator()),
 		sdk.DefaultWrappedAnteDecorator(ante.NewValidateMemoDecorator(options.AccountKeeper)),
