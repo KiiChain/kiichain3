@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-/* setUp conditions:
+/* SetUp conditions:
 voting target:
 - uatom
 - ueth
@@ -31,7 +31,7 @@ ballot threshold: 20 power units
 func TestMidBlocker(t *testing.T) {
 	t.Run("Success case - Exchange rate created on KVStore", func(t *testing.T) {
 		// Reset blockchain state
-		input, handler := setUp(t)
+		input, handler := SetUp(t)
 		ctx := input.Ctx
 		oracleKeeper := input.OracleKeeper
 
@@ -58,7 +58,7 @@ func TestMidBlocker(t *testing.T) {
 
 	t.Run("Success case - snapshot created", func(t *testing.T) {
 		// Reset blockchain state
-		input, handler := setUp(t)
+		input, handler := SetUp(t)
 		ctx := input.Ctx
 		oracleKeeper := input.OracleKeeper
 
@@ -86,7 +86,7 @@ func TestMidBlocker(t *testing.T) {
 
 	t.Run("Error case - Ballot power less than threshold", func(t *testing.T) {
 		// Reset blockchain state
-		input, handler := setUp(t)
+		input, handler := SetUp(t)
 		ctx := input.Ctx
 		oracleKeeper := input.OracleKeeper
 
@@ -109,7 +109,7 @@ func TestMidBlocker(t *testing.T) {
 
 	t.Run("Validator does not vote - AbstainCount should increase", func(t *testing.T) {
 		// Reset blockchain state
-		input, handler := setUp(t)
+		input, handler := SetUp(t)
 		ctx := input.Ctx
 		oracleKeeper := input.OracleKeeper
 
@@ -134,7 +134,7 @@ func TestMidBlocker(t *testing.T) {
 
 	t.Run("Validator votes out of acceptable range - Should count as Miss", func(t *testing.T) {
 		// Reset blockchain state
-		input, handler := setUp(t)
+		input, handler := SetUp(t)
 		ctx := input.Ctx
 		oracleKeeper := input.OracleKeeper
 
@@ -165,7 +165,7 @@ func TestMidBlocker(t *testing.T) {
 
 	t.Run("Verify upgrading the vote targets", func(t *testing.T) {
 		// Reset blockchain state
-		input, _ := setUp(t)
+		input, _ := SetUp(t)
 		ctx := input.Ctx
 		oracleKeeper := input.OracleKeeper
 
@@ -209,7 +209,7 @@ func TestMidBlocker(t *testing.T) {
 
 func TestOracleDrop(t *testing.T) {
 	// Reset blockchain state
-	input, handler := setUp(t)
+	input, handler := SetUp(t)
 	ctx := input.Ctx
 	oracleKeeper := input.OracleKeeper
 	ctx = input.Ctx.WithBlockHeight(1)
@@ -235,8 +235,8 @@ func TestOracleDrop(t *testing.T) {
 
 func TestEndblocker(t *testing.T) {
 	t.Run("Validator Jailed - success voting below min valid per window", func(t *testing.T) {
-		// Setup blockchain state
-		input, _ := setUp(t)
+		// SetUp blockchain state
+		input, _ := SetUp(t)
 		ctx := input.Ctx
 		oracleKeeper := input.OracleKeeper
 		stakingKeeper := input.StakingKeeper
@@ -270,8 +270,8 @@ func TestEndblocker(t *testing.T) {
 	})
 
 	t.Run("Validator not jailed", func(t *testing.T) {
-		// Setup blockchain state
-		input, _ := setUp(t)
+		// SetUp blockchain state
+		input, _ := SetUp(t)
 		ctx := input.Ctx
 		oracleKeeper := input.OracleKeeper
 		stakingKeeper := input.StakingKeeper
@@ -305,8 +305,8 @@ func TestEndblocker(t *testing.T) {
 	})
 
 	t.Run("Success remove excess feeds", func(t *testing.T) {
-		// Setup blockchain state
-		input, _ := setUp(t)
+		// SetUp blockchain state
+		input, _ := SetUp(t)
 		ctx := input.Ctx
 		oracleKeeper := input.OracleKeeper
 

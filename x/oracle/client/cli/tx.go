@@ -26,7 +26,7 @@ func GetTxCmd() *cobra.Command {
 	// Add Tx commands
 	oracleTxCmd.AddCommand(
 		CmdDelegateFeederPermission(),
-		CmdDelegateFeederPermission(),
+		CmdAggregateExchangeRateVote(),
 	)
 
 	return oracleTxCmd
