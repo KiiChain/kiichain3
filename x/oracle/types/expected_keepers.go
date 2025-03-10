@@ -23,6 +23,7 @@ type StakingKeeper interface {
 type AccountKeeper interface {
 	GetModuleAddress(name string) sdk.AccAddress                                  //Ensures the oracle module has an account
 	GetModuleAccount(ctx sdk.Context, moduleName string) authtypes.ModuleAccountI // Retrieves detailed account information
+	SetModuleAccount(ctx sdk.Context, macc authtypes.ModuleAccountI)              // Creates a module account
 }
 
 // BankKeeper is expected keeper for bank module, because I need to handle
