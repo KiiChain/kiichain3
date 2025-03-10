@@ -15,7 +15,7 @@ var (
 	randomBExchangeRate = sdk.NewDecWithPrec(4882, 2)
 )
 
-func setUp(t *testing.T) (keeper.TestInput, sdk.Handler) {
+func SetUp(t *testing.T) (keeper.TestInput, sdk.Handler) {
 	input := keeper.CreateTestInput(t)
 	oracleKeeper := input.OracleKeeper
 	stakingKeeper := input.StakingKeeper

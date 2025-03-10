@@ -4,18 +4,23 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkacltypes "github.com/cosmos/cosmos-sdk/types/accesscontrol"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
 	evmtypes "github.com/kiichain/kiichain/x/evm/types"
+	oraclekeeper "github.com/kiichain/kiichain3/x/oracle/keeper"
+	oracletypes "github.com/kiichain/kiichain3/x/oracle/types"
 )
 
+// GaslessDecorator is the struct that has the modules' keeper which are gassless
 type GaslessDecorator struct {
-	wrapped []sdk.AnteFullDecorator
-	// oracleKeeper oraclekeeper.Keeper
-	evmKeeper *evmkeeper.Keeper
+	wrapped      []sdk.AnteFullDecorator
+	oracleKeeper oraclekeeper.Keeper
+	evmKeeper    *evmkeeper.Keeper
 }
 
-func NewGaslessDecorator(wrapped []sdk.AnteFullDecorator, evmKeeper *evmkeeper.Keeper) GaslessDecorator {
-	return GaslessDecorator{wrapped: wrapped, evmKeeper: evmKeeper}
+// NewGaslessDecorator creates a new instance of GaslessDecorator
+func NewGaslessDecorator(wrapped []sdk.AnteFullDecorator, evmKeeper *evmkeeper.Keeper, oracleKeeper oraclekeeper.Keeper) GaslessDecorator {
+	return GaslessDecorator{wrapped: wrapped, evmKeeper: evmKeeper, oracleKeeper: oracleKeeper}
 }
 
 func (gd GaslessDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
@@ -23,10 +28,11 @@ func (gd GaslessDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool,
 	// eagerly set infinite gas meter so that queries performed by IsTxGasless will not incur gas cost
 	ctx = ctx.WithGasMeter(storetypes.NewNoConsumptionInfiniteGasMeter())
 
-	isGasless, err := IsTxGasless(tx, ctx, gd.evmKeeper)
+	isGasless, err := IsTxGasless(tx, ctx, gd.evmKeeper, gd.oracleKeeper)
 	if err != nil {
 		return ctx, err
 	}
+
 	if !isGasless {
 		ctx = ctx.WithGasMeter(originalGasMeter)
 	}
@@ -73,7 +79,8 @@ func (gd GaslessDecorator) AnteDeps(txDeps []sdkacltypes.AccessOperation, tx sdk
 	return next(append(txDeps, deps...), tx, txIndex)
 }
 
-func IsTxGasless(tx sdk.Tx, ctx sdk.Context, evmKeeper *evmkeeper.Keeper) (bool, error) {
+// IsTxGasless checks the type of the msg and validate if it is registered as gass less tx
+func IsTxGasless(tx sdk.Tx, ctx sdk.Context, evmKeeper *evmkeeper.Keeper, oracleKeeper oraclekeeper.Keeper) (bool, error) {
 	if len(tx.GetMsgs()) == 0 {
 		// empty TX shouldn't be gasless
 		return false, nil
@@ -86,6 +93,11 @@ func IsTxGasless(tx sdk.Tx, ctx sdk.Context, evmKeeper *evmkeeper.Keeper) (bool,
 			}
 			// ddos prevention
 			return len(tx.GetMsgs()) == 1, nil
+		case *oracletypes.MsgAggregateExchangeRateVote:
+			isGassLess, err := oracleVoteIsGassLess(m, ctx, oracleKeeper)
+			if err != nil || !isGassLess {
+				return false, err
+			}
 		default:
 			return false, nil
 		}
@@ -98,4 +110,35 @@ func evmAssociateIsGasless(msg *evmtypes.MsgAssociate, ctx sdk.Context, keeper *
 	kiiAddr := sdk.MustAccAddressFromBech32(msg.Sender)
 	_, associated := keeper.GetEVMAddress(ctx, kiiAddr)
 	return !associated
+}
+
+// oracleVoteIsGassLess checks the msg's info is valid
+func oracleVoteIsGassLess(msg *oracletypes.MsgAggregateExchangeRateVote, ctx sdk.Context, keeper oraclekeeper.Keeper) (bool, error) {
+	// validate feeder address
+	feederAddr, err := sdk.AccAddressFromBech32(msg.Feeder)
+	if err != nil {
+		return false, err
+	}
+
+	// validate validator address
+	valAddr, err := sdk.ValAddressFromBech32(msg.Validator)
+	if err != nil {
+		return false, err
+	}
+
+	// validate the feeder is allowed to send tx
+	err = keeper.ValidateFeeder(ctx, feederAddr, valAddr)
+	if err != nil {
+		return false, err
+	}
+
+	// check the address has votes
+	_, err = keeper.GetAggregateExchangeRateVote(ctx, valAddr)
+	if err != nil {
+		// if there is no error that means there is a vote present, so we don't allow gasless tx
+		err = sdkerrors.Wrap(oracletypes.ErrAggregateVoteExist, valAddr.String())
+		return false, err
+	}
+
+	return true, nil
 }
