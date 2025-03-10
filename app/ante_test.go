@@ -100,6 +100,7 @@ func (suite *AnteTestSuite) SetupTest(isCheckTx bool) {
 			WasmKeeper:          &suite.App.WasmKeeper,
 			AccessControlKeeper: &suite.App.AccessControlKeeper,
 			TracingInfo:         tracingInfo,
+			OracleKeeper:        &suite.App.OracleKeeper,
 			EVMKeeper:           &suite.App.EvmKeeper,
 			LatestCtxGetter:     func() sdk.Context { return suite.Ctx },
 		},
