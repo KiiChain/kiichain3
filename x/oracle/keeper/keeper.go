@@ -34,7 +34,7 @@ func NewKeeper(cdc codec.BinaryCodec, storeKey sdk.StoreKey, memKey sdk.StoreKey
 	distrName string) Keeper {
 	// Ensure oracle module account is set
 	addr := accountKeeper.GetModuleAddress(types.ModuleName)
-	if addr != nil {
+	if addr == nil {
 		panic(fmt.Sprintf("%s module account has not been set", types.ModuleName))
 	}
 
