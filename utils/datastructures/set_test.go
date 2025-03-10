@@ -4,7 +4,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/kiichain/kiichain3/utils/datastructures"
+	"github.com/kiichain/kiichain/utils/datastructures"
 	"github.com/stretchr/testify/require"
 )
 

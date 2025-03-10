@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	goappend "github.com/kiichain/kiichain3/utils/append"
+	goappend "github.com/kiichain/kiichain/utils/append"
 )
 
 // Chain-ID constants for use in hard fork handlers.

@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/kiichain/kiichain3/x/mint/types"
+	"github.com/kiichain/kiichain/x/mint/types"
 )
 
 // ValidateMinter validates a new minter inflation rate

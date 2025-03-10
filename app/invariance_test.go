@@ -7,7 +7,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	app "github.com/kiichain/kiichain3/app"
+	app "github.com/kiichain/kiichain/app"
 	"github.com/stretchr/testify/require"
 )
 

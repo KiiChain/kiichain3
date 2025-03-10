@@ -14,10 +14,10 @@ import (
 	"github.com/ethereum/go-ethereum/trie/triedb/hashdb"
 	"github.com/ethereum/go-ethereum/trie/triedb/pathdb"
 
-	"github.com/kiichain/kiichain3/x/evm/artifacts/erc20"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/erc721"
-	artifactsutils "github.com/kiichain/kiichain3/x/evm/artifacts/utils"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/artifacts/erc20"
+	"github.com/kiichain/kiichain/x/evm/artifacts/erc721"
+	artifactsutils "github.com/kiichain/kiichain/x/evm/artifacts/utils"
+	"github.com/kiichain/kiichain/x/evm/types"
 )
 
 var ethReplayInitialied = false

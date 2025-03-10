@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/types"
 	"github.com/stretchr/testify/require"
 )
 

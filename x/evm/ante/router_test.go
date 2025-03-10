@@ -8,9 +8,9 @@ import (
 	sdkacltypes "github.com/cosmos/cosmos-sdk/types/accesscontrol"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/kiichain/kiichain3/x/evm/ante"
-	"github.com/kiichain/kiichain3/x/evm/types"
-	"github.com/kiichain/kiichain3/x/evm/types/ethtx"
+	"github.com/kiichain/kiichain/x/evm/ante"
+	"github.com/kiichain/kiichain/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/types/ethtx"
 	"github.com/stretchr/testify/require"
 )
 

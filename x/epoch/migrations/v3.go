@@ -3,8 +3,8 @@ package migrations
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/kiichain/kiichain3/x/epoch/keeper"
-	"github.com/kiichain/kiichain3/x/epoch/types"
+	"github.com/kiichain/kiichain/x/epoch/keeper"
+	"github.com/kiichain/kiichain/x/epoch/types"
 )
 
 // V3MigrateStore apply the migration from v2 to v3 for the module

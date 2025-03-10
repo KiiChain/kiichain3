@@ -3,7 +3,7 @@ package processblock
 import (
 	"time"
 
-	minttypes "github.com/kiichain/kiichain3/x/mint/types"
+	minttypes "github.com/kiichain/kiichain/x/mint/types"
 )
 
 func (a *App) NewMinter(amount uint64) {

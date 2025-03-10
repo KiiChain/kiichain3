@@ -6,16 +6,16 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/kiichain/kiichain3/utils/metrics"
-	epochwasm "github.com/kiichain/kiichain3/x/epoch/client/wasm"
-	epochbindings "github.com/kiichain/kiichain3/x/epoch/client/wasm/bindings"
-	epochtypes "github.com/kiichain/kiichain3/x/epoch/types"
-	evmwasm "github.com/kiichain/kiichain3/x/evm/client/wasm"
-	evmbindings "github.com/kiichain/kiichain3/x/evm/client/wasm/bindings"
+	"github.com/kiichain/kiichain/utils/metrics"
+	epochwasm "github.com/kiichain/kiichain/x/epoch/client/wasm"
+	epochbindings "github.com/kiichain/kiichain/x/epoch/client/wasm/bindings"
+	epochtypes "github.com/kiichain/kiichain/x/epoch/types"
+	evmwasm "github.com/kiichain/kiichain/x/evm/client/wasm"
+	evmbindings "github.com/kiichain/kiichain/x/evm/client/wasm/bindings"
 
-	tokenfactorywasm "github.com/kiichain/kiichain3/x/tokenfactory/client/wasm"
-	tokenfactorybindings "github.com/kiichain/kiichain3/x/tokenfactory/client/wasm/bindings"
-	tokenfactorytypes "github.com/kiichain/kiichain3/x/tokenfactory/types"
+	tokenfactorywasm "github.com/kiichain/kiichain/x/tokenfactory/client/wasm"
+	tokenfactorybindings "github.com/kiichain/kiichain/x/tokenfactory/client/wasm/bindings"
+	tokenfactorytypes "github.com/kiichain/kiichain/x/tokenfactory/types"
 )
 
 type QueryPlugin struct {

@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/cosmos/go-bip39"
-	"github.com/kiichain/kiichain3/app/params"
+	"github.com/kiichain/kiichain/app/params"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	tmcfg "github.com/tendermint/tendermint/config"

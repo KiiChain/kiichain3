@@ -3,7 +3,7 @@ package evmrpc
 import (
 	"net/http"
 
-	"github.com/kiichain/kiichain3/utils/metrics"
+	"github.com/kiichain/kiichain/utils/metrics"
 )
 
 type wsConnectionHandler struct {

@@ -4,11 +4,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kiichain/kiichain3/app"
-	"github.com/kiichain/kiichain3/testutil/nullify"
+	"github.com/kiichain/kiichain/app"
+	"github.com/kiichain/kiichain/testutil/nullify"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	"github.com/kiichain/kiichain3/x/mint/types"
+	"github.com/kiichain/kiichain/x/mint/types"
 	"github.com/stretchr/testify/require"
 )
 

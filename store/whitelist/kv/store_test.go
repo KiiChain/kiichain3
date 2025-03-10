@@ -3,8 +3,8 @@ package kv_test
 import (
 	"testing"
 
-	"github.com/kiichain/kiichain3/store"
-	"github.com/kiichain/kiichain3/store/whitelist/kv"
+	"github.com/kiichain/kiichain/store"
+	"github.com/kiichain/kiichain/store/whitelist/kv"
 	"github.com/stretchr/testify/require"
 )
 

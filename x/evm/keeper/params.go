@@ -4,9 +4,9 @@ import (
 	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/utils"
-	"github.com/kiichain/kiichain3/x/evm/config"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/utils"
+	"github.com/kiichain/kiichain/x/evm/config"
+	"github.com/kiichain/kiichain/x/evm/types"
 )
 
 const BaseDenom = "ukii"

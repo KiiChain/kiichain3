@@ -13,9 +13,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/rpc"
-	"github.com/kiichain/kiichain3/app"
-	"github.com/kiichain/kiichain3/evmrpc"
-	testkeeper "github.com/kiichain/kiichain3/testutil/keeper"
+	"github.com/kiichain/kiichain/app"
+	"github.com/kiichain/kiichain/evmrpc"
+	testkeeper "github.com/kiichain/kiichain/testutil/keeper"
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 )

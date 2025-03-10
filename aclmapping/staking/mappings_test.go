@@ -11,9 +11,9 @@ import (
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	stakingacl "github.com/kiichain/kiichain3/aclmapping/staking"
-	aclutils "github.com/kiichain/kiichain3/aclmapping/utils"
-	"github.com/kiichain/kiichain3/app/apptesting"
+	stakingacl "github.com/kiichain/kiichain/aclmapping/staking"
+	aclutils "github.com/kiichain/kiichain/aclmapping/utils"
+	"github.com/kiichain/kiichain/app/apptesting"
 
 	acltypes "github.com/cosmos/cosmos-sdk/x/accesscontrol/types"
 	"github.com/stretchr/testify/require"

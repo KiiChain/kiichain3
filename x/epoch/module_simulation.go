@@ -9,9 +9,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"github.com/kiichain/kiichain3/testutil/sample"
-	epochsimulation "github.com/kiichain/kiichain3/x/epoch/simulation"
-	"github.com/kiichain/kiichain3/x/epoch/types"
+	"github.com/kiichain/kiichain/testutil/sample"
+	epochsimulation "github.com/kiichain/kiichain/x/epoch/simulation"
+	"github.com/kiichain/kiichain/x/epoch/types"
 )
 
 // avoid unused import issue

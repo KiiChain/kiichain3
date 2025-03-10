@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/kiichain/kiichain3/utils/helpers"
+	"github.com/kiichain/kiichain/utils/helpers"
 
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
@@ -20,13 +20,13 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/params"
-	"github.com/kiichain/kiichain3/app/antedecorators"
-	"github.com/kiichain/kiichain3/utils"
-	"github.com/kiichain/kiichain3/utils/metrics"
-	"github.com/kiichain/kiichain3/x/evm/derived"
-	evmkeeper "github.com/kiichain/kiichain3/x/evm/keeper"
-	evmtypes "github.com/kiichain/kiichain3/x/evm/types"
-	"github.com/kiichain/kiichain3/x/evm/types/ethtx"
+	"github.com/kiichain/kiichain/app/antedecorators"
+	"github.com/kiichain/kiichain/utils"
+	"github.com/kiichain/kiichain/utils/metrics"
+	"github.com/kiichain/kiichain/x/evm/derived"
+	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
+	evmtypes "github.com/kiichain/kiichain/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/types/ethtx"
 )
 
 // Accounts need to have at least 1Kii to force association. Note that account won't be charged.

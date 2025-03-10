@@ -12,9 +12,9 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 
-	"github.com/kiichain/kiichain3/app"
-	evmkeeper "github.com/kiichain/kiichain3/x/evm/keeper"
-	evmtypes "github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/app"
+	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
+	evmtypes "github.com/kiichain/kiichain/x/evm/types"
 )
 
 var EVMTestApp = app.Setup(false, true)

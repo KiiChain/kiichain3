@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
-	"github.com/kiichain/kiichain3/testutil/processblock"
+	"github.com/kiichain/kiichain/testutil/processblock"
 )
 
 type BlockRunnable func() (resultCodes []uint32)

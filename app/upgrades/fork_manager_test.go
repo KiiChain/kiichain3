@@ -6,8 +6,8 @@ import (
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/app/apptesting"
-	"github.com/kiichain/kiichain3/app/upgrades"
+	"github.com/kiichain/kiichain/app/apptesting"
+	"github.com/kiichain/kiichain/app/upgrades"
 	"github.com/stretchr/testify/suite"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmtypes "github.com/tendermint/tendermint/proto/tendermint/types"

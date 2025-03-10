@@ -2,10 +2,10 @@ package keeper
 
 import (
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/kiichain/kiichain3/precompiles/bank"
-	"github.com/kiichain/kiichain3/precompiles/gov"
-	"github.com/kiichain/kiichain3/precompiles/staking"
-	"github.com/kiichain/kiichain3/precompiles/wasmd"
+	"github.com/kiichain/kiichain/precompiles/bank"
+	"github.com/kiichain/kiichain/precompiles/gov"
+	"github.com/kiichain/kiichain/precompiles/staking"
+	"github.com/kiichain/kiichain/precompiles/wasmd"
 )
 
 // add any payable precompiles here

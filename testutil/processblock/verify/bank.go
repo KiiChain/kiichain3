@@ -6,7 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/kiichain/kiichain3/testutil/processblock"
+	"github.com/kiichain/kiichain/testutil/processblock"
 	"github.com/stretchr/testify/require"
 )
 

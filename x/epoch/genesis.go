@@ -2,8 +2,8 @@ package epoch
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/x/epoch/keeper"
-	"github.com/kiichain/kiichain3/x/epoch/types"
+	"github.com/kiichain/kiichain/x/epoch/keeper"
+	"github.com/kiichain/kiichain/x/epoch/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis

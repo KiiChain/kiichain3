@@ -8,11 +8,11 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 
-	testkeeper "github.com/kiichain/kiichain3/testutil/keeper"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/cw20"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/cw721"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/native"
-	evmkeeper "github.com/kiichain/kiichain3/x/evm/keeper"
+	testkeeper "github.com/kiichain/kiichain/testutil/keeper"
+	"github.com/kiichain/kiichain/x/evm/artifacts/cw20"
+	"github.com/kiichain/kiichain/x/evm/artifacts/cw721"
+	"github.com/kiichain/kiichain/x/evm/artifacts/native"
+	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
 )
 
 // allows us to permutate different pointer combinations

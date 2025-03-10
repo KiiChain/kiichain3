@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	testkeeper "github.com/kiichain/kiichain3/testutil/keeper"
+	testkeeper "github.com/kiichain/kiichain/testutil/keeper"
 	"github.com/stretchr/testify/require"
 )
 

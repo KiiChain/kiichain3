@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
-	keepertest "github.com/kiichain/kiichain3/testutil/keeper"
-	"github.com/kiichain/kiichain3/x/epoch/types"
-	minttypes "github.com/kiichain/kiichain3/x/mint/types"
+	keepertest "github.com/kiichain/kiichain/testutil/keeper"
+	"github.com/kiichain/kiichain/x/epoch/types"
+	minttypes "github.com/kiichain/kiichain/x/mint/types"
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 

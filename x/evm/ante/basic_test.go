@@ -7,10 +7,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/params"
-	testkeeper "github.com/kiichain/kiichain3/testutil/keeper"
-	"github.com/kiichain/kiichain3/x/evm/ante"
-	"github.com/kiichain/kiichain3/x/evm/types"
-	"github.com/kiichain/kiichain3/x/evm/types/ethtx"
+	testkeeper "github.com/kiichain/kiichain/testutil/keeper"
+	"github.com/kiichain/kiichain/x/evm/ante"
+	"github.com/kiichain/kiichain/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/types/ethtx"
 	"github.com/stretchr/testify/require"
 )
 

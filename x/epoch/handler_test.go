@@ -8,9 +8,9 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 
-	"github.com/kiichain/kiichain3/app"
-	"github.com/kiichain/kiichain3/x/epoch"
-	"github.com/kiichain/kiichain3/x/epoch/types"
+	"github.com/kiichain/kiichain/app"
+	"github.com/kiichain/kiichain/x/epoch"
+	"github.com/kiichain/kiichain/x/epoch/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 )
 

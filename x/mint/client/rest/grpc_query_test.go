@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/suite"
 
 	"github.com/cosmos/cosmos-sdk/testutil/network"
-	minttypes "github.com/kiichain/kiichain3/x/mint/types"
+	minttypes "github.com/kiichain/kiichain/x/mint/types"
 )
 
 type IntegrationTestSuite struct {

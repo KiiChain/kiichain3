@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
-	"github.com/kiichain/kiichain3/testutil/processblock"
-	minttypes "github.com/kiichain/kiichain3/x/mint/types"
+	"github.com/kiichain/kiichain/testutil/processblock"
+	minttypes "github.com/kiichain/kiichain/x/mint/types"
 	"github.com/stretchr/testify/require"
 )
 

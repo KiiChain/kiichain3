@@ -10,10 +10,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
-	"github.com/kiichain/kiichain3/occ_tests/utils"
-	"github.com/kiichain/kiichain3/x/evm/config"
-	"github.com/kiichain/kiichain3/x/evm/types"
-	"github.com/kiichain/kiichain3/x/evm/types/ethtx"
+	"github.com/kiichain/kiichain/occ_tests/utils"
+	"github.com/kiichain/kiichain/x/evm/config"
+	"github.com/kiichain/kiichain/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/types/ethtx"
 )
 
 const instantiateMsg = `{"whitelist": ["kii1h9yjz89tl0dl6zu65dpxcqnxfhq60wxxnhl2dk"],

@@ -4,7 +4,7 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/kiichain/kiichain3/x/evm/state"
+	"github.com/kiichain/kiichain/x/evm/state"
 	"github.com/stretchr/testify/require"
 )
 

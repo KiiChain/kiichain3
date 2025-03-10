@@ -13,8 +13,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/bank"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	aclutils "github.com/kiichain/kiichain3/aclmapping/utils"
-	utils "github.com/kiichain/kiichain3/aclmapping/utils"
+	aclutils "github.com/kiichain/kiichain/aclmapping/utils"
+	utils "github.com/kiichain/kiichain/aclmapping/utils"
 
 	"github.com/stretchr/testify/require"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"

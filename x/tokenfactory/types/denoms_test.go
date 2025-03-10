@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	appparams "github.com/kiichain/kiichain3/app/params"
-	"github.com/kiichain/kiichain3/x/tokenfactory/types"
+	appparams "github.com/kiichain/kiichain/app/params"
+	"github.com/kiichain/kiichain/x/tokenfactory/types"
 )
 
 func TestDecomposeDenoms(t *testing.T) {

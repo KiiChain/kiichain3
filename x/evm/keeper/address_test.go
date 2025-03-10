@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/testutil/keeper"
+	"github.com/kiichain/kiichain/testutil/keeper"
 	"github.com/stretchr/testify/require"
 )
 

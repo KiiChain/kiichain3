@@ -28,13 +28,13 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	"github.com/kiichain/kiichain3/evmrpc"
-	"github.com/kiichain/kiichain3/precompiles"
-	"github.com/kiichain/kiichain3/utils"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/native"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/wkii"
-	"github.com/kiichain/kiichain3/x/evm/types"
-	"github.com/kiichain/kiichain3/x/evm/types/ethtx"
+	"github.com/kiichain/kiichain/evmrpc"
+	"github.com/kiichain/kiichain/precompiles"
+	"github.com/kiichain/kiichain/utils"
+	"github.com/kiichain/kiichain/x/evm/artifacts/native"
+	"github.com/kiichain/kiichain/x/evm/artifacts/wkii"
+	"github.com/kiichain/kiichain/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/types/ethtx"
 )
 
 const (
