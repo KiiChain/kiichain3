@@ -81,12 +81,12 @@ func NewMsgDelegateFeedConsent(operatorAddress sdk.ValAddress, feederAddress sdk
 // GetSigners implements sdk.Msg interface
 // Returns the signer of the transaction which is the feeder
 func (msg MsgDelegateFeedConsent) GetSigners() []sdk.AccAddress {
-	feeder, err := sdk.AccAddressFromBech32(msg.Operator)
+	operator, err := sdk.ValAddressFromBech32(msg.Operator)
 	if err != nil {
 		panic(err)
 	}
 
-	return []sdk.AccAddress{feeder}
+	return []sdk.AccAddress{sdk.AccAddress(operator)}
 }
 
 // ValidateBasic implements sdk.Msg interface
