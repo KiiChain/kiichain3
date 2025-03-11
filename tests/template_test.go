@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
-	"github.com/kiichain/kiichain3/testutil/processblock"
-	"github.com/kiichain/kiichain3/testutil/processblock/msgs"
-	"github.com/kiichain/kiichain3/testutil/processblock/verify"
+	"github.com/kiichain/kiichain/testutil/processblock"
+	"github.com/kiichain/kiichain/testutil/processblock/msgs"
+	"github.com/kiichain/kiichain/testutil/processblock/verify"
 	"github.com/stretchr/testify/require"
 )
 

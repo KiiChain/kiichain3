@@ -5,8 +5,8 @@ import (
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	testkeeper "github.com/kiichain/kiichain3/testutil/keeper"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	testkeeper "github.com/kiichain/kiichain/testutil/keeper"
+	"github.com/kiichain/kiichain/x/evm/types"
 	"github.com/stretchr/testify/require"
 )
 

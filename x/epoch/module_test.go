@@ -8,9 +8,9 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/app"
-	epoch "github.com/kiichain/kiichain3/x/epoch"
-	"github.com/kiichain/kiichain3/x/epoch/types"
+	"github.com/kiichain/kiichain/app"
+	epoch "github.com/kiichain/kiichain/x/epoch"
+	"github.com/kiichain/kiichain/x/epoch/types"
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"

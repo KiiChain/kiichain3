@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/cosmos/cosmos-sdk/std"
-	"github.com/kiichain/kiichain3/app/params"
+	"github.com/kiichain/kiichain/app/params"
 )
 
 // MakeEncodingConfig creates an EncodingConfig for testing.

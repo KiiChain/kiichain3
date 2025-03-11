@@ -1,6 +1,6 @@
 package bindings
 
-import "github.com/kiichain/kiichain3/x/tokenfactory/types"
+import "github.com/kiichain/kiichain/x/tokenfactory/types"
 
 type KiiTokenFactoryQuery struct {
 	// queries the tokenfactory authority metadata

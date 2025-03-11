@@ -15,7 +15,7 @@ import (
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	"github.com/cosmos/cosmos-sdk/x/staking/teststaking"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	tokenfactorykeeper "github.com/kiichain/kiichain3/x/tokenfactory/keeper"
+	tokenfactorykeeper "github.com/kiichain/kiichain/x/tokenfactory/keeper"
 	"github.com/stretchr/testify/suite"
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/config"
@@ -23,7 +23,7 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	minttypes "github.com/kiichain/kiichain3/x/mint/types"
+	minttypes "github.com/kiichain/kiichain/x/mint/types"
 )
 
 const TestContract = "TEST"

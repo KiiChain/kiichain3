@@ -6,7 +6,7 @@ import (
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/app/upgrades"
+	"github.com/kiichain/kiichain/app/upgrades"
 )
 
 const (

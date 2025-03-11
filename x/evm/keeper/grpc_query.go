@@ -7,12 +7,12 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/cw20"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/cw721"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/erc20"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/erc721"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/native"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/artifacts/cw20"
+	"github.com/kiichain/kiichain/x/evm/artifacts/cw721"
+	"github.com/kiichain/kiichain/x/evm/artifacts/erc20"
+	"github.com/kiichain/kiichain/x/evm/artifacts/erc721"
+	"github.com/kiichain/kiichain/x/evm/artifacts/native"
+	"github.com/kiichain/kiichain/x/evm/types"
 )
 
 var _ types.QueryServer = Querier{}

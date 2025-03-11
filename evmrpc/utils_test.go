@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kiichain/kiichain3/app"
-	"github.com/kiichain/kiichain3/evmrpc"
+	"github.com/kiichain/kiichain/app"
+	"github.com/kiichain/kiichain/evmrpc"
 	"github.com/stretchr/testify/require"
 )
 

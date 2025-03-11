@@ -13,15 +13,15 @@ import (
 	cosmosQuery "github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/stretchr/testify/require"
 
-	"github.com/kiichain/kiichain3/app"
-	"github.com/kiichain/kiichain3/wasmbinding"
-	epochwasm "github.com/kiichain/kiichain3/x/epoch/client/wasm"
-	epochbinding "github.com/kiichain/kiichain3/x/epoch/client/wasm/bindings"
-	epochtypes "github.com/kiichain/kiichain3/x/epoch/types"
-	evmwasm "github.com/kiichain/kiichain3/x/evm/client/wasm"
-	tokenfactorywasm "github.com/kiichain/kiichain3/x/tokenfactory/client/wasm"
-	tokenfactorybinding "github.com/kiichain/kiichain3/x/tokenfactory/client/wasm/bindings"
-	tokenfactorytypes "github.com/kiichain/kiichain3/x/tokenfactory/types"
+	"github.com/kiichain/kiichain/app"
+	"github.com/kiichain/kiichain/wasmbinding"
+	epochwasm "github.com/kiichain/kiichain/x/epoch/client/wasm"
+	epochbinding "github.com/kiichain/kiichain/x/epoch/client/wasm/bindings"
+	epochtypes "github.com/kiichain/kiichain/x/epoch/types"
+	evmwasm "github.com/kiichain/kiichain/x/evm/client/wasm"
+	tokenfactorywasm "github.com/kiichain/kiichain/x/tokenfactory/client/wasm"
+	tokenfactorybinding "github.com/kiichain/kiichain/x/tokenfactory/client/wasm/bindings"
+	tokenfactorytypes "github.com/kiichain/kiichain/x/tokenfactory/types"
 )
 
 func SetupWasmbindingTest(t *testing.T) (*app.TestWrapper, func(ctx sdk.Context, request json.RawMessage) ([]byte, error)) {

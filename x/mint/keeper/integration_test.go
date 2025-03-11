@@ -1,11 +1,11 @@
 package keeper_test
 
 import (
-	"github.com/kiichain/kiichain3/app"
+	"github.com/kiichain/kiichain/app"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/x/mint/types"
+	"github.com/kiichain/kiichain/x/mint/types"
 )
 
 // returns context and an app with updated mint keeper

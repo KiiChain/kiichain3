@@ -5,8 +5,8 @@ import (
 
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	"github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/store"
-	"github.com/kiichain/kiichain3/store/whitelist/cachemulti"
+	"github.com/kiichain/kiichain/store"
+	"github.com/kiichain/kiichain/store/whitelist/cachemulti"
 	"github.com/stretchr/testify/require"
 )
 

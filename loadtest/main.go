@@ -37,9 +37,9 @@ import (
 	"golang.org/x/sync/semaphore"
 	"golang.org/x/time/rate"
 
-	"github.com/kiichain/kiichain3/app"
-	"github.com/kiichain/kiichain3/utils/metrics"
-	tokenfactorytypes "github.com/kiichain/kiichain3/x/tokenfactory/types"
+	"github.com/kiichain/kiichain/app"
+	"github.com/kiichain/kiichain/utils/metrics"
+	tokenfactorytypes "github.com/kiichain/kiichain/x/tokenfactory/types"
 )
 
 var TestConfig EncodingConfig

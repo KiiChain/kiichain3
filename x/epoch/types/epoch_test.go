@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/kiichain/kiichain3/x/epoch/types"
+	"github.com/kiichain/kiichain/x/epoch/types"
 )
 
 // TestEpochValidation tests the epoch validation process

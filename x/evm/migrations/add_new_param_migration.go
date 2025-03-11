@@ -2,8 +2,8 @@ package migrations
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/x/evm/keeper"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/keeper"
+	"github.com/kiichain/kiichain/x/evm/types"
 )
 
 // Note that such migration would nuke any param changes that deviate

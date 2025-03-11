@@ -24,9 +24,9 @@ import (
 	"github.com/spf13/cobra"
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/kiichain/kiichain3/x/tokenfactory/client/cli"
-	"github.com/kiichain/kiichain3/x/tokenfactory/keeper"
-	"github.com/kiichain/kiichain3/x/tokenfactory/types"
+	"github.com/kiichain/kiichain/x/tokenfactory/client/cli"
+	"github.com/kiichain/kiichain/x/tokenfactory/keeper"
+	"github.com/kiichain/kiichain/x/tokenfactory/types"
 
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 )

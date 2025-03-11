@@ -9,11 +9,11 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/kiichain/kiichain3/precompiles/pointer"
-	testkeeper "github.com/kiichain/kiichain3/testutil/keeper"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/native"
-	"github.com/kiichain/kiichain3/x/evm/state"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/precompiles/pointer"
+	testkeeper "github.com/kiichain/kiichain/testutil/keeper"
+	"github.com/kiichain/kiichain/x/evm/artifacts/native"
+	"github.com/kiichain/kiichain/x/evm/state"
+	"github.com/kiichain/kiichain/x/evm/types"
 	"github.com/stretchr/testify/require"
 )
 

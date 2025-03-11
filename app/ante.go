@@ -12,10 +12,10 @@ import (
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	ibcante "github.com/cosmos/ibc-go/v3/modules/core/ante"
 	ibckeeper "github.com/cosmos/ibc-go/v3/modules/core/keeper"
-	"github.com/kiichain/kiichain3/app/antedecorators"
-	"github.com/kiichain/kiichain3/app/antedecorators/depdecorators"
-	evmante "github.com/kiichain/kiichain3/x/evm/ante"
-	evmkeeper "github.com/kiichain/kiichain3/x/evm/keeper"
+	"github.com/kiichain/kiichain/app/antedecorators"
+	"github.com/kiichain/kiichain/app/antedecorators/depdecorators"
+	evmante "github.com/kiichain/kiichain/x/evm/ante"
+	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
 )
 
 // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC

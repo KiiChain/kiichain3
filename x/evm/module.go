@@ -23,13 +23,13 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	"github.com/kiichain/kiichain3/utils"
-	"github.com/kiichain/kiichain3/utils/metrics"
-	"github.com/kiichain/kiichain3/x/evm/client/cli"
-	"github.com/kiichain/kiichain3/x/evm/keeper"
-	"github.com/kiichain/kiichain3/x/evm/migrations"
-	"github.com/kiichain/kiichain3/x/evm/state"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/utils"
+	"github.com/kiichain/kiichain/utils/metrics"
+	"github.com/kiichain/kiichain/x/evm/client/cli"
+	"github.com/kiichain/kiichain/x/evm/keeper"
+	"github.com/kiichain/kiichain/x/evm/migrations"
+	"github.com/kiichain/kiichain/x/evm/state"
+	"github.com/kiichain/kiichain/x/evm/types"
 )
 
 var (

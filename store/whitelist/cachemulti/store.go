@@ -2,7 +2,7 @@ package cachemulti
 
 import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
-	"github.com/kiichain/kiichain3/store/whitelist/kv"
+	"github.com/kiichain/kiichain/store/whitelist/kv"
 )
 
 // Since `CacheMultiStore` has a method with the same name, we have to

@@ -10,10 +10,10 @@ import (
 	acltypes "github.com/cosmos/cosmos-sdk/x/accesscontrol/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/kiichain/kiichain3/x/evm/ante"
-	evmkeeper "github.com/kiichain/kiichain3/x/evm/keeper"
-	"github.com/kiichain/kiichain3/x/evm/state"
-	evmtypes "github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/ante"
+	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
+	"github.com/kiichain/kiichain/x/evm/state"
+	evmtypes "github.com/kiichain/kiichain/x/evm/types"
 )
 
 var ErrInvalidMessageType = fmt.Errorf("invalid message received for EVM Module")

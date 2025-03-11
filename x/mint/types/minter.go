@@ -5,8 +5,8 @@ import (
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/utils/metrics"
-	epochTypes "github.com/kiichain/kiichain3/x/epoch/types"
+	"github.com/kiichain/kiichain/utils/metrics"
+	epochTypes "github.com/kiichain/kiichain/x/epoch/types"
 )
 
 // NewMinter returns a new Minter object with the given inflation and annual

@@ -3,7 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/kiichain/kiichain3/utils"
+	"github.com/kiichain/kiichain/utils"
 )
 
 // EpochHooks are the interface for the Epoch Hooks

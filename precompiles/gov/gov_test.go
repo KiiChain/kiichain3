@@ -14,13 +14,13 @@ import (
 	"github.com/stretchr/testify/require"
 	tmtypes "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	pcommon "github.com/kiichain/kiichain3/precompiles/common"
-	"github.com/kiichain/kiichain3/precompiles/gov"
-	testkeeper "github.com/kiichain/kiichain3/testutil/keeper"
-	"github.com/kiichain/kiichain3/x/evm/ante"
-	"github.com/kiichain/kiichain3/x/evm/keeper"
-	evmtypes "github.com/kiichain/kiichain3/x/evm/types"
-	"github.com/kiichain/kiichain3/x/evm/types/ethtx"
+	pcommon "github.com/kiichain/kiichain/precompiles/common"
+	"github.com/kiichain/kiichain/precompiles/gov"
+	testkeeper "github.com/kiichain/kiichain/testutil/keeper"
+	"github.com/kiichain/kiichain/x/evm/ante"
+	"github.com/kiichain/kiichain/x/evm/keeper"
+	evmtypes "github.com/kiichain/kiichain/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/types/ethtx"
 )
 
 //go:embed abi.json

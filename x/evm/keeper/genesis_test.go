@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"testing"
 
-	testkeeper "github.com/kiichain/kiichain3/testutil/keeper"
-	"github.com/kiichain/kiichain3/x/evm/keeper"
+	testkeeper "github.com/kiichain/kiichain/testutil/keeper"
+	"github.com/kiichain/kiichain/x/evm/keeper"
 	"github.com/stretchr/testify/require"
 )
 

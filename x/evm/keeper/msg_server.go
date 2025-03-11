@@ -22,12 +22,12 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	"github.com/kiichain/kiichain3/precompiles/wasmd"
-	"github.com/kiichain/kiichain3/utils"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/erc20"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/erc721"
-	"github.com/kiichain/kiichain3/x/evm/state"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/precompiles/wasmd"
+	"github.com/kiichain/kiichain/utils"
+	"github.com/kiichain/kiichain/x/evm/artifacts/erc20"
+	"github.com/kiichain/kiichain/x/evm/artifacts/erc721"
+	"github.com/kiichain/kiichain/x/evm/state"
+	"github.com/kiichain/kiichain/x/evm/types"
 )
 
 type msgServer struct {

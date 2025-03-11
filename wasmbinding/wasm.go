@@ -7,13 +7,13 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	aclkeeper "github.com/cosmos/cosmos-sdk/x/accesscontrol/keeper"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
-	epochwasm "github.com/kiichain/kiichain3/x/epoch/client/wasm"
-	epochkeeper "github.com/kiichain/kiichain3/x/epoch/keeper"
-	evmwasm "github.com/kiichain/kiichain3/x/evm/client/wasm"
-	evmkeeper "github.com/kiichain/kiichain3/x/evm/keeper"
+	epochwasm "github.com/kiichain/kiichain/x/epoch/client/wasm"
+	epochkeeper "github.com/kiichain/kiichain/x/epoch/keeper"
+	evmwasm "github.com/kiichain/kiichain/x/evm/client/wasm"
+	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
 
-	tokenfactorywasm "github.com/kiichain/kiichain3/x/tokenfactory/client/wasm"
-	tokenfactorykeeper "github.com/kiichain/kiichain3/x/tokenfactory/keeper"
+	tokenfactorywasm "github.com/kiichain/kiichain/x/tokenfactory/client/wasm"
+	tokenfactorykeeper "github.com/kiichain/kiichain/x/tokenfactory/keeper"
 )
 
 func RegisterCustomPlugins(

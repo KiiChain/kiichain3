@@ -5,7 +5,7 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/params"
-	"github.com/kiichain/kiichain3/utils"
+	"github.com/kiichain/kiichain/utils"
 )
 
 var CancunTime int64 = 0

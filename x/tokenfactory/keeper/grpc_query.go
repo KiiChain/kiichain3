@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/kiichain/kiichain3/x/tokenfactory/types"
+	"github.com/kiichain/kiichain/x/tokenfactory/types"
 )
 
 // Interface check for the query server

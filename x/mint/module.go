@@ -20,12 +20,12 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"github.com/kiichain/kiichain3/x/mint/client/cli"
-	"github.com/kiichain/kiichain3/x/mint/client/rest"
-	"github.com/kiichain/kiichain3/x/mint/keeper"
-	"github.com/kiichain/kiichain3/x/mint/migrations"
-	"github.com/kiichain/kiichain3/x/mint/simulation"
-	"github.com/kiichain/kiichain3/x/mint/types"
+	"github.com/kiichain/kiichain/x/mint/client/cli"
+	"github.com/kiichain/kiichain/x/mint/client/rest"
+	"github.com/kiichain/kiichain/x/mint/keeper"
+	"github.com/kiichain/kiichain/x/mint/migrations"
+	"github.com/kiichain/kiichain/x/mint/simulation"
+	"github.com/kiichain/kiichain/x/mint/types"
 )
 
 var (

@@ -13,9 +13,9 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/tracing"
 	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/kiichain/kiichain3/utils/metrics"
-	"github.com/kiichain/kiichain3/x/evm/state"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/utils/metrics"
+	"github.com/kiichain/kiichain/x/evm/state"
+	"github.com/kiichain/kiichain/x/evm/types"
 )
 
 const UnknownMethodCallGas uint64 = 3000

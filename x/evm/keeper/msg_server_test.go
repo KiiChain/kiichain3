@@ -20,17 +20,17 @@ import (
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/kiichain/kiichain3/example/contracts/echo"
-	"github.com/kiichain/kiichain3/example/contracts/sendall"
-	"github.com/kiichain/kiichain3/example/contracts/simplestorage"
-	testkeeper "github.com/kiichain/kiichain3/testutil/keeper"
-	"github.com/kiichain/kiichain3/x/evm/ante"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/erc20"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/erc721"
-	"github.com/kiichain/kiichain3/x/evm/keeper"
-	"github.com/kiichain/kiichain3/x/evm/state"
-	"github.com/kiichain/kiichain3/x/evm/types"
-	"github.com/kiichain/kiichain3/x/evm/types/ethtx"
+	"github.com/kiichain/kiichain/example/contracts/echo"
+	"github.com/kiichain/kiichain/example/contracts/sendall"
+	"github.com/kiichain/kiichain/example/contracts/simplestorage"
+	testkeeper "github.com/kiichain/kiichain/testutil/keeper"
+	"github.com/kiichain/kiichain/x/evm/ante"
+	"github.com/kiichain/kiichain/x/evm/artifacts/erc20"
+	"github.com/kiichain/kiichain/x/evm/artifacts/erc721"
+	"github.com/kiichain/kiichain/x/evm/keeper"
+	"github.com/kiichain/kiichain/x/evm/state"
+	"github.com/kiichain/kiichain/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/types/ethtx"
 )
 
 type mockTx struct {

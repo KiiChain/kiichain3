@@ -18,11 +18,11 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"github.com/kiichain/kiichain3/utils/metrics"
-	"github.com/kiichain/kiichain3/x/epoch/client/cli"
-	"github.com/kiichain/kiichain3/x/epoch/keeper"
-	"github.com/kiichain/kiichain3/x/epoch/migrations"
-	"github.com/kiichain/kiichain3/x/epoch/types"
+	"github.com/kiichain/kiichain/utils/metrics"
+	"github.com/kiichain/kiichain/x/epoch/client/cli"
+	"github.com/kiichain/kiichain/x/epoch/keeper"
+	"github.com/kiichain/kiichain/x/epoch/migrations"
+	"github.com/kiichain/kiichain/x/epoch/types"
 )
 
 var (

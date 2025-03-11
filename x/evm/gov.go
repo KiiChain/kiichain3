@@ -7,9 +7,9 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/kiichain/kiichain3/utils"
-	"github.com/kiichain/kiichain3/x/evm/keeper"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/utils"
+	"github.com/kiichain/kiichain/x/evm/keeper"
+	"github.com/kiichain/kiichain/x/evm/types"
 )
 
 func HandleAddERCNativePointerProposalV2(ctx sdk.Context, k *keeper.Keeper, p *types.AddERCNativePointerProposalV2) error {

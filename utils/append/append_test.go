@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	goappend "github.com/kiichain/kiichain3/utils/append"
+	goappend "github.com/kiichain/kiichain/utils/append"
 )
 
 type TestStruct struct {

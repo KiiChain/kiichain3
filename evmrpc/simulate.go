@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kiichain/kiichain3/precompiles/wasmd"
-	"github.com/kiichain/kiichain3/utils/helpers"
+	"github.com/kiichain/kiichain/precompiles/wasmd"
+	"github.com/kiichain/kiichain/utils/helpers"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -26,11 +26,11 @@ import (
 	"github.com/ethereum/go-ethereum/lib/ethapi"
 	"github.com/ethereum/go-ethereum/params"
 	"github.com/ethereum/go-ethereum/rpc"
-	"github.com/kiichain/kiichain3/utils"
-	"github.com/kiichain/kiichain3/utils/metrics"
-	"github.com/kiichain/kiichain3/x/evm/keeper"
-	"github.com/kiichain/kiichain3/x/evm/state"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/utils"
+	"github.com/kiichain/kiichain/utils/metrics"
+	"github.com/kiichain/kiichain/x/evm/keeper"
+	"github.com/kiichain/kiichain/x/evm/state"
+	"github.com/kiichain/kiichain/x/evm/types"
 	rpcclient "github.com/tendermint/tendermint/rpc/client"
 	"github.com/tendermint/tendermint/rpc/coretypes"
 )

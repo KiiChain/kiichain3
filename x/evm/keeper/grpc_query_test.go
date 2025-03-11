@@ -6,14 +6,14 @@ import (
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	testkeeper "github.com/kiichain/kiichain3/testutil/keeper"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/cw20"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/cw721"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/erc20"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/erc721"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/native"
-	"github.com/kiichain/kiichain3/x/evm/keeper"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	testkeeper "github.com/kiichain/kiichain/testutil/keeper"
+	"github.com/kiichain/kiichain/x/evm/artifacts/cw20"
+	"github.com/kiichain/kiichain/x/evm/artifacts/cw721"
+	"github.com/kiichain/kiichain/x/evm/artifacts/erc20"
+	"github.com/kiichain/kiichain/x/evm/artifacts/erc721"
+	"github.com/kiichain/kiichain/x/evm/artifacts/native"
+	"github.com/kiichain/kiichain/x/evm/keeper"
+	"github.com/kiichain/kiichain/x/evm/types"
 	"github.com/stretchr/testify/require"
 )
 

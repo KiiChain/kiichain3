@@ -46,7 +46,7 @@ resource "aws_instance" "sentry" {
         go version >> /tmp/userdata.log 2>&1 || { echo "Go command not found" >> /tmp/userdata.log; exit 1; }
 
         # Clone the project repository
-        git clone https://<TOKEN>@github.com/KiiChain/kiichain3.git >> /tmp/userdata.log 2>&1
+        git clone https://<TOKEN>@github.com/kiichain/kiichain.git >> /tmp/userdata.log 2>&1
 
         # Navigate to project directory and execute make command
         cd kiichain3 >> /tmp/userdata.log 2>&1

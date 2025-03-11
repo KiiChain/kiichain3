@@ -3,7 +3,7 @@ package keeper
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/kiichain/kiichain3/x/epoch/types"
+	"github.com/kiichain/kiichain/x/epoch/types"
 )
 
 // AfterEpochEnd is the keeper execution of the AfterEpochEnd

@@ -3,7 +3,7 @@ package evmrpc_test
 import (
 	"testing"
 
-	"github.com/kiichain/kiichain3/evmrpc"
+	"github.com/kiichain/kiichain/evmrpc"
 	"github.com/stretchr/testify/require"
 )
 

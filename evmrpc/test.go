@@ -3,7 +3,7 @@ package evmrpc
 import (
 	"errors"
 
-	"github.com/kiichain/kiichain3/x/evm/artifacts/cw20"
+	"github.com/kiichain/kiichain/x/evm/artifacts/cw20"
 )
 
 type TestAPI struct{}

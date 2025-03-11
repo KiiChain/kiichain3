@@ -4,7 +4,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/x/epoch/types"
+	"github.com/kiichain/kiichain/x/epoch/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

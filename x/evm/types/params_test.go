@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/types"
 	"github.com/stretchr/testify/require"
 )
 

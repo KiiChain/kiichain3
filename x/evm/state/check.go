@@ -2,7 +2,7 @@ package state
 
 import (
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/kiichain/kiichain3/utils"
+	"github.com/kiichain/kiichain/utils"
 )
 
 // Exist reports whether the given account exists in state.

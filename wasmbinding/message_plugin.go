@@ -9,8 +9,8 @@ import (
 	sdkacltypes "github.com/cosmos/cosmos-sdk/types/accesscontrol"
 	aclkeeper "github.com/cosmos/cosmos-sdk/x/accesscontrol/keeper"
 	acltypes "github.com/cosmos/cosmos-sdk/x/accesscontrol/types"
-	evmkeeper "github.com/kiichain/kiichain3/x/evm/keeper"
-	evmtypes "github.com/kiichain/kiichain3/x/evm/types"
+	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
+	evmtypes "github.com/kiichain/kiichain/x/evm/types"
 )
 
 type CustomRouter struct {

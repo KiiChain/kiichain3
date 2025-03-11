@@ -2,8 +2,8 @@ package mint
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/x/mint/keeper"
-	"github.com/kiichain/kiichain3/x/mint/types"
+	"github.com/kiichain/kiichain/x/mint/keeper"
+	"github.com/kiichain/kiichain/x/mint/types"
 )
 
 // HandleUpdateMinterProposal handle the update minter governance proposal

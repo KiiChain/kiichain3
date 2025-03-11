@@ -5,8 +5,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/accesscontrol"
-	"github.com/kiichain/kiichain3/app/antedecorators"
-	evmkeeper "github.com/kiichain/kiichain3/x/evm/keeper"
+	"github.com/kiichain/kiichain/app/antedecorators"
+	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
 )
 
 var output = ""

@@ -8,8 +8,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/accesscontrol"
 	acltypes "github.com/cosmos/cosmos-sdk/x/accesscontrol/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/kiichain/kiichain3/app"
-	"github.com/kiichain/kiichain3/app/antedecorators"
+	"github.com/kiichain/kiichain/app"
+	"github.com/kiichain/kiichain/app/antedecorators"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/proto/tendermint/types"
 )

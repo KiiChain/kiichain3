@@ -13,8 +13,8 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/kiichain/kiichain3/utils"
-	"github.com/kiichain/kiichain3/utils/helpers"
+	"github.com/kiichain/kiichain/utils"
+	"github.com/kiichain/kiichain/utils/helpers"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -22,9 +22,9 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
-	pcommon "github.com/kiichain/kiichain3/precompiles/common"
-	"github.com/kiichain/kiichain3/utils/metrics"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	pcommon "github.com/kiichain/kiichain/precompiles/common"
+	"github.com/kiichain/kiichain/utils/metrics"
+	"github.com/kiichain/kiichain/x/evm/types"
 )
 
 const (

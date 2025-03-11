@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"github.com/kiichain/kiichain3/x/epoch/types"
+	"github.com/kiichain/kiichain/x/epoch/types"
 )
 
 type msgServer struct {

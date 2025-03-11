@@ -3,7 +3,7 @@ package utils_test
 import (
 	"testing"
 
-	"github.com/kiichain/kiichain3/utils"
+	"github.com/kiichain/kiichain/utils"
 	"github.com/stretchr/testify/require"
 )
 

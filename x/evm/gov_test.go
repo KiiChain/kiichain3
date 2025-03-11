@@ -3,10 +3,10 @@ package evm_test
 import (
 	"testing"
 
-	testkeeper "github.com/kiichain/kiichain3/testutil/keeper"
-	"github.com/kiichain/kiichain3/x/evm"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/native"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	testkeeper "github.com/kiichain/kiichain/testutil/keeper"
+	"github.com/kiichain/kiichain/x/evm"
+	"github.com/kiichain/kiichain/x/evm/artifacts/native"
+	"github.com/kiichain/kiichain/x/evm/types"
 	"github.com/stretchr/testify/require"
 )
 

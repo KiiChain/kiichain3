@@ -33,12 +33,12 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmtypes "github.com/tendermint/tendermint/types"
 
-	"github.com/kiichain/kiichain3/utils"
-	"github.com/kiichain/kiichain3/x/evm/blocktest"
-	"github.com/kiichain/kiichain3/x/evm/querier"
-	"github.com/kiichain/kiichain3/x/evm/replay"
-	"github.com/kiichain/kiichain3/x/evm/state"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/utils"
+	"github.com/kiichain/kiichain/x/evm/blocktest"
+	"github.com/kiichain/kiichain/x/evm/querier"
+	"github.com/kiichain/kiichain/x/evm/replay"
+	"github.com/kiichain/kiichain/x/evm/state"
+	"github.com/kiichain/kiichain/x/evm/types"
 )
 
 type Keeper struct {

@@ -6,7 +6,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	proto "github.com/gogo/protobuf/proto"
-	"github.com/kiichain/kiichain3/utils"
+	"github.com/kiichain/kiichain/utils"
 )
 
 var (

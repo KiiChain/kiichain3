@@ -12,9 +12,9 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/simapp"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	"github.com/kiichain/kiichain3/app"
-	"github.com/kiichain/kiichain3/x/mint"
-	"github.com/kiichain/kiichain3/x/mint/types"
+	"github.com/kiichain/kiichain/app"
+	"github.com/kiichain/kiichain/x/mint"
+	"github.com/kiichain/kiichain/x/mint/types"
 )
 
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {

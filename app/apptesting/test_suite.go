@@ -23,8 +23,8 @@ import (
 	tmtypes "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	"github.com/kiichain/kiichain3/app"
-	"github.com/kiichain/kiichain3/app/params"
+	"github.com/kiichain/kiichain/app"
+	"github.com/kiichain/kiichain/app/params"
 )
 
 type KeeperTestHelper struct {

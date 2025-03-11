@@ -9,8 +9,8 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/kiichain/kiichain3/testutil/processblock"
-	"github.com/kiichain/kiichain3/utils"
+	"github.com/kiichain/kiichain/testutil/processblock"
+	"github.com/kiichain/kiichain/utils"
 	"github.com/stretchr/testify/require"
 )
 

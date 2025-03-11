@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
-	"github.com/kiichain/kiichain3/testutil/processblock"
-	"github.com/kiichain/kiichain3/testutil/processblock/verify"
+	"github.com/kiichain/kiichain/testutil/processblock"
+	"github.com/kiichain/kiichain/testutil/processblock/verify"
 )
 
 func TestEpoch(t *testing.T) {

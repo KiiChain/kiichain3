@@ -4,7 +4,7 @@ import (
 	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/x/evm/state"
+	"github.com/kiichain/kiichain/x/evm/state"
 )
 
 func (k *Keeper) GetBalance(ctx sdk.Context, addr sdk.AccAddress) *big.Int {

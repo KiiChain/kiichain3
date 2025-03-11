@@ -11,9 +11,9 @@ import (
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	"github.com/kiichain/kiichain3/utils"
-	evmkeeper "github.com/kiichain/kiichain3/x/evm/keeper"
-	evmtypes "github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/utils"
+	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
+	evmtypes "github.com/kiichain/kiichain/x/evm/types"
 	abci "github.com/tendermint/tendermint/abci/types"
 )
 

@@ -3,11 +3,11 @@ package main
 import (
 	"os"
 
-	"github.com/kiichain/kiichain3/app/params"
-	"github.com/kiichain/kiichain3/cmd/kiichaind/cmd"
+	"github.com/kiichain/kiichain/app/params"
+	"github.com/kiichain/kiichain/cmd/kiichaind/cmd"
 
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
-	"github.com/kiichain/kiichain3/app"
+	"github.com/kiichain/kiichain/app"
 )
 
 func main() {

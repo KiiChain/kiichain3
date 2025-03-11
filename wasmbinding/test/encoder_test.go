@@ -5,14 +5,14 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/wasmbinding/bindings"
+	"github.com/kiichain/kiichain/wasmbinding/bindings"
 	"github.com/stretchr/testify/require"
 
-	tokenfactorywasm "github.com/kiichain/kiichain3/x/tokenfactory/client/wasm"
-	tokenfactorytypes "github.com/kiichain/kiichain3/x/tokenfactory/types"
+	tokenfactorywasm "github.com/kiichain/kiichain/x/tokenfactory/client/wasm"
+	tokenfactorytypes "github.com/kiichain/kiichain/x/tokenfactory/types"
 
 	// Fixes the kii addresses
-	_ "github.com/kiichain/kiichain3/app/params"
+	_ "github.com/kiichain/kiichain/app/params"
 )
 
 const (

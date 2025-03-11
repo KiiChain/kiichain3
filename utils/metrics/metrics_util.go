@@ -8,7 +8,7 @@ import (
 
 	metrics "github.com/armon/go-metrics"
 	"github.com/cosmos/cosmos-sdk/telemetry"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/types"
 )
 
 // Measures the time taken to execute a sudo msg

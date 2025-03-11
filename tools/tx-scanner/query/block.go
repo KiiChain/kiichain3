@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/cosmos/cosmos-sdk/client/grpc/tmservice"
-	"github.com/kiichain/kiichain3/tools/tx-scanner/client"
+	"github.com/kiichain/kiichain/tools/tx-scanner/client"
 )
 
 // GetLatestBlock query the latest block data

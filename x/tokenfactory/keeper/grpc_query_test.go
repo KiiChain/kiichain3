@@ -9,8 +9,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/kiichain/kiichain3/x/tokenfactory/keeper"
-	"github.com/kiichain/kiichain3/x/tokenfactory/types"
+	"github.com/kiichain/kiichain/x/tokenfactory/keeper"
+	"github.com/kiichain/kiichain/x/tokenfactory/types"
 )
 
 func (suite *KeeperTestSuite) TestDenomMetadataRequest() {

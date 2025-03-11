@@ -108,7 +108,7 @@ kiichaind tx staking create-validator \
 
 _This is the Kiichain kiichain3 Testnet_
 
-> Genesis [Published](https://github.com/KiiChain/kiichain3/blob/main/remote/genesis.json)
+> Genesis [Published](https://github.com/kiichain/kiichain/blob/main/remote/genesis.json)
 
 ## Hardware Requirements
 
@@ -184,5 +184,5 @@ We use [GitHub Issues][issues] for tracking requests and bugs, and for general q
 The Kiichain is licensed under [Apache License 2.0][license].
 
 [coc]: ./CODE_OF_CONDUCT.md
-[issues]: https://github.com/KiiChain/kiichain3/issues
+[issues]: https://github.com/kiichain/kiichain/issues
 [license]: ./LICENSE

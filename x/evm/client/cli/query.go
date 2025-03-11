@@ -16,11 +16,11 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/cw20"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/cw721"
-	"github.com/kiichain/kiichain3/x/evm/artifacts/native"
-	"github.com/kiichain/kiichain3/x/evm/config"
-	"github.com/kiichain/kiichain3/x/evm/types"
+	"github.com/kiichain/kiichain/x/evm/artifacts/cw20"
+	"github.com/kiichain/kiichain/x/evm/artifacts/cw721"
+	"github.com/kiichain/kiichain/x/evm/artifacts/native"
+	"github.com/kiichain/kiichain/x/evm/config"
+	"github.com/kiichain/kiichain/x/evm/types"
 )
 
 const TrueStr = "true"

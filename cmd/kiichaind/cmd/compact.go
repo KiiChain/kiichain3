@@ -9,7 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/server"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/app/params"
+	"github.com/kiichain/kiichain/app/params"
 	"github.com/spf13/cobra"
 	leveldbutils "github.com/syndtr/goleveldb/leveldb/util"
 	"github.com/tendermint/tendermint/libs/cli"
