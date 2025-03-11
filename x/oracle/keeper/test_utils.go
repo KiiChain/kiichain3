@@ -145,6 +145,7 @@ func CreateTestInput(t *testing.T) TestInput {
 		stakingTypes.BondedPoolName:    true,
 		distTypes.ModuleName:           true,
 		faucetAccountName:              true,
+		types.ModuleName:               true,
 	}
 
 	// Define account's permissions
@@ -154,6 +155,7 @@ func CreateTestInput(t *testing.T) TestInput {
 		stakingTypes.BondedPoolName:    {authTypes.Burner, authTypes.Staking},
 		distTypes.ModuleName:           {authTypes.Burner, authTypes.Staking},
 		faucetAccountName:              {authTypes.Minter},
+		types.ModuleName:               {authTypes.Minter, authTypes.Burner},
 	}
 
 	// Init account, bank and staking keepers
@@ -214,6 +216,10 @@ func CreateTestInput(t *testing.T) TestInput {
 		err := bankKeeper.SendCoinsFromModuleToAccount(ctx, faucetAccountName, addr, InitialCoins)
 		require.NoError(t, err) // Validate the operation
 	}
+
+	// check the module account set
+	addr := accountKeeper.GetModuleAddress(types.ModuleName)
+	require.NotNil(t, addr, "Oracle account was not set")
 
 	// Set Oracle module
 	oracleKeeper := NewKeeper(appCodec, keyOracle, memKeys[types.MemStoreKey], paramsKeeper.Subspace(types.ModuleName),

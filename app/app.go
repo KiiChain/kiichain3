@@ -129,6 +129,9 @@ import (
 	mintclient "github.com/kiichain/kiichain3/x/mint/client/cli"
 	mintkeeper "github.com/kiichain/kiichain3/x/mint/keeper"
 	minttypes "github.com/kiichain/kiichain3/x/mint/types"
+	oraclemodule "github.com/kiichain/kiichain3/x/oracle"
+	oraclekeeper "github.com/kiichain/kiichain3/x/oracle/keeper"
+	oracletypes "github.com/kiichain/kiichain3/x/oracle/types"
 
 	tokenfactorymodule "github.com/kiichain/kiichain3/x/tokenfactory"
 	tokenfactorykeeper "github.com/kiichain/kiichain3/x/tokenfactory/keeper"
@@ -204,6 +207,7 @@ var (
 		wasm.AppModuleBasic{},
 		epochmodule.AppModuleBasic{},
 		tokenfactorymodule.AppModuleBasic{},
+		oraclemodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -220,6 +224,8 @@ var (
 		wasm.ModuleName:                {authtypes.Burner},
 		evmtypes.ModuleName:            {authtypes.Minter, authtypes.Burner},
 		tokenfactorytypes.ModuleName:   {authtypes.Minter, authtypes.Burner},
+		oracletypes.ModuleName:         nil,
+
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
@@ -323,6 +329,7 @@ type App struct {
 	FeeGrantKeeper      feegrantkeeper.Keeper
 	WasmKeeper          wasm.Keeper
 	EvmKeeper           evmkeeper.Keeper
+	OracleKeeper        oraclekeeper.Keeper
 
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
@@ -404,10 +411,11 @@ func New(
 		evmtypes.StoreKey, wasm.StoreKey,
 		epochmoduletypes.StoreKey,
 		tokenfactorytypes.StoreKey,
+		oracletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey, evmtypes.TransientStoreKey)
-	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey, banktypes.DeferredCacheStoreKey)
+	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey, banktypes.DeferredCacheStoreKey, oracletypes.MemStoreKey)
 
 	app := &App{
 		BaseApp:           bApp,
@@ -535,6 +543,17 @@ func New(
 		tokenFactoryConfig,
 	)
 
+	app.OracleKeeper = oraclekeeper.NewKeeper(
+		appCodec,
+		keys[oracletypes.StoreKey],
+		memKeys[oracletypes.MemStoreKey],
+		app.GetSubspace(oracletypes.ModuleName),
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.StakingKeeper,
+		distrtypes.ModuleName,
+	)
+
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks
 	supportedFeatures := "iterator,staking,stargate,sei"
@@ -659,6 +678,7 @@ func New(
 		AddRoute(tokenfactorytypes.RouterKey, tokenfactorymodule.NewProposalHandler(app.TokenFactoryKeeper)).
 		AddRoute(acltypes.ModuleName, aclmodule.NewProposalHandler(app.AccessControlKeeper)).
 		AddRoute(evmtypes.RouterKey, evm.NewProposalHandler(app.EvmKeeper))
+		// FIXME: Add proposal handler for oracle Module
 	if len(enabledProposals) != 0 {
 		govRouter.AddRoute(wasm.RouterKey, wasm.NewWasmProposalHandler(app.WasmKeeper, enabledProposals))
 	}
@@ -693,6 +713,7 @@ func New(
 			app.IBCKeeper.ConnectionKeeper,
 			app.IBCKeeper.ChannelKeeper,
 			app.AccountKeeper,
+			// app.OracleKeeper, // FIXME: Uncomment when precompiles are set
 		); err != nil {
 			panic(err)
 		}
@@ -734,6 +755,7 @@ func New(
 		epochModule,
 		tokenfactorymodule.NewAppModule(app.TokenFactoryKeeper, app.AccountKeeper, app.BankKeeper),
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
+		oraclemodule.NewAppModule(appCodec, app.OracleKeeper, app.AccountKeeper, app.BankKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -761,10 +783,15 @@ func New(
 		vestingtypes.ModuleName,
 		ibchost.ModuleName,
 		ibctransfertypes.ModuleName,
+		oracletypes.ModuleName, // register oracle begin blocker
 		evmtypes.ModuleName,
 		wasm.ModuleName,
 		tokenfactorytypes.ModuleName,
 		acltypes.ModuleName,
+	)
+
+	app.mm.SetOrderMidBlockers(
+		oracletypes.ModuleName, // register oracle mid blocker
 	)
 
 	app.mm.SetOrderEndBlockers(
@@ -786,6 +813,7 @@ func New(
 		vestingtypes.ModuleName,
 		ibchost.ModuleName,
 		ibctransfertypes.ModuleName,
+		oracletypes.ModuleName, // register oracle end blocker
 		epochmoduletypes.ModuleName,
 		evmtypes.ModuleName,
 		wasm.ModuleName,
@@ -817,6 +845,7 @@ func New(
 		ibctransfertypes.ModuleName,
 		authz.ModuleName,
 		feegrant.ModuleName,
+		oracletypes.ModuleName, // register oracle init genesis
 		tokenfactorytypes.ModuleName,
 		epochmoduletypes.ModuleName,
 		wasm.ModuleName,
@@ -885,6 +914,7 @@ func New(
 			TXCounterStoreKey:   keys[wasm.StoreKey],
 			WasmConfig:          &wasmConfig,
 			WasmKeeper:          &app.WasmKeeper,
+			OracleKeeper:        &app.OracleKeeper,
 			EVMKeeper:           &app.EvmKeeper,
 			TracingInfo:         app.GetBaseApp().TracingInfo,
 			AccessControlKeeper: &app.AccessControlKeeper,
@@ -970,6 +1000,16 @@ func (app *App) SetStoreUpgradeHandlers() {
 	if err != nil {
 		panic(err)
 	}
+
+	// TODO: Uncomment when oracle will be release
+	// if upgradeInfo.Name == "3.0.0beta" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+	// 	storeUpgrades := storetypes.StoreUpgrades{
+	// 		Added: []string{oracletypes.StoreKey},
+	// 	}
+
+	// 	// configure store loader that checks if version == upgradeHeight and applies store upgrades
+	// 	app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
+	// }
 
 	if upgradeInfo.Name == "1.1.1beta" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
 		storeUpgrades := storetypes.StoreUpgrades{
@@ -1834,7 +1874,7 @@ func (app *App) checkTotalBlockGasWanted(ctx sdk.Context, txs [][]byte) bool {
 			continue
 		}
 		// check gasless first (this has to happen before other checks to avoid panics)
-		isGasless, err := antedecorators.IsTxGasless(decodedTx, ctx, &app.EvmKeeper)
+		isGasless, err := antedecorators.IsTxGasless(decodedTx, ctx, &app.EvmKeeper, app.OracleKeeper)
 		if err != nil {
 			ctx.Logger().Error("error checking if tx is gasless", "error", err)
 			continue
@@ -1912,6 +1952,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(evmtypes.ModuleName)
 	paramsKeeper.Subspace(epochmoduletypes.ModuleName)
 	paramsKeeper.Subspace(tokenfactorytypes.ModuleName)
+	paramsKeeper.Subspace(oracletypes.ModuleName) // register oracle params
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
