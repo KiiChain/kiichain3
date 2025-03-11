@@ -230,9 +230,7 @@ var (
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
-	allowedReceivingModAcc = map[string]bool{
-		oracletypes.ModuleName: true, //
-	}
+	allowedReceivingModAcc = map[string]bool{}
 
 	// WasmProposalsEnabled enables all x/wasm proposals when it's value is "true"
 	// and EnableSpecificWasmProposals is empty. Otherwise, all x/wasm proposals
@@ -1004,14 +1002,15 @@ func (app *App) SetStoreUpgradeHandlers() {
 		panic(err)
 	}
 
-	if upgradeInfo.Name == "3.0.0beta" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
-		storeUpgrades := storetypes.StoreUpgrades{
-			Added: []string{oracletypes.StoreKey},
-		}
+	// TODO: Uncomment when oracle will be release
+	// if upgradeInfo.Name == "3.0.0beta" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+	// 	storeUpgrades := storetypes.StoreUpgrades{
+	// 		Added: []string{oracletypes.StoreKey},
+	// 	}
 
-		// configure store loader that checks if version == upgradeHeight and applies store upgrades
-		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
-	}
+	// 	// configure store loader that checks if version == upgradeHeight and applies store upgrades
+	// 	app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
+	// }
 
 	if upgradeInfo.Name == "1.1.1beta" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
 		storeUpgrades := storetypes.StoreUpgrades{
