@@ -1,0 +1,53 @@
+- name: Test Param Change Proposal
+  inputs:
+    # Confirm no panic before upgrade and block height
+    - cmd: verify_running.sh
+      node: kii-node-0
+      env: RUNNING_BEFORE_UPGRADE_NODE_0
+    - cmd: verify_running.sh
+      node: kii-node-1
+      env: RUNNING_BEFORE_UPGRADE_NODE_1
+    - cmd: verify_running.sh
+      node: kii-node-2
+      env: RUNNING_BEFORE_UPGRADE_NODE_2
+    - cmd: verify_running.sh
+      node: kii-node-3
+      env: RUNNING_BEFORE_UPGRADE_NODE_3
+
+    # Query the chain config
+    - cmd: kiichaind q staking params
+      node: kii-node-0
+
+    # Do the proposal
+    - cmd: param_change_proposal.sh
+      env: PROPOSAL_ID
+      node: kii-node-0
+
+    # Vote with all nodes
+    - cmd: proposal_vote.sh $PROPOSAL_ID
+      node: kii-node-0
+    - cmd: proposal_vote.sh $PROPOSAL_ID
+      node: kii-node-1
+    - cmd:  proposal_vote.sh $PROPOSAL_ID
+      node: kii-node-2
+    - cmd:  proposal_vote.sh $PROPOSAL_ID
+      node: kii-node-3
+  
+    # Wait for the proposal to pass
+    - cmd: proposal_wait_for_pass.sh $PROPOSAL_ID
+      node: kii-node-0
+
+    # Query the chain config
+    - cmd: kiichaind q staking params
+      node: kii-node-0
+
+  verifiers:
+    # Nodes are running before upgrade
+    - type: eval
+      expr: RUNNING_BEFORE_UPGRADE_NODE_0 == "PASS"
+    - type: eval
+      expr: RUNNING_BEFORE_UPGRADE_NODE_1 == "PASS"
+    - type: eval
+      expr: RUNNING_BEFORE_UPGRADE_NODE_2 == "PASS"
+    - type: eval
+      expr: RUNNING_BEFORE_UPGRADE_NODE_3 == "PASS"
