@@ -1,6 +1,8 @@
 package antedecorators
 
 import (
+	"errors"
+
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkacltypes "github.com/cosmos/cosmos-sdk/types/accesscontrol"
@@ -132,13 +134,18 @@ func oracleVoteIsGassLess(msg *oracletypes.MsgAggregateExchangeRateVote, ctx sdk
 		return false, err
 	}
 
-	// check the address has votes
+	// check the address has votes (spamming protection, avoid more than one vote)
 	_, err = keeper.GetAggregateExchangeRateVote(ctx, valAddr)
-	if err != nil {
+	if err == nil {
 		// if there is no error that means there is a vote present, so we don't allow gasless tx
 		err = sdkerrors.Wrap(oracletypes.ErrAggregateVoteExist, valAddr.String())
 		return false, err
 	}
 
-	return true, nil
+	// if the error is there are no votes by valAddress means the first voting, allow them
+	if errors.Is(err, oracletypes.ErrNoAggregateVote) {
+		return true, nil
+	}
+
+	return false, err
 }
