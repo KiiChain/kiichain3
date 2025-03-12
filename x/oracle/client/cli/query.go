@@ -43,16 +43,16 @@ func CmdQueryExchangeRates() *cobra.Command {
 		Args:  cobra.RangeArgs(0, 1),
 		Short: "Query the current exchange rate w.r.t an asset",
 		Long: strings.TrimSpace(`
-		Query the current exchange rate of Kii with an asset.
-		You can find the current list of active denoms by running 
+Query the current exchange rate of Kii with an asset.
+You can find the current list of active denoms by running 
 		
-		$kiichaind query oracle exchange-rates
+$kiichaind query oracle exchange-rates
 		
-		Or filter by denom running 
+Or filter by denom running 
 
-		$kiichaind query oracle exchange-rates <denom>
+$kiichaind query oracle exchange-rates <denom>
 
-		where denom is the denom you want to filter by 
+where denom is the denom you want to filter by 
 		`),
 
 		RunE: getExchangeRate,
@@ -69,9 +69,9 @@ func CmdQueryPriceSnapshotHistory() *cobra.Command {
 		Args:  cobra.NoArgs,
 		Short: "Query the history for oracle price snapshots",
 		Long: strings.TrimSpace(`
-		Query the history for oracle price snapshots.
+Query the history for oracle price snapshots.
 		
-		$kiichaind query oracle price-snapshot-history`),
+$kiichaind query oracle price-snapshot-history`),
 
 		RunE: getPriceSnapshotHistory,
 	}
@@ -87,11 +87,11 @@ func CmdQueryTwaps() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		Short: "Query the time weighted average (Twap) prices for denom from prices snapshot data",
 		Long: strings.TrimSpace(`
-		Query the time weighted average prices for denoms from price snapshot data
+Query the time weighted average prices for denoms from price snapshot data
 		
-		$kiichaind query oracle twaps 1
+$kiichaind query oracle twaps 1
 		
-		where 1 means 1 second `),
+where 1 means 1 second `),
 		RunE: getTwaps,
 	}
 
@@ -106,9 +106,9 @@ func CmdQueryActives() *cobra.Command {
 		Args:  cobra.NoArgs,
 		Short: "Query the active assets list recognized by the oracle module",
 		Long: strings.TrimSpace(`
-		Query the active assets list recognized by the oracle module.
+Query the active assets list recognized by the oracle module.
 
-		$kiichaind query oracle actives
+$kiichaind query oracle actives
 		`),
 		RunE: getActives,
 	}
@@ -137,9 +137,9 @@ func CmdQueryFeederDelegation() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		Short: "Query the oracle feeder delegated account",
 		Long: strings.TrimSpace(`
-		Query the account the validator's oracle voting right is delegated to
+Query the account the validator's oracle voting right is delegated to
 		
-		$kiichaind query oracle feeder kiivaloper.....`),
+$kiichaind query oracle feeder kiivaloper.....`),
 		RunE: getFeederDelegation,
 	}
 
@@ -154,9 +154,9 @@ func CmdQueryVotePenaltyCounter() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		Short: "Query the number of miss count and abstain count",
 		Long: strings.TrimSpace(`
-		Query the number of vote periods missed and abstained in the current slash window
+Query the number of vote periods missed and abstained in the current slash window
 
-		$kiichaind query oracle vote-penalty-counter kiivaloper...`),
+$kiichaind query oracle vote-penalty-counter kiivaloper...`),
 		RunE: getVotePenaltyCounter,
 	}
 

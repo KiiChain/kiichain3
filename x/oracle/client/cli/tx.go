@@ -40,13 +40,13 @@ func CmdDelegateFeederPermission() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		Short: "Delegate the permissions to vote for the oracle to an address",
 		Long: strings.TrimSpace(`
-		Delegate the permission to submit exchange rate votes for the oracle to an address.
+Delegate the permission to submit exchange rate votes for the oracle to an address.
 		
-		Delegation can keep your validator operator key offline and use a separate replaceable key online.
+Delegation can keep your validator operator key offline and use a separate replaceable key online.
 		
-		$ kiichaind tx oracle set-feeder kii1....
+$ kiichaind tx oracle set-feeder kii1....
 		
-		where "kii1..." is the address you want to delegate your voting rights to.`),
+where "kii1..." is the address you want to delegate your voting rights to.`),
 		RunE: setFeeder,
 	}
 	flags.AddTxFlagsToCmd(cmd)
@@ -62,15 +62,15 @@ func CmdAggregateExchangeRateVote() *cobra.Command {
 		Args:  cobra.RangeArgs(1, 2),
 		Short: "Submit an oracle aggregate vote with the exchange rates",
 		Long: strings.TrimSpace(`
-		Submit an aggregate vote with the exchange rates.
+Submit an aggregate vote with the exchange rates.
 		
-		$kiichaind tx oracle aggregate-vote 123.45ukii,678.90uatom...
+$kiichaind tx oracle aggregate-vote 123.45ukii,678.90uatom...
 		
-		where "ukii,uatom,ueth..." are the denominating currencies and 123.45,678.90 are the exchange rates of micro USD in micro denoms
+where "ukii,uatom,ueth..." are the denominating currencies and 123.45,678.90 are the exchange rates of micro USD in micro denoms
 		
-		If voting from a delegate account, set "validator" to the address of the validator you are voting on behalf of, i.e:
+If voting from a delegate account, set "validator" to the address of the validator you are voting on behalf of, i.e:
 		
-		$ kiichaind oracle aggregate-vote 123.45ukii,678.90uatom... kiivaloper1...`),
+$ kiichaind oracle aggregate-vote 123.45ukii,678.90uatom... kiivaloper1...`),
 		RunE: aggregateVote,
 	}
 
