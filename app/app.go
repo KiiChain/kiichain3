@@ -225,7 +225,6 @@ var (
 		evmtypes.ModuleName:            {authtypes.Minter, authtypes.Burner},
 		tokenfactorytypes.ModuleName:   {authtypes.Minter, authtypes.Burner},
 		oracletypes.ModuleName:         nil,
-
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
