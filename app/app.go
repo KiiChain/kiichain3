@@ -129,10 +129,10 @@ import (
 	mintclient "github.com/kiichain/kiichain/x/mint/client/cli"
 	mintkeeper "github.com/kiichain/kiichain/x/mint/keeper"
 	minttypes "github.com/kiichain/kiichain/x/mint/types"
-	"github.com/kiichain/kiichain3/x/oracle"
+	oraclemodule "github.com/kiichain/kiichain/x/oracle"
 
-	oraclemodulekeeper "github.com/kiichain/kiichain3/x/oracle/keeper"
-	oraclemoduletypes "github.com/kiichain/kiichain3/x/oracle/types"
+	oraclekeeper "github.com/kiichain/kiichain/x/oracle/keeper"
+	oracletypes "github.com/kiichain/kiichain/x/oracle/types"
 
 	tokenfactorymodule "github.com/kiichain/kiichain/x/tokenfactory"
 	tokenfactorykeeper "github.com/kiichain/kiichain/x/tokenfactory/keeper"

@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/x/oracle/types"
+	"github.com/kiichain/kiichain/x/oracle/types"
 )
 
 // GetParams returns the Oracle module's params
