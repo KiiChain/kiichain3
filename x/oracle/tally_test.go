@@ -5,9 +5,9 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
-	"github.com/kiichain/kiichain3/x/oracle/keeper"
-	"github.com/kiichain/kiichain3/x/oracle/types"
-	"github.com/kiichain/kiichain3/x/oracle/utils"
+	"github.com/kiichain/kiichain/x/oracle/keeper"
+	"github.com/kiichain/kiichain/x/oracle/types"
+	"github.com/kiichain/kiichain/x/oracle/utils"
 	"github.com/stretchr/testify/require"
 )
 

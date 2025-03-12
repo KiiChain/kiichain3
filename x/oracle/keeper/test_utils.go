@@ -16,8 +16,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/distribution"
 	"github.com/cosmos/cosmos-sdk/x/params"
 	"github.com/cosmos/cosmos-sdk/x/staking"
-	"github.com/kiichain/kiichain3/x/oracle/types"
-	"github.com/kiichain/kiichain3/x/oracle/utils"
+	"github.com/kiichain/kiichain/x/oracle/types"
+	"github.com/kiichain/kiichain/x/oracle/utils"
 	"github.com/stretchr/testify/require"
 
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"

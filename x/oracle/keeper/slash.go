@@ -5,7 +5,7 @@ import (
 
 	cosmostelemetry "github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/x/oracle/types"
+	"github.com/kiichain/kiichain/x/oracle/types"
 )
 
 // SlashAndResetCounters calculate if the validator must be slashed if success votes / total votes

@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/kiichain/kiichain3/x/oracle/utils"
+	"github.com/kiichain/kiichain/x/oracle/utils"
 	"gopkg.in/yaml.v2"
 )
 
