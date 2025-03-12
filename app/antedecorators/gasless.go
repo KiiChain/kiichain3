@@ -9,8 +9,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
 	evmtypes "github.com/kiichain/kiichain/x/evm/types"
-	oraclekeeper "github.com/kiichain/kiichain3/x/oracle/keeper"
-	oracletypes "github.com/kiichain/kiichain3/x/oracle/types"
+	oraclekeeper "github.com/kiichain/kiichain/x/oracle/keeper"
+	oracletypes "github.com/kiichain/kiichain/x/oracle/types"
 )
 
 // GaslessDecorator is the struct that has the modules' keeper which are gassless

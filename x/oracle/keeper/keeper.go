@@ -11,7 +11,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/kiichain/kiichain3/x/oracle/types"
+	"github.com/kiichain/kiichain/x/oracle/types"
 )
 
 // Keeper manages the oracle module's state
