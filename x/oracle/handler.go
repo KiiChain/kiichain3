@@ -3,8 +3,8 @@ package oracle
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/kiichain/kiichain3/x/oracle/keeper"
-	"github.com/kiichain/kiichain3/x/oracle/types"
+	"github.com/kiichain/kiichain/x/oracle/keeper"
+	"github.com/kiichain/kiichain/x/oracle/types"
 )
 
 // NewHandler returns a new handler for Oracle type messages

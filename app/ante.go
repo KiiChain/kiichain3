@@ -16,8 +16,8 @@ import (
 	"github.com/kiichain/kiichain/app/antedecorators/depdecorators"
 	evmante "github.com/kiichain/kiichain/x/evm/ante"
 	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
-	"github.com/kiichain/kiichain3/x/oracle"
-	oraclekeeper "github.com/kiichain/kiichain3/x/oracle/keeper"
+	"github.com/kiichain/kiichain/x/oracle"
+	oraclekeeper "github.com/kiichain/kiichain/x/oracle/keeper"
 )
 
 // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC

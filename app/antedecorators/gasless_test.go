@@ -7,7 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/accesscontrol"
 	"github.com/kiichain/kiichain/app/antedecorators"
 	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
-	oraclekeeper "github.com/kiichain/kiichain3/x/oracle/keeper"
+	oraclekeeper "github.com/kiichain/kiichain/x/oracle/keeper"
 )
 
 var output = ""

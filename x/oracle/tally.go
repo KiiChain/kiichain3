@@ -2,8 +2,8 @@ package oracle
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/kiichain/kiichain3/x/oracle/keeper"
-	"github.com/kiichain/kiichain3/x/oracle/types"
+	"github.com/kiichain/kiichain/x/oracle/keeper"
+	"github.com/kiichain/kiichain/x/oracle/types"
 )
 
 // pickReferenceDenom selects a denom with the highest vote power as reference denom.
