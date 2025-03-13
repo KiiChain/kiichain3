@@ -17,6 +17,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/kiichain/kiichain/utils"
+
+	oracletypes "github.com/kiichain/kiichain/x/oracle/types"
 )
 
 type BankKeeper interface {
@@ -65,6 +67,17 @@ type AccountKeeper interface {
 	SetAccount(ctx sdk.Context, acc authtypes.AccountI)
 	RemoveAccount(ctx sdk.Context, acc authtypes.AccountI)
 	NewAccountWithAddress(ctx sdk.Context, addr sdk.AccAddress) authtypes.AccountI
+}
+
+type OracleKeeper interface {
+	IterateBaseExchangeRates(ctx sdk.Context, handler func(denom string, exchangeRate oracletypes.OracleExchangeRate) bool)
+	CalculateTwaps(ctx sdk.Context, lookBackSeconds uint64) (oracletypes.OracleTwaps, error)
+	IterateVoteTargets(ctx sdk.Context, handler func(denom string, denomInfo oracletypes.Denom) bool)
+	IteratePriceSnapshots(ctx sdk.Context, handler func(snapshot oracletypes.PriceSnapshot) bool)
+	GetFeederDelegation(ctx sdk.Context, valAddr sdk.ValAddress) sdk.AccAddress
+	GetMissCount(ctx sdk.Context, operator sdk.ValAddress) uint64
+	GetAbstainCount(ctx sdk.Context, operator sdk.ValAddress) uint64
+	GetSuccessCount(ctx sdk.Context, operator sdk.ValAddress) uint64
 }
 
 type WasmdKeeper interface {
