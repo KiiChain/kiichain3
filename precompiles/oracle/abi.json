@@ -1,0 +1,162 @@
+[
+  {
+    "inputs": [],
+    "name": "getActives",
+    "outputs": [{ "internalType": "string[]", "name": "", "type": "string[]" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getExchangeRates",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "string", "name": "denom", "type": "string" },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "exchangeRate",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "lastUpdate",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "lastUpdateTimestamp",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IOracle.OracleExchangeRate",
+            "name": "oracleExchangeRate",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct IOracle.DenomOracleExchangeRate[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "validatorAddress", "type": "string" }
+    ],
+    "name": "getFeederDelegation",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "lookback_seconds",
+        "type": "uint256"
+      }
+    ],
+    "name": "getOracleTwaps",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "string", "name": "denom", "type": "string" },
+          { "internalType": "string", "name": "twap", "type": "string" },
+          {
+            "internalType": "uint256",
+            "name": "lookbackSeconds",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IOracle.OracleTwap[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getPriceSnapshotHistory",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "snapshotTimestamp",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              { "internalType": "string", "name": "denom", "type": "string" },
+              {
+                "components": [
+                  {
+                    "internalType": "string",
+                    "name": "exchangeRate",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "lastUpdate",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "lastUpdateTimestamp",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct IOracle.OracleExchangeRate",
+                "name": "oracleExchangeRate",
+                "type": "tuple"
+              }
+            ],
+            "internalType": "struct IOracle.DenomOracleExchangeRate[]",
+            "name": "PriceSnapshotItems",
+            "type": "tuple[]"
+          }
+        ],
+        "internalType": "struct IOracle.PriceSnapshot",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "validatorAddress", "type": "string" }
+    ],
+    "name": "getVotePenaltyCounter",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "missCount", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "abstainCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "successCount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IOracle.VotePenaltyCounter",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
