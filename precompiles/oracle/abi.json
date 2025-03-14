@@ -123,9 +123,9 @@
             "type": "tuple[]"
           }
         ],
-        "internalType": "struct IOracle.PriceSnapshot",
+        "internalType": "struct IOracle.PriceSnapshot[]",
         "name": "",
-        "type": "tuple"
+        "type": "tuple[]"
       }
     ],
     "stateMutability": "view",
