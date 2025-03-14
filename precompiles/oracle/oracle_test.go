@@ -163,7 +163,7 @@ func TestGetActives(t *testing.T) {
 	// setup sender and env
 	evm := setupEvmEnv(ctx, evmKeeper)
 
-	// Set and Get Voting target
+	// Set Voting target
 	voteTarget := map[string]oracletypes.Denom{
 		utils.MicroKiiDenom:  {Name: utils.MicroKiiDenom},
 		utils.MicroEthDenom:  {Name: utils.MicroEthDenom},
