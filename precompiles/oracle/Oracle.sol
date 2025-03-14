@@ -22,15 +22,18 @@ interface IOracle {
     // getActives queries the active assets list on the module
     function getActives() external view returns (string[] memory);
 
+    // getPriceSnapshotHistory queries the price history with snapshots
     function getPriceSnapshotHistory()
         external
         view
-        returns (PriceSnapshot memory);
+        returns (PriceSnapshot[] memory);
 
+    // getFeederDelegation queries the feeder delegated based on the validator address
     function getFeederDelegation(
         string memory validatorAddress
     ) external view returns (string memory);
 
+    // getVotePenaltyCounter queries the vote penalty counters based on the validator address
     function getVotePenaltyCounter(
         string memory validatorAddress
     ) external view returns (VotePenaltyCounter memory);
@@ -56,11 +59,13 @@ interface IOracle {
         uint256 lookbackSeconds;
     }
 
+    // PriceSnapshot represents an snapshot
     struct PriceSnapshot {
         uint256 snapshotTimestamp;
         DenomOracleExchangeRate[] PriceSnapshotItems;
     }
 
+    // VotePenaltyCounter represents the votepenalty result from module
     struct VotePenaltyCounter {
         uint256 missCount;
         uint256 abstainCount;
