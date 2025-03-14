@@ -570,6 +570,7 @@ func New(
 			app.TransferKeeper,
 			app.AccessControlKeeper,
 			&app.EvmKeeper,
+			&app.OracleKeeper, // register oracle on wasm binding
 		),
 		wasmOpts...,
 	)
