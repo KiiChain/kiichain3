@@ -25,6 +25,7 @@ const (
 // precompiled address
 const OracleAddress = "0x0000000000000000000000000000000000001008"
 
+//go:embed abi.json
 var f embed.FS
 
 // PrecompileExecutor handles the precompile execution
@@ -115,7 +116,7 @@ func (p PrecompileExecutor) Execute(ctx sdk.Context, method *abi.Method, caller 
 type OracleExchangeRate struct {
 	ExchangeRate        string
 	LastUpdate          string
-	LastUpdateTimestamp int64
+	LastUpdateTimestamp *big.Int
 }
 
 // DenomOracleExchangeRate represents the exchange rate by denom
@@ -145,7 +146,7 @@ func (p PrecompileExecutor) getExchangeRates(ctx sdk.Context, method *abi.Method
 			OracleExchangeRate: OracleExchangeRate{
 				ExchangeRate:        exchangeRate.String(),
 				LastUpdate:          exchangeRate.LastUpdate.String(),
-				LastUpdateTimestamp: exchangeRate.LastUpdateTimestamp,
+				LastUpdateTimestamp: big.NewInt(exchangeRate.LastUpdateTimestamp),
 			},
 		}
 
@@ -167,7 +168,7 @@ func (p PrecompileExecutor) getExchangeRates(ctx sdk.Context, method *abi.Method
 type OracleTwap struct {
 	Denom           string
 	Twap            string
-	LookbackSeconds int64
+	LookbackSeconds *big.Int
 }
 
 // getOracleTwaps calls the oracle keeper to calculate twaps within the lookback period
@@ -183,10 +184,10 @@ func (p PrecompileExecutor) getOracleTwaps(ctx sdk.Context, method *abi.Method, 
 	}
 
 	// receive input arg
-	lookbackSeconds := args[0].(uint64) // obligate the input is uint64
+	lookbackSeconds := args[0].(*big.Int) // obligate the input is uint64
 
 	// calculate twap
-	twaps, err := p.oracleKeeper.CalculateTwaps(ctx, lookbackSeconds)
+	twaps, err := p.oracleKeeper.CalculateTwaps(ctx, lookbackSeconds.Uint64())
 	if err != nil {
 		return nil, 0, err
 	}
@@ -198,7 +199,7 @@ func (p PrecompileExecutor) getOracleTwaps(ctx sdk.Context, method *abi.Method, 
 		stringTwap := OracleTwap{
 			Denom:           twap.Denom,
 			Twap:            twap.Twap.String(),
-			LookbackSeconds: twap.LookbackSeconds,
+			LookbackSeconds: big.NewInt(twap.LookbackSeconds),
 		}
 
 		stringTwaps = append(stringTwaps, stringTwap)
@@ -244,7 +245,7 @@ func (p PrecompileExecutor) getActives(ctx sdk.Context, method *abi.Method, args
 }
 
 type PriceSnapshot struct {
-	SnapshotTimestamp  int64
+	SnapshotTimestamp  *big.Int
 	PriceSnapshotItems []DenomOracleExchangeRate
 }
 
@@ -268,11 +269,12 @@ func (p PrecompileExecutor) getPriceSnapshotHistory(ctx sdk.Context, method *abi
 	p.oracleKeeper.IteratePriceSnapshots(ctx, func(snapshot types.PriceSnapshot) bool {
 		// Iterate the snapshots by denom
 		for _, item := range snapshot.PriceSnapshotItems {
+
 			// convert the current rate to string
 			stringRate := OracleExchangeRate{
 				ExchangeRate:        item.OracleExchangeRate.ExchangeRate.String(),
 				LastUpdate:          item.OracleExchangeRate.LastUpdate.String(),
-				LastUpdateTimestamp: item.OracleExchangeRate.LastUpdateTimestamp,
+				LastUpdateTimestamp: big.NewInt(item.OracleExchangeRate.LastUpdateTimestamp),
 			}
 
 			// create the string snapshot by denom
@@ -286,7 +288,7 @@ func (p PrecompileExecutor) getPriceSnapshotHistory(ctx sdk.Context, method *abi
 
 		// create the struct with array of string snapshots by denom
 		priceSnapshot := PriceSnapshot{
-			SnapshotTimestamp:  snapshot.SnapshotTimestamp,
+			SnapshotTimestamp:  big.NewInt(snapshot.SnapshotTimestamp),
 			PriceSnapshotItems: snapshotItems,
 		}
 
@@ -338,9 +340,9 @@ func (p PrecompileExecutor) getFeederDelegation(ctx sdk.Context, method *abi.Met
 }
 
 type VotePenaltyCounter struct {
-	MissCount    uint64
-	AbstainCount uint64
-	SuccessCount uint64
+	MissCount    *big.Int
+	AbstainCount *big.Int
+	SuccessCount *big.Int
 }
 
 // getVotePenaltyCounter returns the penalty counter based on the validator input arg
@@ -369,9 +371,9 @@ func (p PrecompileExecutor) getVotePenaltyCounter(ctx sdk.Context, method *abi.M
 	successCount := p.oracleKeeper.GetSuccessCount(ctx, valAddr)
 
 	votePenaltyCounter := VotePenaltyCounter{
-		MissCount:    missCount,
-		AbstainCount: abstainCount,
-		SuccessCount: successCount,
+		MissCount:    big.NewInt(int64(missCount)),
+		AbstainCount: big.NewInt(int64(abstainCount)),
+		SuccessCount: big.NewInt(int64(successCount)),
 	}
 
 	// convert from go struct to []byte data
