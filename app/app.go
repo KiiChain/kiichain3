@@ -1001,7 +1001,7 @@ func (app *App) SetStoreUpgradeHandlers() {
 		panic(err)
 	}
 
-	if upgradeInfo.Name == "3.0.0" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+	if upgradeInfo.Name == "v3.0.0" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
 		storeUpgrades := storetypes.StoreUpgrades{
 			Added: []string{oracletypes.StoreKey},
 		}
