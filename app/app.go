@@ -570,6 +570,7 @@ func New(
 			app.TransferKeeper,
 			app.AccessControlKeeper,
 			&app.EvmKeeper,
+			&app.OracleKeeper, // register oracle on wasm binding
 		),
 		wasmOpts...,
 	)
@@ -713,7 +714,7 @@ func New(
 			app.IBCKeeper.ConnectionKeeper,
 			app.IBCKeeper.ChannelKeeper,
 			app.AccountKeeper,
-			// app.OracleKeeper, // FIXME: Uncomment when precompiles are set
+			app.OracleKeeper,
 		); err != nil {
 			panic(err)
 		}
