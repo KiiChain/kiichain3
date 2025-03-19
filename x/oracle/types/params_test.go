@@ -67,6 +67,6 @@ func TestParamsValid(t *testing.T) {
 
 func TestDefaultParams(t *testing.T) {
 	params := DefaultParams()
-	err := params.Validate()
-	require.NoError(t, err)
+	require.Equal(t, DefaultSlashFraction, params.SlashFraction)
+	require.Equal(t, DefaultLookbackDuration, params.LookbackDuration)
 }

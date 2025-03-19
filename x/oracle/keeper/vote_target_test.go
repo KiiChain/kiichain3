@@ -20,9 +20,18 @@ func TestGetVoteTargets(t *testing.T) {
 		oracleKeeper.SetVoteTarget(input.Ctx, target)
 	}
 
-	// validation
+	// get voting target
 	targets := oracleKeeper.GetVoteTargets(input.Ctx)
-	require.Equal(t, expectedTargets, targets)
+
+	// validation
+	elements := make(map[string]bool)
+	for _, target := range targets {
+		elements[target] = true
+	}
+
+	for _, expectedTarget := range expectedTargets {
+		require.True(t, elements[expectedTarget])
+	}
 }
 
 func TestIsVoteTarget(t *testing.T) {

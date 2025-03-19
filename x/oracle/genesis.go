@@ -117,7 +117,14 @@ func ExportGenesis(ctx sdk.Context, keeper keeper.Keeper) types.GenesisState {
 		return false
 	})
 
+	// Extract votePenaltyCounters
+	votePenaltyCounters := []types.VotePenaltyCounter{}
+	keeper.IterateVotePenaltyCounters(ctx, func(operator sdk.ValAddress, votePenaltyCounter types.VotePenaltyCounter) bool {
+		votePenaltyCounters = append(votePenaltyCounters, votePenaltyCounter)
+		return false
+	})
+
 	// Send data
-	return *types.NewGenesisState(params, exchangeRates, feederDelegations, penaltyCounters, aggregateExchangeRateVotes, priceSnapshots)
+	return *types.NewGenesisState(params, exchangeRates, feederDelegations, penaltyCounters, aggregateExchangeRateVotes, priceSnapshots, votePenaltyCounters)
 
 }
