@@ -65,6 +65,7 @@ func (k Keeper) MinValidPerWindow(ctx sdk.Context) (res sdk.Dec) {
 	return
 }
 
+// LookbackDuration returns oracle LookbackDuration param
 func (k Keeper) LookbackDuration(ctx sdk.Context) (res uint64) {
 	k.paramSpace.Get(ctx, types.KeyLookbackDuration, &res)
 	return
