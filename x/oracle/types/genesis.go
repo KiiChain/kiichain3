@@ -8,7 +8,7 @@ import (
 
 // NewGenesisState creates a new GenesisState object with the imput parameters
 func NewGenesisState(params Params, exchangeRateTuple []ExchangeRateTuple, feederDelegation []FeederDelegation,
-	penaltyCounters []PenaltyCounter, aggregateExchangeRateVote []AggregateExchangeRateVote, priceSnapshot PriceSnapshots) *GenesisState {
+	penaltyCounters []PenaltyCounter, aggregateExchangeRateVote []AggregateExchangeRateVote, priceSnapshot PriceSnapshots, votePenaltyCounters []VotePenaltyCounter) *GenesisState {
 	return &GenesisState{
 		Params:                     params,
 		ExchangeRates:              exchangeRateTuple,
@@ -16,6 +16,7 @@ func NewGenesisState(params Params, exchangeRateTuple []ExchangeRateTuple, feede
 		PenaltyCounters:            penaltyCounters,
 		AggregateExchangeRateVotes: aggregateExchangeRateVote,
 		PriceSnapshots:             priceSnapshot,
+		VotePenaltyCounters:        votePenaltyCounters,
 	}
 }
 
@@ -28,6 +29,7 @@ func DefaultGenesisState() *GenesisState {
 		PenaltyCounters:            []PenaltyCounter{},
 		AggregateExchangeRateVotes: []AggregateExchangeRateVote{},
 		PriceSnapshots:             PriceSnapshots{},
+		VotePenaltyCounters:        []VotePenaltyCounter{},
 	}
 }
 
