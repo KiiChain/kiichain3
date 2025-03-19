@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"sort"
 	"strings"
 	"testing"
 
@@ -97,16 +98,19 @@ func TestOrganizeBallotByDenom(t *testing.T) {
 		{Denom: utils.MicroKiiDenom, ExchangeRate: sdk.NewDec(4), Power: int64(10), Voter: ValAddrs[1]},
 	}
 
-	reference := map[string]types.ExchangeRateBallot{
-		utils.MicroAtomDenom: uatomBallot,
-		utils.MicroEthDenom:  uethBallot,
-		utils.MicroUsdcDenom: uusdcBallot,
-		utils.MicroKiiDenom:  ukiiBallot,
-	}
+	sort.Sort(uatomBallot)
+	sort.Sort(uethBallot)
+	sort.Sort(uusdcBallot)
+	sort.Sort(ukiiBallot)
 
 	// Call function
 	denomBallot := oracleKeeper.OrganizeBallotByDenom(ctx, validatorClaimMap)
-	require.Equal(t, reference, denomBallot)
+
+	// Validation
+	require.Equal(t, uatomBallot, denomBallot[utils.MicroAtomDenom])
+	require.Equal(t, uethBallot, denomBallot[utils.MicroEthDenom])
+	require.Equal(t, uusdcBallot, denomBallot[utils.MicroUsdcDenom])
+	require.Equal(t, ukiiBallot, denomBallot[utils.MicroKiiDenom])
 }
 
 func TestClearBallots(t *testing.T) {

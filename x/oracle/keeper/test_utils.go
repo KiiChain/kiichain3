@@ -120,7 +120,7 @@ func CreateTestInput(t *testing.T) TestInput {
 	memKeys := sdk.NewMemoryStoreKeys(types.MemStoreKey)          // Create the memory KV store for the oracle
 	tKeyParams := sdk.NewTransientStoreKey(paramsTypes.TStoreKey) // create a KV store for temporal parameters
 
-	db := dbm.NewMemDB()                                                                         // Create on memory DB                                                                  // Create a DB on memory (for testing)
+	db := dbm.NewMemDB()                                                                         // Create on memory DB
 	ms := store.NewCommitMultiStore(db)                                                          // create the multistore to handle the KV stores
 	ctx := sdk.NewContext(ms, tmproto.Header{Time: time.Now().UTC()}, false, log.NewNopLogger()) // Create new context
 	encodingConfig := MakeEncodingConfig()
