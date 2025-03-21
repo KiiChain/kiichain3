@@ -7,10 +7,10 @@ require (
 	github.com/CosmWasm/wasmvm v1.5.5
 	github.com/armon/go-metrics v0.4.1
 	github.com/btcsuite/btcd v0.22.1
-	github.com/cosmos/cosmos-sdk v0.45.10
+	github.com/cosmos/cosmos-sdk v0.45.16
 	github.com/cosmos/go-bip39 v1.0.0
 	github.com/cosmos/iavl v0.21.0-alpha.1.0.20230904092046-df3db2d96583
-	github.com/cosmos/ibc-go/v3 v3.0.0
+	github.com/cosmos/ibc-go/v4 v4.6.0
 	github.com/ethereum/go-ethereum v1.13.2
 	github.com/gogo/protobuf v1.3.3
 	github.com/golang-jwt/jwt/v4 v4.5.0
@@ -46,25 +46,24 @@ require (
 	filippo.io/edwards25519 v1.0.0-rc.1 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
-	github.com/DataDog/zstd v1.4.5 // indirect
+	github.com/DataDog/zstd v1.5.0 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/VictoriaMetrics/fastcache v1.12.1 // indirect
 	github.com/alitto/pond v1.8.3 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/bgentry/speakeasy v0.1.0 // indirect
+	github.com/bgentry/speakeasy v0.1.1-0.20220910012023-760eaf8b6816 // indirect
 	github.com/bits-and-blooms/bitset v1.10.0 // indirect
 	github.com/btcsuite/btcd/btcec/v2 v2.3.2 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
-	github.com/cockroachdb/errors v1.8.1 // indirect
-	github.com/cockroachdb/logtags v0.0.0-20190617123548-eb05cc24525f // indirect
+	github.com/cockroachdb/errors v1.9.1 // indirect
+	github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b // indirect
 	github.com/cockroachdb/pebble v0.0.0-20230928194634-aa077af62593 // indirect
-	github.com/cockroachdb/redact v1.0.8 // indirect
-	github.com/cockroachdb/sentry-go v0.6.1-cockroachdb.2 // indirect
+	github.com/cockroachdb/redact v1.1.3 // indirect
 	github.com/cockroachdb/tokenbucket v0.0.0-20230807174530-cc333fc44b06 // indirect
-	github.com/coinbase/rosetta-sdk-go v0.7.0 // indirect
-	github.com/confio/ics23/go v0.9.0 // indirect
+	github.com/coinbase/rosetta-sdk-go v0.7.9 // indirect
+	github.com/confio/ics23/go v0.9.1 // indirect
 	github.com/consensys/bavard v0.1.13 // indirect
 	github.com/consensys/gnark-crypto v0.12.1 // indirect
 	github.com/cosmos/btcutil v1.0.5 // indirect
@@ -90,6 +89,7 @@ require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/gballet/go-libpcsclite v0.0.0-20190607065134-2772fd86a8ff // indirect
 	github.com/gballet/go-verkle v0.1.1-0.20231031103413-a67434b50f46 // indirect
+	github.com/getsentry/sentry-go v0.17.0 // indirect
 	github.com/go-kit/kit v0.12.0 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.5.1 // indirect
@@ -163,17 +163,17 @@ require (
 	github.com/savaki/jq v0.0.0-20161209013833-0e6baecebbf8 // indirect
 	github.com/sei-protocol/sei-tm-db v0.0.5 // indirect
 	github.com/shirou/gopsutil v3.21.4-0.20210419000835-c7a38de76ee5+incompatible // indirect
-	github.com/spf13/afero v1.8.2 // indirect
+	github.com/spf13/afero v1.9.2 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/spf13/viper v1.13.0 // indirect
+	github.com/spf13/viper v1.14.0 // indirect
 	github.com/status-im/keycard-go v0.2.0 // indirect
 	github.com/subosito/gotenv v1.4.1 // indirect
 	github.com/supranational/blst v0.3.11 // indirect
 	github.com/tendermint/btcd v0.1.1 // indirect
 	github.com/tendermint/crypto v0.0.0-20191022145703-50d29ede1e15 // indirect
 	github.com/tendermint/go-amino v0.16.0 // indirect
-	github.com/tidwall/gjson v1.10.2 // indirect
+	github.com/tidwall/gjson v1.14.0 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/tidwall/tinylru v1.1.0 // indirect
@@ -218,11 +218,11 @@ require (
 )
 
 replace (
-	github.com/CosmWasm/wasmd => github.com/kiichain/kii-wasmd v0.2.4
+	github.com/CosmWasm/wasmd => github.com/kiichain/kii-wasmd v0.2.4-fork.1
 	github.com/confio/ics23/go => github.com/cosmos/cosmos-sdk/ics23/go v0.8.0
 	github.com/cosmos/cosmos-sdk => github.com/KiiChain/kiichain-cosmos v0.3.38-fork.2
 	github.com/cosmos/iavl => github.com/sei-protocol/sei-iavl v0.2.0
-	github.com/cosmos/ibc-go/v3 => github.com/kiichain/kii-ibc-go/v3 v3.3.2
+	github.com/cosmos/ibc-go/v4 => github.com/KiiChain/kii-ibc-go/v4 v4.6.0-fork.1
 	github.com/ethereum/go-ethereum => github.com/sei-protocol/go-ethereum v1.13.5-sei-23
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	github.com/sei-protocol/sei-db => github.com/sei-protocol/sei-db v0.0.44
