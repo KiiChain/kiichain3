@@ -220,7 +220,7 @@ require (
 replace (
 	github.com/CosmWasm/wasmd => github.com/kiichain/kii-wasmd v0.2.4
 	github.com/confio/ics23/go => github.com/cosmos/cosmos-sdk/ics23/go v0.8.0
-	github.com/cosmos/cosmos-sdk => github.com/KiiChain/kiichain-cosmos v0.3.38-fork.1
+	github.com/cosmos/cosmos-sdk => github.com/KiiChain/kiichain-cosmos v0.3.38-fork.2
 	github.com/cosmos/iavl => github.com/sei-protocol/sei-iavl v0.2.0
 	github.com/cosmos/ibc-go/v3 => github.com/kiichain/kii-ibc-go/v3 v3.3.2
 	github.com/ethereum/go-ethereum => github.com/sei-protocol/go-ethereum v1.13.5-sei-23
