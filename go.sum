@@ -84,8 +84,8 @@ github.com/Joker/hpp v1.0.0/go.mod h1:8x5n+M1Hp5hC0g8okX3sR3vFQwynaX/UgSOM9MeBKz
 github.com/Joker/jade v1.0.1-0.20190614124447-d475f43051e7/go.mod h1:6E6s8o2AE4KhCrqr6GRJjdC/gNfTdxkIXvuGZZda2VM=
 github.com/KiiChain/kii-ibc-go/v4 v4.6.0-fork.1 h1:EQJl92srOlKd4DoqqA27Lq7xYaV/4wIDNvtB1C9SA2w=
 github.com/KiiChain/kii-ibc-go/v4 v4.6.0-fork.1/go.mod h1:iLyRIhdYcRQzb6DlHNl8wi2aY+OyhyGbQna14Kr1hd4=
-github.com/KiiChain/kiichain-cosmos v0.3.38-fork.2 h1:VhS7IIUKvL3bDMCHSjHR5l3zM+6PgD9S91z8evvmJ4Q=
-github.com/KiiChain/kiichain-cosmos v0.3.38-fork.2/go.mod h1:zxz8WC4+N/th1Guq1NaexVO/4EAPE4rq5MNfgQKF6ek=
+github.com/KiiChain/kiichain-cosmos v0.3.38-fork.3 h1:h+TX56i0gp5Qi9etc9Qf/chA3QIp1lDBihc14dMaAuU=
+github.com/KiiChain/kiichain-cosmos v0.3.38-fork.3/go.mod h1:zxz8WC4+N/th1Guq1NaexVO/4EAPE4rq5MNfgQKF6ek=
 github.com/KiiChain/kiichain-tendermint v0.3.8-fork.1 h1:+QpIa3qk4136vO1lLsq4Yghqf5l9QIS4Hk2KUrKmO74=
 github.com/KiiChain/kiichain-tendermint v0.3.8-fork.1/go.mod h1:4LSlJdhl3nf3OmohliwRNUFLOB1XWlrmSodrIP7fLh4=
 github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible/go.mod h1:r7JcOSlj0wfOMncg0iLm8Leh48TZaKVeNIfJntJ2wa0=
