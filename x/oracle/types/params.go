@@ -25,16 +25,19 @@ var (
 var (
 	DefaultVotePeriod    = uint64(2)                  // Voting every two blocks
 	DefaultSlashWindow   = utils.BlocksPerDay * 2     // 2 days for oracle slashing
-	DefaultVoteThreshold = sdk.NewDecWithPrec(667, 3) // 66.7%
-	DefaultRewardBand    = sdk.NewDecWithPrec(2, 2)   // 2%
+	DefaultVoteThreshold = sdk.NewDecWithPrec(667, 3) // 0.667 | 66.7%
+	DefaultRewardBand    = sdk.NewDecWithPrec(2, 2)   // 0.02% | 2%
 	DefaultWhitelist     = DenomList{
-		{Name: utils.MicroAtomDenom},
+		{Name: utils.MicroBtcDenom},
 		{Name: utils.MicroEthDenom},
-		{Name: utils.MicroKiiDenom},
+		{Name: utils.MicroSolDenom},
+		{Name: utils.MicroXrpDenom},
+		{Name: utils.MicroBnbDenom},
+		{Name: utils.MicroUsdtDenom},
 		{Name: utils.MicroUsdcDenom},
 	}
-	DefaultSlashFraction     = sdk.NewDecWithPrec(0, 4) // 0.00%
-	DefaultMinValidPerWindow = sdk.NewDecWithPrec(5, 2) // 5%
+	DefaultSlashFraction     = sdk.NewDecWithPrec(0, 4) // 0.00 | 0%
+	DefaultMinValidPerWindow = sdk.NewDecWithPrec(5, 2) // 0.05 | 5%
 	DefaultLookbackDuration  = uint64(3600)
 )
 
