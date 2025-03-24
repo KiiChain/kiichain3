@@ -16,6 +16,11 @@ func TestOracleFilters(t *testing.T) {
 	// Prepare env
 	input, handler := SetUp(t)
 	ctx := input.Ctx
+	oracleKeeper := input.OracleKeeper
+
+	// set voting targets
+	oracleKeeper.DeleteVoteTargets(ctx)
+	oracleKeeper.SetVoteTarget(ctx, utils.MicroAtomDenom)
 
 	t.Run("Non-oracle message received", func(t *testing.T) {
 		bankMsg := &banktypes.MsgSend{}
@@ -43,6 +48,11 @@ func TestMsgDelegateFeedConsent(t *testing.T) {
 	// Prepare env
 	input, handler := SetUp(t)
 	ctx := input.Ctx
+	oracleKeeper := input.OracleKeeper
+
+	// set voting targets
+	oracleKeeper.DeleteVoteTargets(ctx)
+	oracleKeeper.SetVoteTarget(ctx, utils.MicroAtomDenom)
 
 	t.Run("empty message", func(t *testing.T) {
 		msg := &types.MsgDelegateFeedConsent{}
