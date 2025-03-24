@@ -105,13 +105,18 @@ func TestQueryVoteTargets(t *testing.T) {
 	// create query server
 	querier := NewQueryServer(oracleKeeper)
 
+	// insert data on the module
+	oracleKeeper.DeleteVoteTargets(ctx)
+	oracleKeeper.SetVoteTarget(ctx, utils.MicroAtomDenom)
+	oracleKeeper.SetVoteTarget(ctx, utils.MicroEthDenom)
+
 	// query params
 	context := sdk.WrapSDKContext(ctx)
 	res, err := querier.VoteTargets(context, &types.QueryVoteTargetsRequest{})
 
 	// validation
 	require.NoError(t, err)
-	require.Equal(t, 4, len(res.VoteTargets))
+	require.Equal(t, 2, len(res.VoteTargets))
 	require.Equal(t, utils.MicroAtomDenom, res.VoteTargets[0])
 	require.Equal(t, utils.MicroEthDenom, res.VoteTargets[1])
 }

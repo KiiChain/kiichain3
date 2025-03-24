@@ -455,6 +455,7 @@ func TestVoteTargetLogic(t *testing.T) {
 	ctx := init.Ctx
 
 	// Set and Get Voting target
+	oracleKeeper.DeleteVoteTargets(ctx)
 	voteTarget := map[string]types.Denom{
 		utils.MicroKiiDenom:  {Name: utils.MicroKiiDenom},
 		utils.MicroEthDenom:  {Name: utils.MicroEthDenom},
