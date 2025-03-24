@@ -33,7 +33,7 @@ func TestAggregateExchangeRateVote(t *testing.T) {
 	staking.EndBlocker(ctx, stakingKeeper)
 
 	// send messages
-	exchangeRate := sdk.NewDec(12).String() + utils.MicroAtomDenom
+	exchangeRate := sdk.NewDec(12).String() + utils.MicroUsdcDenom
 	context := sdk.WrapSDKContext(ctx)
 	_, err = msgServer.AggregateExchangeRateVote(context, types.NewMsgAggregateExchangeRateVote(exchangeRate, Addrs[0], ValAddrs[0]))
 

@@ -77,7 +77,6 @@ func TestSetWhitelist(t *testing.T) {
 	params := oracleKeeper.GetParams(ctx)
 	require.NotNil(t, params)
 	require.Equal(t, types.DefaultWhitelist, params.Whitelist)
-	require.True(t, len(params.Whitelist) == 4)
 
 	// update the param
 	newDenomList := types.DenomList{

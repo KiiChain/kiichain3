@@ -36,6 +36,8 @@ func TestMidBlocker(t *testing.T) {
 		oracleKeeper := input.OracleKeeper
 
 		// Sample exchange rate for the test
+		oracleKeeper.DeleteVoteTargets(ctx)
+		oracleKeeper.SetVoteTarget(ctx, utils.MicroAtomDenom)
 		exchangeRate := randomAExchangeRate.String() + utils.MicroAtomDenom
 
 		ctx = input.Ctx.WithBlockHeight(1)
@@ -63,6 +65,8 @@ func TestMidBlocker(t *testing.T) {
 		oracleKeeper := input.OracleKeeper
 
 		// Sample exchange rate for the test
+		oracleKeeper.DeleteVoteTargets(ctx)
+		oracleKeeper.SetVoteTarget(ctx, utils.MicroAtomDenom)
 		exchangeRate := randomAExchangeRate.String() + utils.MicroAtomDenom
 
 		ctx = input.Ctx.WithBlockHeight(1)
@@ -91,6 +95,8 @@ func TestMidBlocker(t *testing.T) {
 		oracleKeeper := input.OracleKeeper
 
 		// Sample exchange rate for the test
+		oracleKeeper.DeleteVoteTargets(ctx)
+		oracleKeeper.SetVoteTarget(ctx, utils.MicroAtomDenom)
 		exchangeRate := randomAExchangeRate.String() + utils.MicroAtomDenom
 
 		ctx = input.Ctx.WithBlockHeight(1)
@@ -114,6 +120,8 @@ func TestMidBlocker(t *testing.T) {
 		oracleKeeper := input.OracleKeeper
 
 		// Sample exchange rate for the test
+		oracleKeeper.DeleteVoteTargets(ctx)
+		oracleKeeper.SetVoteTarget(ctx, utils.MicroAtomDenom)
 		exchangeRate := randomAExchangeRate.String() + utils.MicroAtomDenom
 
 		ctx = input.Ctx.WithBlockHeight(1)
@@ -139,6 +147,8 @@ func TestMidBlocker(t *testing.T) {
 		oracleKeeper := input.OracleKeeper
 
 		// Sample exchange rate for the test
+		oracleKeeper.DeleteVoteTargets(ctx)
+		oracleKeeper.SetVoteTarget(ctx, utils.MicroAtomDenom)
 		exchangeRate := randomAExchangeRate.String() + utils.MicroAtomDenom
 
 		ctx = input.Ctx.WithBlockHeight(1)
@@ -172,6 +182,7 @@ func TestMidBlocker(t *testing.T) {
 		ctx = input.Ctx.WithBlockHeight(1)
 
 		// Modify the whitelist and apply it (ukii and uusdc will be 'new assets')
+		oracleKeeper.DeleteVoteTargets(ctx)
 		newWhitelist := types.DenomList{
 			{Name: utils.MicroAtomDenom},
 			{Name: utils.MicroEthDenom},
@@ -214,6 +225,8 @@ func TestOracleDrop(t *testing.T) {
 	oracleKeeper := input.OracleKeeper
 	ctx = input.Ctx.WithBlockHeight(1)
 
+	oracleKeeper.DeleteVoteTargets(ctx)
+	oracleKeeper.SetVoteTarget(ctx, utils.MicroAtomDenom)
 	input.OracleKeeper.SetBaseExchangeRate(ctx, utils.MicroAtomDenom, randomAExchangeRate)
 
 	// Sample exchange rate for the test
