@@ -29,6 +29,10 @@ threshold = "2"
 base = "USDC"
 threshold = "2"
 
+[[deviation_thresholds]]
+base = "XAUT"
+threshold = "2"
+
 [[currency_pairs]]
 base = "BTC"
 chain_denom = "ubtc"
@@ -109,6 +113,17 @@ providers = [
 ]
 quote = "USDT"
 
+[[currency_pairs]]
+base = "XAUT"
+chain_denom = "uxaut"
+providers = [
+  "huobi",
+  "okx",
+  "gate",
+  "crypto",
+]
+quote = "USDT"
+
 [account]
 address = "kii1..."
 chain_id = "kiichain3"
@@ -116,7 +131,7 @@ validator = "kiivaloper1..."
 prefix = "kii"
 
 [keyring]
-backend = "test"
+backend = "os"
 dir = "~/.kiichain3"
 
 [rpc]
