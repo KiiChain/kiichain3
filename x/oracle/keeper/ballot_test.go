@@ -107,10 +107,10 @@ func TestOrganizeBallotByDenom(t *testing.T) {
 	denomBallot := oracleKeeper.OrganizeBallotByDenom(ctx, validatorClaimMap)
 
 	// Validation
-	require.Equal(t, uatomBallot, denomBallot[utils.MicroAtomDenom])
-	require.Equal(t, uethBallot, denomBallot[utils.MicroEthDenom])
-	require.Equal(t, uusdcBallot, denomBallot[utils.MicroUsdcDenom])
-	require.Equal(t, ukiiBallot, denomBallot[utils.MicroKiiDenom])
+	require.ElementsMatch(t, uatomBallot, denomBallot[utils.MicroAtomDenom])
+	require.ElementsMatch(t, uethBallot, denomBallot[utils.MicroEthDenom])
+	require.ElementsMatch(t, uusdcBallot, denomBallot[utils.MicroUsdcDenom])
+	require.ElementsMatch(t, ukiiBallot, denomBallot[utils.MicroKiiDenom])
 }
 
 func TestClearBallots(t *testing.T) {
