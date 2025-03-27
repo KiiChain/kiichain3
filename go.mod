@@ -222,7 +222,7 @@ replace (
 	github.com/confio/ics23/go => github.com/cosmos/cosmos-sdk/ics23/go v0.8.0
 	github.com/cosmos/cosmos-sdk => github.com/KiiChain/kiichain-cosmos v0.3.38-fork.3
 	github.com/cosmos/iavl => github.com/sei-protocol/sei-iavl v0.2.0
-	github.com/cosmos/ibc-go/v4 => github.com/KiiChain/kii-ibc-go/v4 v4.6.0-fork.1
+	github.com/cosmos/ibc-go/v4 => github.com/KiiChain/kii-ibc-go/v4 v4.6.0-fork.2
 	github.com/ethereum/go-ethereum => github.com/sei-protocol/go-ethereum v1.13.5-sei-23
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	github.com/sei-protocol/sei-db => github.com/sei-protocol/sei-db v0.0.44
