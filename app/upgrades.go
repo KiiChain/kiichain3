@@ -15,7 +15,7 @@ import (
 // for both the current (n) and the previous (n-1) upgrade name. There is a bug
 // in a missing value in a log statement for which the fix is not released
 var upgradesList = []string{
-	"v3.0.0",
+	"v4.0.0",
 }
 
 // if there is an override list, use that instead, for integration tests

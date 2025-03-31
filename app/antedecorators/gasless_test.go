@@ -7,6 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/accesscontrol"
 	"github.com/kiichain/kiichain/app/antedecorators"
 	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
+	oraclekeeper "github.com/kiichain/kiichain/x/oracle/keeper"
 )
 
 var output = ""
@@ -84,9 +85,9 @@ func (t FakeTx) FeeGranter() sdk.AccAddress {
 	return nil
 }
 
-func CallGaslessDecoratorWithMsg(ctx sdk.Context, msg sdk.Msg, evmKeeper *evmkeeper.Keeper) error {
+func CallGaslessDecoratorWithMsg(ctx sdk.Context, msg sdk.Msg, evmKeeper *evmkeeper.Keeper, orcleKeeper oraclekeeper.Keeper) error {
 	anteDecorators := []sdk.AnteFullDecorator{
-		antedecorators.NewGaslessDecorator([]sdk.AnteFullDecorator{sdk.DefaultWrappedAnteDecorator(FakeAnteDecoratorGasReqd{})}, evmKeeper),
+		antedecorators.NewGaslessDecorator([]sdk.AnteFullDecorator{sdk.DefaultWrappedAnteDecorator(FakeAnteDecoratorGasReqd{})}, evmKeeper, orcleKeeper),
 	}
 	chainedHandler, depGen := sdk.ChainAnteDecorators(anteDecorators...)
 	fakeTx := FakeTx{

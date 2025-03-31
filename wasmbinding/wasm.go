@@ -12,6 +12,9 @@ import (
 	evmwasm "github.com/kiichain/kiichain/x/evm/client/wasm"
 	evmkeeper "github.com/kiichain/kiichain/x/evm/keeper"
 
+	oraclewasm "github.com/kiichain/kiichain/x/oracle/client/wasm"
+	oraclekeeper "github.com/kiichain/kiichain/x/oracle/keeper"
+
 	tokenfactorywasm "github.com/kiichain/kiichain/x/tokenfactory/client/wasm"
 	tokenfactorykeeper "github.com/kiichain/kiichain/x/tokenfactory/keeper"
 )
@@ -28,11 +31,13 @@ func RegisterCustomPlugins(
 	portSource wasmtypes.ICS20TransferPortSource,
 	aclKeeper aclkeeper.Keeper,
 	evmKeeper *evmkeeper.Keeper,
+	oracleKeeper *oraclekeeper.Keeper,
 ) []wasmkeeper.Option {
 	epochHandler := epochwasm.NewEpochWasmQueryHandler(epoch)
 	tokenfactoryHandler := tokenfactorywasm.NewTokenFactoryWasmQueryHandler(tokenfactory)
 	evmHandler := evmwasm.NewEVMQueryHandler(evmKeeper)
-	wasmQueryPlugin := NewQueryPlugin(epochHandler, tokenfactoryHandler, evmHandler)
+	oracleHandler := oraclewasm.NewOracleWasmQueryHandler(oracleKeeper)
+	wasmQueryPlugin := NewQueryPlugin(epochHandler, tokenfactoryHandler, evmHandler, oracleHandler)
 
 	queryPluginOpt := wasmkeeper.WithQueryPlugins(&wasmkeeper.QueryPlugins{
 		Custom: CustomQuerier(wasmQueryPlugin),

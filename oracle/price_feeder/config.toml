@@ -1,0 +1,158 @@
+gas_adjustment = 1.5
+gas_prices = "0.00125ukii"
+
+[[deviation_thresholds]]
+base = "BTC"
+threshold = "2"
+
+[[deviation_thresholds]]
+base = "ETH"
+threshold = "2"
+
+[[deviation_thresholds]]
+base = "SOL"
+threshold = "2"
+
+[[deviation_thresholds]]
+base = "XRP"
+threshold = "2"
+
+[[deviation_thresholds]]
+base = "BNB"
+threshold = "2"
+
+[[deviation_thresholds]]
+base = "USDT"
+threshold = "2"
+
+[[deviation_thresholds]]
+base = "USDC"
+threshold = "2"
+
+[[deviation_thresholds]]
+base = "XAUT"
+threshold = "2"
+
+[[currency_pairs]]
+base = "BTC"
+chain_denom = "ubtc"
+providers = [
+  "huobi",
+  "crypto",
+  "coinbase",
+  "kraken",
+  "okx"
+]
+quote = "USDT"
+
+[[currency_pairs]]
+base = "ETH"
+chain_denom = "ueth"
+providers = [
+  "huobi",
+  "crypto",
+  "coinbase",
+  "kraken",
+  "okx"
+]
+quote = "USDT"
+
+[[currency_pairs]]
+base = "SOL"
+chain_denom = "usol"
+providers = [
+  "huobi",
+  "kraken",
+  "crypto",
+  "coinbase",
+  "okx",
+]
+quote = "USDT"
+
+[[currency_pairs]]
+base = "XRP"
+chain_denom = "uxrp"
+providers = [
+  "huobi",
+  "kraken",
+  "crypto",
+  "coinbase",
+  "okx",
+]
+quote = "USDT"
+
+[[currency_pairs]]
+base = "BNB"
+chain_denom = "ubnb"
+providers = [
+  "huobi",
+  "kraken",
+  "crypto",
+  "okx",
+]
+quote = "USDT"
+
+[[currency_pairs]]
+base = "USDT"
+chain_denom = "uusdt"
+providers = [
+  "kraken",
+  "crypto",
+  "coinbase",
+]
+quote = "USD"
+
+[[currency_pairs]]
+base = "USDC"
+chain_denom = "uusdc"
+providers = [
+  "huobi",
+  "kraken",
+  "okx",
+  "gate",
+]
+quote = "USDT"
+
+[[currency_pairs]]
+base = "XAUT"
+chain_denom = "uxaut"
+providers = [
+  "huobi",
+  "okx",
+  "gate",
+  "crypto",
+]
+quote = "USDT"
+
+[account]
+address = "kii1..."
+chain_id = "kiichain3"
+validator = "kiivaloper1..."
+prefix = "kii"
+
+[keyring]
+backend = "os"
+dir = "~/.kiichain3"
+
+[rpc]
+grpc_endpoint = "localhost:9090"
+rpc_timeout = "100ms"
+tmrpc_endpoint = "http://localhost:26657"
+
+[telemetry]
+enable_hostname = true
+enable_hostname_label = true
+enable_service_label = true
+enabled = true
+global_labels = [["chain_id", "kiichain3"]]
+service_name = "price-feeder"
+prometheus_retention = 60
+
+[[provider_endpoints]]
+name = "binance"
+rest = "https://api1.binance.com"
+websocket = "stream.binance.com:9443"
+
+# [[healthchecks]]
+# url = "https://hc-ping.com/HEALTHCHECK-UUID"
+# timeout = "5s"

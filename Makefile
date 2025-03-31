@@ -50,7 +50,9 @@ ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=kiichain \
 			-X github.com/cosmos/cosmos-sdk/version.ServerName=kiichaind \
 			-X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \
 			-X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT) \
-			-X "github.com/cosmos/cosmos-sdk/version.BuildTags=$(build_tags_comma_sep)"
+			-X "github.com/cosmos/cosmos-sdk/version.BuildTags=$(build_tags_comma_sep)" \
+			-X github.com/kiichain/kiichain/oracle/price_feeder/cmd.Version=$(VERSION) \
+			-X github.com/kiichain/kiichain/oracle/price_feeder/cmd.Commit=$(COMMIT)
 
 ifeq ($(LINK_STATICALLY),true)
 	ldflags += -linkmode=external -extldflags "-Wl,-z,muldefs -static"
@@ -71,14 +73,9 @@ install: go.sum
 install-with-race-detector: go.sum
 		go install -race $(BUILD_FLAGS) ./cmd/kiichaind
 
-# install-price-feeder: go.sum
-# 		go install $(BUILD_FLAGS) ./oracle/price-feeder
-
 loadtest: go.sum
 		go build $(BUILD_FLAGS) -o ./build/loadtest ./loadtest/
 
-# price-feeder: go.sum
-# 		go build $(BUILD_FLAGS) -o ./build/price-feeder ./oracle/price-feeder
 
 go.sum: go.mod
 		@echo "--> Ensure dependencies have not been modified"
@@ -88,8 +85,6 @@ build:
 	go build $(BUILD_FLAGS) -o ./build/kiichaind ./cmd/kiichaind
 .PHONY: build
 
-# build-price-feeder:
-# 	go build $(BUILD_FLAGS) -o ./build/price-feeder ./oracle/price-feeder
 
 clean:
 	rm -rf ./build
@@ -384,3 +379,13 @@ compile-evm-all: compile-evm-cw20 compile-evm-cw721 compile-evm-native compile-e
 	@echo "All contracts compiled successfully."
 
 .PHONY: check-evm-tools compile-evm-cw20 compile-evm-cw721 compile-evm-native compile-evm-wkii compile-evm-all
+
+################################################################################
+###                             Price Feeder                                 ###
+################################################################################
+# build ONLY pricec feeder
+build-price-feeder: go.sum
+		go build $(BUILD_FLAGS) -o ./build/price-feeder ./oracle/price_feeder
+
+install-price-feeder: go.sum
+		go install $(BUILD_FLAGS) ./oracle/price_feeder

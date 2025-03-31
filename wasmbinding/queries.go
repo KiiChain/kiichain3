@@ -16,20 +16,26 @@ import (
 	tokenfactorywasm "github.com/kiichain/kiichain/x/tokenfactory/client/wasm"
 	tokenfactorybindings "github.com/kiichain/kiichain/x/tokenfactory/client/wasm/bindings"
 	tokenfactorytypes "github.com/kiichain/kiichain/x/tokenfactory/types"
+
+	oraclewasm "github.com/kiichain/kiichain/x/oracle/client/wasm"
+	oraclebindings "github.com/kiichain/kiichain/x/oracle/client/wasm/bindings"
+	oracletypes "github.com/kiichain/kiichain/x/oracle/types"
 )
 
 type QueryPlugin struct {
 	epochHandler        epochwasm.EpochWasmQueryHandler
 	tokenfactoryHandler tokenfactorywasm.TokenFactoryWasmQueryHandler
 	evmHandler          evmwasm.EVMQueryHandler
+	oracleHandler       oraclewasm.OracleWasmQueryHandler
 }
 
 // NewQueryPlugin returns a reference to a new QueryPlugin.
-func NewQueryPlugin(eh *epochwasm.EpochWasmQueryHandler, th *tokenfactorywasm.TokenFactoryWasmQueryHandler, evmh *evmwasm.EVMQueryHandler) *QueryPlugin {
+func NewQueryPlugin(eh *epochwasm.EpochWasmQueryHandler, th *tokenfactorywasm.TokenFactoryWasmQueryHandler, evmh *evmwasm.EVMQueryHandler, oh *oraclewasm.OracleWasmQueryHandler) *QueryPlugin {
 	return &QueryPlugin{
 		epochHandler:        *eh,
 		tokenfactoryHandler: *th,
 		evmHandler:          *evmh,
+		oracleHandler:       *oh,
 	}
 }
 
@@ -163,5 +169,97 @@ func (qp QueryPlugin) HandleEVMQuery(ctx sdk.Context, queryData json.RawMessage)
 		return qp.evmHandler.HandleSupportsInterface(ctx, c.Caller, c.InterfaceID, c.ContractAddress)
 	default:
 		return nil, errors.New("unknown EVM query")
+	}
+}
+
+// HandleOracleQuery receives the query from the wasm contract and executed the querier function
+func (qp QueryPlugin) HandleOracleQuery(ctx sdk.Context, queryData json.RawMessage) ([]byte, error) {
+	querier := &oraclebindings.KiiOracleQuery{}
+	err := json.Unmarshal(queryData, querier)
+	if err != nil {
+		return nil, oracletypes.ErrParsingOracleQuery
+	}
+
+	switch {
+	case querier.ExchangeRates != nil:
+		res, err := qp.oracleHandler.GetExchangeRates(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		byteData, err := json.Marshal(res)
+		if err != nil {
+			return nil, err
+		}
+
+		return byteData, nil
+
+	case querier.OracleTwaps != nil:
+		res, err := qp.oracleHandler.GetOracleTwaps(ctx, querier.OracleTwaps)
+		if err != nil {
+			return nil, err
+		}
+
+		byteData, err := json.Marshal(res)
+		if err != nil {
+			return nil, err
+		}
+
+		return byteData, nil
+
+	case querier.Actives != nil:
+		res, err := qp.oracleHandler.GetActives(ctx, querier.Actives)
+		if err != nil {
+			return nil, err
+		}
+
+		byteData, err := json.Marshal(res)
+		if err != nil {
+			return nil, err
+		}
+
+		return byteData, nil
+
+	case querier.PriceSnapshotHistory != nil:
+		res, err := qp.oracleHandler.GetPriceSnapshotHistory(ctx, querier.PriceSnapshotHistory)
+		if err != nil {
+			return nil, err
+		}
+
+		byteData, err := json.Marshal(res)
+		if err != nil {
+			return nil, err
+		}
+
+		return byteData, nil
+
+	case querier.FeederDelegation != nil:
+		res, err := qp.oracleHandler.GetFeederDelegation(ctx, querier.FeederDelegation)
+		if err != nil {
+			return nil, err
+		}
+
+		byteData, err := json.Marshal(res)
+		if err != nil {
+			return nil, err
+		}
+
+		return byteData, nil
+
+	case querier.VotePenaltyCounter != nil:
+		res, err := qp.oracleHandler.GetVotePenaltyCounter(ctx, querier.VotePenaltyCounter)
+		if err != nil {
+			return nil, err
+		}
+
+		byteData, err := json.Marshal(res)
+		if err != nil {
+			return nil, err
+		}
+
+		return byteData, nil
+
+	default:
+		return nil, oracletypes.ErrUnknownKiiOracleQuery
 	}
 }
