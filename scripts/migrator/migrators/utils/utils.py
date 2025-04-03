@@ -1,0 +1,46 @@
+import json
+import base64
+from decimal import Decimal, getcontext
+
+getcontext().prec = 50
+
+# Do replace in a json in a serialized form
+def replace_in_serialized(data: dict, old_value: str, new_value: str) -> dict:
+    json_str = json.dumps(data)
+    json_str = json_str.replace(old_value, new_value)
+    return json.loads(json_str)
+
+# Migrate a list of coins to 18 decimals for a selected denom
+def coins_to_decimals(coins: list[dict], denom: str = "ukii"):
+    for coin in coins:
+        coin_denom = coin['denom']
+        amount = coin['amount']
+
+        # Check if ukii
+        if coin_denom == denom:
+            coin['amount'] = add_decimals(amount)
+
+# Migrate a list of dec coins to have 18 decimals for a selected denom
+def dec_coins_to_decimals(dec_coins: list[dict], denom: str = "ukii"):
+    for dec_coin in dec_coins:
+        coin_denom = dec_coin['denom']
+        amount = dec_coin['amount']
+
+        # Check if ukii
+        if coin_denom == denom:
+            dec_coin['amount'] = f"{dec_add_decimals(amount)}"
+
+# Turns a base64 string into hex
+def base64_to_hex(string: str):
+    return base64.b64decode(string).hex()
+
+# Add 12 more decimals to a string
+def dec_add_decimals(number: str, decimals: int = 12) -> str:
+    value = Decimal(number)
+    shifted = value * Decimal(f"1e{decimals}")
+    return f"{shifted}"
+
+# Add 12 mode decimals to a number as a string
+def add_decimals(number: str, decimals: int = 12) -> str:
+    wei_decimals = "".zfill(12)
+    return f"{number}{wei_decimals}"
