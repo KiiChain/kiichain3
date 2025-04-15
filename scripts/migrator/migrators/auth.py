@@ -1,12 +1,13 @@
 from migrators import Migrator
 
+
 class Auth(Migrator):
     # Migrate the accounts and the params
     def migrate(self, data: dict):
-        auth = data['auth']
+        auth = data["auth"]
 
-        self.migrate_accounts(auth['accounts'])
-        self.migrate_params(auth['params'])
+        self.migrate_accounts(auth["accounts"])
+        self.migrate_params(auth["params"])
 
     # Migrate the accounts
     def migrate_accounts(self, accounts: list[dict]):
@@ -17,9 +18,9 @@ class Auth(Migrator):
                 continue
 
             # Clear the pubkey
-            account['pub_key'] = None
+            account["pub_key"] = None
 
     # Migrate the params
     # Delete the key disable_seqno_check
     def migrate_params(self, data: dict):
-        del(data['disable_seqno_check'])
+        del data["disable_seqno_check"]

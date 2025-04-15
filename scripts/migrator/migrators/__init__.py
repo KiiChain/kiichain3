@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Callable
 
+
 class Migrator(ABC):
     @abstractmethod
     def migrate(self, data: dict):
@@ -9,3 +10,6 @@ class Migrator(ABC):
 
     def delete_self(self) -> bool:
         return False
+
+    def print_class_name(self):
+        return self.__class__.__name__

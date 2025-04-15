@@ -10,18 +10,23 @@ from migrators.evm import EVM
 from migrators.feegrant import Feegrant
 from migrators.gov import Gov
 from migrators.ibc import IBC
-from migrators.mint import Mint
 from migrators.slashing import Slashing
 from migrators.staking import Staking
 from migrators.transfer import Transfer
+from migrators.crisis import Crisis
+from migrators.ratelimit import RateLimit
+from migrators.wasm import Wasm
 
 from migrators.erc20 import ERC20
 from migrators.feemarket import FeeMarket
+from migrators.feeIBC import FeeIBC
+from migrators.interchainaccounts import InterchainAccounts
+from migrators.packetfowardmiddleware import PacketForwardMiddleware
 
 from migrators.delete import Deleter
 from migrators.nochange import NoChange
 from migrators.utils.address_converter import convert_bech32_prefix, hex_to_bech32
-from migrators.utils.utils import replace_in_serialized
+from migrators.utils.utils import replace_in_serialized, replace_in_dict
 
 # Define all the migrators
 MIGRATORS: dict[str, Migrator] = {
@@ -30,7 +35,7 @@ MIGRATORS: dict[str, Migrator] = {
     "authz": Authz(),
     "bank": Bank(),
     "capability": NoChange(),
-    "crisis": Deleter(),
+    "crisis": Crisis(),
     "distribution": Distribution(),
     "epoch": Deleter(),
     "evidence": Evidence(),
@@ -39,15 +44,15 @@ MIGRATORS: dict[str, Migrator] = {
     "genutil": NoChange(),
     "gov": Gov(),
     "ibc": IBC(),
-    "mint": Mint(),
+    "mint": Deleter(),
     "params": Deleter(),
     "slashing": Slashing(),
     "staking": Staking(),
     "tokenfactory": Deleter(),
     "transfer": Transfer(),
     "upgrade": NoChange(),
-    "vesting": Deleter(),
-    "wasm": Deleter(),
+    "vesting": NoChange(),
+    "wasm": Wasm(),
 }
 
 
@@ -55,6 +60,10 @@ MIGRATORS: dict[str, Migrator] = {
 MODULES_TO_ADD: list[Migrator] = {
     ERC20(),
     FeeMarket(),
+    FeeIBC(),
+    InterchainAccounts(),
+    PacketForwardMiddleware(),
+    RateLimit(),
 }
 
 
@@ -112,6 +121,9 @@ class Root(Migrator):
 
             # Run the migration
             MIGRATORS[key].migrate(data)
+
+            class_name = MIGRATORS[key].print_class_name()
+            print(f"Class {class_name} migrated successfully")
 
         # Iterate all the modules to add
         for module in MODULES_TO_ADD:
@@ -195,7 +207,13 @@ class Root(Migrator):
                 address = account["base_account"]["address"]
                 non_migrate_addresses[address] = True
 
+        # Check all the wasm addresses
+        for wasm_contract in data["app_state"]["wasm"]["contracts"]:
+            contract_address = wasm_contract["contract_address"]
+            non_migrate_addresses[contract_address] = True
+
         # Iterate all the address associations
+        replace_map = {}
         for association in evm_data["address_associations"]:
             kii_address = association["kii_address"]
             eth_address = association["eth_address"]
@@ -208,7 +226,10 @@ class Root(Migrator):
             # Convert the address
             processed_kii_address = hex_to_bech32(eth_address, "kii")
 
-            # Apply
-            data = replace_in_serialized(data, kii_address, processed_kii_address)
+            # Add to the replace map
+            replace_map[kii_address] = processed_kii_address
+
+        # Apply
+        data = replace_in_dict(data, replace_map)
 
         return data
