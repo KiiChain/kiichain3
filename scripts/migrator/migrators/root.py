@@ -16,6 +16,7 @@ from migrators.transfer import Transfer
 from migrators.crisis import Crisis
 from migrators.ratelimit import RateLimit
 from migrators.wasm import Wasm
+from migrators.tokenfactory import TokenFactory
 
 from migrators.erc20 import ERC20
 from migrators.feemarket import FeeMarket
@@ -48,7 +49,7 @@ MIGRATORS: dict[str, Migrator] = {
     "params": Deleter(),
     "slashing": Slashing(),
     "staking": Staking(),
-    "tokenfactory": Deleter(),
+    "tokenfactory": TokenFactory(),
     "transfer": Transfer(),
     "upgrade": NoChange(),
     "vesting": NoChange(),
@@ -122,8 +123,8 @@ class Root(Migrator):
             # Run the migration
             MIGRATORS[key].migrate(data)
 
-            class_name = MIGRATORS[key].print_class_name()
-            print(f"Class {class_name} migrated successfully")
+            # Print the class name
+            MIGRATORS[key].print_class_name()
 
         # Iterate all the modules to add
         for module in MODULES_TO_ADD:

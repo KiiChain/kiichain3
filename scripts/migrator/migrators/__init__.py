@@ -12,4 +12,11 @@ class Migrator(ABC):
         return False
 
     def print_class_name(self):
-        return self.__class__.__name__
+        # Get the class name
+        class_name = self.__class__.__name__
+
+        # If the class name is NoChange we skip it
+        if class_name == "NoChange":
+            return
+        
+        print(f"Class {class_name} migrated successfully")
