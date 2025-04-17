@@ -6,7 +6,6 @@ class Distribution(Migrator):
     # Migrate the accounts and the params
     def migrate(self, data: dict):
         distribution = data["distribution"]
-        print("MISSING IMPLEMENTATION DISTRIBUTION")
 
         # Migrate the params
         self.migrate_params(distribution["params"])
@@ -50,7 +49,6 @@ class Distribution(Migrator):
 
     # Migrate the delegators withdraw infos
     def migrate_delegator_withdraw_infos(self, data: list):
-        print("MISSING IMPLEMENTATION delegator_withdraw_infos")
         return
 
     # Migrate the previous proposer
@@ -109,5 +107,4 @@ class Distribution(Migrator):
 
     # Migrate the validator slash events
     def migrate_validator_slash_events(self, validator_slash_events: list[dict]):
-        print("MISSING IMPLEMENTATION validator_slash_events")
         return

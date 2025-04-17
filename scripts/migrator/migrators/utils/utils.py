@@ -29,22 +29,31 @@ def replace_in_serialized(data: dict, replacement_dict: dict[str, str]) -> dict:
     return json.loads(json_str)
 
 # Migrate a list of coins to 18 decimals for a selected denom
-def coins_to_decimals(coins: list[dict], denom: str = "ukii"):
+def coins_to_decimals(coins: list[dict], denom: str = "akii"):
+    # Sort
+    coins.sort(key=lambda c: c["denom"])
+
+    # Fix the decimals
     for coin in coins:
         coin_denom = coin['denom']
         amount = coin['amount']
 
-        # Check if ukii
+        # Check if akii
         if coin_denom == denom:
             coin['amount'] = add_decimals(amount)
 
+
 # Migrate a list of dec coins to have 18 decimals for a selected denom
-def dec_coins_to_decimals(dec_coins: list[dict], denom: str = "ukii"):
+def dec_coins_to_decimals(dec_coins: list[dict], denom: str = "akii"):
+    # Sort
+    dec_coins.sort(key=lambda c: c["denom"])
+
+    # Fix the decimals
     for dec_coin in dec_coins:
         coin_denom = dec_coin['denom']
         amount = dec_coin['amount']
 
-        # Check if ukii
+        # Check if akii
         if coin_denom == denom:
             dec_coin['amount'] = f"{dec_add_decimals(amount)}"
 

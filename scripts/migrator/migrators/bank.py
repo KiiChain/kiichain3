@@ -1,6 +1,9 @@
 from migrators import Migrator
 from migrators.utils.utils import coins_to_decimals
 
+BAD_ADDRESS="kii1qqqqqta26mc9wa6zvzmv9jccv8ugunj7jmgqfl"
+REWARDS="kii1ayzckayhqvr3ujd5qn58avy7t85mjye3gc40fh"
+ONE_TOKEN=1_000_000_000_000_000_000
 
 class Bank(Migrator):
     # Migrate the accounts and the params
@@ -22,6 +25,9 @@ class Bank(Migrator):
         # Delete the unused key
         del bank["wei_balances"]
 
+        # Clear a bad address on the system
+        self.clear_bad_address(bank["balances"])
+
     # Migrate the params
     # Params are the same
     def migrate_params(self, params: dict):
@@ -33,9 +39,9 @@ class Bank(Migrator):
         return
 
     # Migrate the supply
-    # Update ukii to have 12 more decimals
+    # Update akii to have 12 more decimals
     def migrate_supply(self, supply: list[dict]):
-        # Convert the ukii on the supply to 18 decimals
+        # Convert the akii on the supply to 18 decimals
         coins_to_decimals(supply)
 
     # Put all balances to 18 decimals and delete the WEI balance key
@@ -57,20 +63,68 @@ class Bank(Migrator):
             # Zero fill to 12 digits
             wei_balance = wei_balance.zfill(12)
 
-            # Now iterate the coins and update only the ukii value
+            # Now iterate the coins and update only the akii value
             for coin in balance["coins"]:
                 denom = coin["denom"]
                 amount = coin["amount"]
 
-                # Check if ukii
-                if denom == "ukii":
+                # Check if akii
+                if denom == "akii":
                     coin["amount"] = f"{amount}{wei_balance}"
+            
+            # Sort the list
+            balance["coins"].sort(key=lambda c: c["denom"])
 
         # Add new balances from wei_balances that are missing
         for address, amount in wei_balances_dict.items():
             if address not in address_to_balance:
                 new_balance = {
                     "address": address,
-                    "coins": [{"denom": "ukii", "amount": amount}],
+                    "coins": [{"denom": "akii", "amount": amount}],
                 }
                 balance_data.append(new_balance)
+        
+    # Clear a bad balance on the chain holding tokens
+    def clear_bad_address(self, balance_data: list[dict]):
+        # Iterate all the addresses and find the bad address
+        remainder=0
+        for balance in balance_data:
+            address = balance["address"]
+
+            # Check if it's the bad address
+            if address == BAD_ADDRESS:
+                # Iterate the coins and reduce the Kii amount
+                for coin in balance["coins"]:
+                    denom = coin["denom"]
+                    amount = coin["amount"]
+
+                    # Check if akii
+                    if denom == "akii":
+                        amount_int = int(coin["amount"])
+
+                        # Leave the address with one token
+                        if amount_int > ONE_TOKEN:
+                            coin["amount"] = f"{ONE_TOKEN}"
+                            remainder = amount_int - ONE_TOKEN
+                            print(f"Removed {remainder} from address {address}")
+        
+        # Iterate again and add to the rewards address
+        if remainder == 0:
+            return
+        
+        for balance in balance_data:
+            address = balance["address"]
+
+            # Check if it's the rewards address
+            if address == REWARDS:
+                # Iterate the coins and reduce the Kii amount
+                for coin in balance["coins"]:
+                    denom = coin["denom"]
+                    amount = coin["amount"]
+
+                    # Check if akii
+                    if denom == "akii":
+                        amount_int = int(coin["amount"])
+
+                        coin["amount"] = f"{amount_int+remainder}"
+                        print(f"Added {amount_int+remainder} from address {address}")

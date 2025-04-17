@@ -6,7 +6,5 @@ class Evidence(Migrator):
     def migrate(self, data: dict):
         evidence = data["evidence"]
 
-        print("CHECK ME EVIDENCE MIGRATOR")
-
         # We do no changes to evidence
         return

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ue
+set -xe
 
 #############
 # VARIABLES #
@@ -8,21 +8,22 @@ set -ue
 # Set the project variables
 EXPORT_GENESIS="testnet_data/export_testnet.json"
 MIGRATED_GENESIS="testnet_data/migrated_genesis.json"
+SORTED_GENESIS="testnet_data/migrated_sorted.json"
 # Validator #1 data
 VAL_1_HOME="/tmp/kiichain/home_validator1"
-VAL_1_NODE_KEY="testnet_data/node_key_1.json"
+VAL_1_NODE_KEY_JSON="testnet_data/node_key_1.json"
 VAL_1_PRIV_VALIDATOR_KEY="testnet_data/priv_key_1.json"
 VAL_1_P2P_PORT=26156
 VAL_1_NODE_KEY="3155135d22707c4021808f788e2bed44119dc687"
 # Validator #2 data
 VAL_2_HOME="/tmp/kiichain/home_validator2"
-VAL_2_NODE_KEY="testnet_data/node_key_2.json"
+VAL_2_NODE_KEY_JSON="testnet_data/node_key_2.json"
 VAL_2_PRIV_VALIDATOR_KEY="testnet_data/priv_key_2.json"
 VAL_2_P2P_PORT=26256
 VAL_2_NODE_KEY="6873de3ec2d1dc35c0d900ed2760eedafefe58ab"
 # Validator #3 data
 VAL_3_HOME="/tmp/kiichain/home_validator3"
-VAL_3_NODE_KEY="testnet_data/node_key_3.json"
+VAL_3_NODE_KEY_JSON="testnet_data/node_key_3.json"
 VAL_3_PRIV_VALIDATOR_KEY="testnet_data/priv_key_3.json"
 VAL_3_P2P_PORT=26356
 VAL_3_NODE_KEY="efc85289d64d3bf351fce0598e2fe160ab8819cf"
@@ -40,6 +41,7 @@ rm -rf /tmp/kiichain
 # Start by migrating the genesis
 source .venv/bin/activate
 python scripts/migrator/main.py $EXPORT_GENESIS $MIGRATED_GENESIS
+jq -S . $MIGRATED_GENESIS > $SORTED_GENESIS
 
 # Validate the genesis
 kiichaind genesis validate $MIGRATED_GENESIS
@@ -49,7 +51,7 @@ kiichaind genesis validate $MIGRATED_GENESIS
 ##################
 
 # Generic initialization function
-start_validator() {
+init_validator() {
     local home=$1
     local node_key=$2
     local priv_validator_key=$3
@@ -67,12 +69,18 @@ start_validator() {
     cp $priv_validator_key $home/config/priv_validator_key.json
 
     # Setup the p2p
-    sed -i -e "/persistent_peers =/ s^= .*^= \"$PERSISTENT_PEERS\"^" $home/config/config.toml
+    sed -i -E "/^persistent_peers *=/ s|=.*|= \"$PERSISTENT_PEERS\"|" "$home/config/config.toml"
+    sed -i -E "/^allow_duplicate_ip *=/ s|=.*|= \"true\"|" "$home/config/config.toml"
 }
 
 # Start the validator #1
-start_validator $VAL_1_HOME $VAL_1_NODE_KEY $VAL_2_PRIV_VALIDATOR_KEY validator1
+init_validator $VAL_1_HOME $VAL_1_NODE_KEY_JSON $VAL_1_PRIV_VALIDATOR_KEY validator1
 # Start the validator #2
-start_validator $VAL_2_HOME $VAL_2_NODE_KEY $VAL_2_PRIV_VALIDATOR_KEY validator2
+init_validator $VAL_2_HOME $VAL_2_NODE_KEY_JSON $VAL_2_PRIV_VALIDATOR_KEY validator2
 # Start the validator #3
-start_validator $VAL_3_HOME $VAL_3_NODE_KEY $VAL_3_PRIV_VALIDATOR_KEY validator3
+init_validator $VAL_3_HOME $VAL_3_NODE_KEY_JSON $VAL_3_PRIV_VALIDATOR_KEY validator3
+
+# Start the validators
+kitty bash -c "kiichaind start --home $VAL_1_HOME --minimum-gas-prices 20000000000akii --inv-check-period 1 --p2p.laddr tcp://0.0.0.0:$VAL_1_P2P_PORT --rpc.laddr tcp://127.0.0.1:26657 --json-rpc.enable true --json-rpc.address 0.0.0.0:8545 --api.enable true" &
+kitty bash -c "kiichaind start --home $VAL_2_HOME --minimum-gas-prices 20000000000akii --inv-check-period 1 --p2p.laddr tcp://0.0.0.0:$VAL_2_P2P_PORT --rpc.laddr tcp://127.0.0.1:26257" &
+kitty bash -c "kiichaind start --home $VAL_3_HOME --minimum-gas-prices 20000000000akii --inv-check-period 1 --p2p.laddr tcp://0.0.0.0:$VAL_3_P2P_PORT --rpc.laddr tcp://127.0.0.1:26357" &

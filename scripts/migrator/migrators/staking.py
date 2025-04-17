@@ -23,8 +23,6 @@ class Staking(Migrator):
         # Migrate the exported
         self.migrate_exported(staking['exported'])
 
-        print("CHECK POWER CALCULATION, MAYBE SHOULD ADD THE 12 DECIMALS")
-
         return
 
     # Migrate the params
@@ -46,7 +44,6 @@ class Staking(Migrator):
     # Migrate the validators
     def migrate_validators(self, validators: list[dict]):
         # Iterate all the validators
-        print("CHECK unbonding_on_hold_ref_count")
         for validator in validators:
             validator['unbonding_on_hold_ref_count'] = "0"
             validator['unbonding_ids'] = []
@@ -64,6 +61,14 @@ class Staking(Migrator):
     
     # Migrate the unbonding delegations
     def migrate_unbonding_delegations(self, unbonding_delegations: list[dict]):
+        # Iterate all the unbonding delegations
+        for unbonding_delegation in unbonding_delegations:
+            # Iterate all the entries
+            for entry in unbonding_delegation['entries']:
+                # Update the balance and initial balance
+                entry['balance'] = add_decimals(entry['balance'])
+                entry['initial_balance'] = add_decimals(entry['initial_balance'])
+
         return
 
     # Migrate the redelegations

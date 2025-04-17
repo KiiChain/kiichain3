@@ -27,7 +27,7 @@ from migrators.packetfowardmiddleware import PacketForwardMiddleware
 from migrators.delete import Deleter
 from migrators.nochange import NoChange
 from migrators.utils.address_converter import convert_bech32_prefix, hex_to_bech32
-from migrators.utils.utils import replace_in_serialized, replace_in_dict
+from migrators.utils.utils import replace_in_dict
 
 # Define all the migrators
 MIGRATORS: dict[str, Migrator] = {
@@ -40,7 +40,7 @@ MIGRATORS: dict[str, Migrator] = {
     "distribution": Distribution(),
     "epoch": Deleter(),
     "evidence": Evidence(),
-    "evm": EVM("ukii", "3665", "KII", evm_decimals="18"),
+    "evm": EVM("akii", "3665", "KII", evm_decimals="18"),
     "feegrant": Feegrant(),
     "genutil": NoChange(),
     "gov": Gov(),
@@ -95,6 +95,9 @@ class Root(Migrator):
 
         # Migrate the addresses
         data = self.migrate_addresses(data)
+
+        # Migrate the denom
+        data = self.migrate_denom(data)
 
         # Migrate the consensus
         data["consensus"] = self.migrate_consensus(data)
@@ -173,23 +176,6 @@ class Root(Migrator):
         # Convert all the contract addresses
         evm_data = data["app_state"]["evm"]
 
-        # Build a hashmap of all the addresses associations
-        # address_associations = {
-        #     a["eth_address"]: a["kii_address"] for a in evm_data["address_associations"]
-        # }
-
-        # Iterate all the contracts
-        # for contract in evm_data["codes"]:
-        #     # Get the contract data
-        #     evm_address = contract["address"]
-        #     kii_address = address_associations[evm_address]
-
-        #     # Process the new kii address
-        #     processed_kii_address = hex_to_bech32(evm_address, "kii")
-
-        #     # Swap the address
-        #     data = replace_in_serialized(data, kii_address, processed_kii_address)
-
         # Generate a list of the validator addresses
         non_migrate_addresses = defaultdict(bool)
         for validator in data["app_state"]["staking"]["validators"]:
@@ -197,7 +183,7 @@ class Root(Migrator):
             converted_operator_address = convert_bech32_prefix(operator_address, "kii")
 
             # Add to the list of addresses to not migrate
-            non_migrate_addresses[converted_operator_address] = True
+            non_migrate_addresses[converted_operator_address] = "validator"
 
         # Check all the module accounts
         # We don't migrate module accounts
@@ -206,12 +192,28 @@ class Root(Migrator):
 
             if account_type == "/cosmos.auth.v1beta1.ModuleAccount":
                 address = account["base_account"]["address"]
-                non_migrate_addresses[address] = True
+                non_migrate_addresses[address] = "module account"
 
         # Check all the wasm addresses
         for wasm_contract in data["app_state"]["wasm"]["contracts"]:
             contract_address = wasm_contract["contract_address"]
-            non_migrate_addresses[contract_address] = True
+            non_migrate_addresses[contract_address] = "wasm contract"
+
+        # Lets not migrate any of the genesis addresses (any account bellow account number 50)
+        for account in data["app_state"]["auth"]["accounts"]:
+            acc_number = 0
+            address = ""
+            # Check if it has a base account
+            if "base_account" in account.keys():
+                address = account["base_account"]["address"]
+                acc_number = int(account["base_account"]["account_number"])
+            else:
+                address = account["address"]
+                acc_number = int(account["account_number"])
+
+            # Check if we should not migrate
+            if acc_number and acc_number != 0 and acc_number <= 50:
+                non_migrate_addresses[address] = f"account number ({acc_number})"
 
         # Iterate all the address associations
         replace_map = {}
@@ -221,7 +223,8 @@ class Root(Migrator):
 
             # Check if it's a validator we don't convert
             if non_migrate_addresses[kii_address]:
-                print(f"Address {kii_address} will not be migrated")
+                reason = non_migrate_addresses[kii_address]
+                print(f"Address {kii_address} will not be migrated - reason: {reason}")
                 continue
 
             # Convert the address
@@ -233,4 +236,11 @@ class Root(Migrator):
         # Apply
         data = replace_in_dict(data, replace_map)
 
+        return data
+
+    # Migrate the denom
+    def migrate_denom(self, data) -> dict:
+        # Apply
+        replace_map = {"ukii": "akii"}
+        data = replace_in_dict(data, replace_map)
         return data
