@@ -87,7 +87,7 @@ class Root(Migrator):
         # Migrate the genesis_time
         data["genesis_time"] = data["genesis_time"]
         # Migrate the chain_id
-        data["chain_id"] = "kiichain_1336-1"
+        data["chain_id"] = "oro_1336-1"
         # Migrate the initial_height
         data["initial_height"] = int(data["initial_height"])
         # Migrate the app_hash

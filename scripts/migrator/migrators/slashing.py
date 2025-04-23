@@ -16,8 +16,11 @@ class Slashing(Migrator):
         return
 
     # Migrate the params
-    # We do no changes
     def migrate_params(self, params: dict):
+        # Update the slashing window
+        params["signed_blocks_window"] = "227368" # 5 days of downtime
+        params["min_signed_per_window"] = "0.050000000000000000"
+
         return
 
     # Migrate the signing infos
