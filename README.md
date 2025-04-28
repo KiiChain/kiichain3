@@ -1,3 +1,6 @@
+> **⚠️ This repository is archived.**  
+> Kiichain Version 3 is no longer actively maintained.  
+
 # Kiichain3
 
 ![Banner!](assets/kii.png)
